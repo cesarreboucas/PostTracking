@@ -9,7 +9,7 @@ public class VehicleController {
 	
 	@GetMapping("/vehicles")
 	public String ShowAll() {
-		return "vehicle/vehicle";
+		return "vehicles/vehicles";
 		
 	}
 }
