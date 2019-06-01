@@ -21,7 +21,4 @@ public class Package {
 	public void setVolume(double volume) {
 		this.volume = volume;
 	}
-	
-	
-	
 }

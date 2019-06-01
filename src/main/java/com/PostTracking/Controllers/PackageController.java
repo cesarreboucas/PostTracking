@@ -30,11 +30,4 @@ public class PackageController {
 		
 		
 	}
-	
-	/*public ArrayList<Package> getAll() {
-		
-		
-		return list;
-	}*/
-	
 }

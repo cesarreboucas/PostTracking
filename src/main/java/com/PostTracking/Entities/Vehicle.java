@@ -21,7 +21,7 @@ public class Vehicle {
 		this.description = description;
 	}
 	public int getMaxWeight() {
-		return maxWeight;
+		return this.maxWeight;
 	}
 	public void setMaxWeight(int maxWeight) {
 		this.maxWeight = maxWeight;
