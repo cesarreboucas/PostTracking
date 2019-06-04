@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head></head>
+<body>
+	<header th:replace="index/header.html"></header>
+	
+		<p>Add Packages!</p>
+		<ul>
+			<li>Lista</li>
+  			<li th:each="journey : ${nextJourneys}" th:text="${journey.getId()}"></li>
+  			<li th:text="'Exemplo: '+${chave}">aa</li>
+		</ul>
+		Table
+		<table>
+    		<tr th:each="var : ${#vars}">
+        		<td th:text="${var.key}">a</td>
+        		<td th:text="${var.value}"></td>
+    		</tr>
+		</table>
+		
+	<footer th:insert="index/footer.html"></footer>
+</body>
+</html>
