@@ -31,10 +31,14 @@ public class RouteController {
 		DistributionCenter coquitlam = new DistributionCenter(6, "Coquitlam");
 		DistributionCenter langley = new DistributionCenter(7, "Langley");
 		DistributionCenter mapleRidge = new DistributionCenter(8, "Maple Ridge");
+		DistributionCenter delta = new DistributionCenter(9, "Delta");
+		DistributionCenter northvan = new DistributionCenter(10, "North Vancouver");
+		DistributionCenter westPointGrey = new DistributionCenter(11, "West Point Grey");
 
 		Vehicle v1 = new Vehicle("Truck_001", 1500, 1500);
 		Vehicle v2 = new Vehicle("Truck_002", 2500, 2500);
 		Vehicle v3 = new Vehicle("Truck_003", 3500, 3500);
+		Vehicle v4 = new Vehicle("Truck_004", 2500, 2500);
 
 		ArrayList<Route> list = new ArrayList<Route>();
 		list.add(new Route(1,v1,surrey,	newWestminster,
@@ -88,6 +92,20 @@ public class RouteController {
 		list.add(new Route(10,v3,mapleRidge,	surrey,
 				new Timestamp(1558108800000L), // 17 - May - 2019 16:00
 				7200000, // 2 hours
+				86400000, // 1 days
+				true));
+		// V4
+		list.add(new Route(11,v4,northvan,	vancouver,
+				new Timestamp(1558090800000L),3600000,86400000,true));
+		
+		list.add(new Route(12,v4,vancouver, burnaby,
+				new Timestamp(1558099800000L), 
+				5400000, //1.5 hours
+				86400000, // 1 days
+				true));
+		list.add(new Route(13,v4,burnaby,	northvan,
+				new Timestamp(1558110600000L), 
+				5400000, // 1.5 hours
 				86400000, // 1 days
 				true));
 		

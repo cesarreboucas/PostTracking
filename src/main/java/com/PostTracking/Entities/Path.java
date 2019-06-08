@@ -7,7 +7,10 @@ public class Path {
 	private int position; // Distribution Center ID
 	private ArrayList<Integer> visited = new ArrayList<Integer>();
 	
-	
+	/**
+	 * Sets the origin of the path
+	 * @param position Origin position
+	 */
 	public Path(int position) {
 		this.position = position;
 		this.visited.add(position);

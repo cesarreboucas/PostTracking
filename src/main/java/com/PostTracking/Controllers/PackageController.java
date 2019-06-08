@@ -1,16 +1,13 @@
 package com.PostTracking.Controllers;
 
-
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Package;
@@ -31,84 +28,86 @@ public class PackageController {
 		return "packages/add";
 	}
 	
-	@GetMapping("/packages/seekpath")
+	@GetMapping("/packages/seekpath/{origin}/{destination}")
 	@ResponseBody
-	public ArrayList<Path> test() {
+	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination) {
 		//test from 1 to 3
 		ArrayList<Path> paths = new ArrayList<Path>();
-		Journey[] journeys = getNextJourneys();
+		Journey[] journeys = getJourneys();
 		
-		int origin_id = 1; // Surrey
-		int destination_id = 3; // Vancouver
+		int origin_id = 0;
+		int destination_id = 0;
+		try {
+			origin_id = Integer.parseInt(origin);
+			destination_id = Integer.parseInt(destination);
+		} catch(Exception ex) {
+			System.out.println("Unable to parse Origin or Destination on PackageController@seekPath");
+			return null;
+		}
 		
-		
-		//paths.add(p_initial);
-		boolean changed = true;
-
-		// Initializing paths
+		// Initializing paths to the first iteration
 		paths.add(new Path(origin_id));
 				
-		while(changed) {
-			changed = false;
-			for(int x=0; x < paths.size(); ++x) {
-				for(int i=0 ; i < journeys.length; ++i) {
-					if(journeys[i].getOrigin().getId() == paths.get(x).getPosition() && 
-							!paths.get(x).checkAlreadyVisited(journeys[i].getDestination().getId()) &&
-							paths.get(x).getPosition() != destination_id ) {
-						Path p = new Path(paths.get(x));
-						p.addStep(journeys[i]);
-												
-						
-						//checking duplicates
-						boolean duplicated = false;
-						for(Path compPath : paths) {
-							if(p.getVisited().equals(compPath.getVisited())) {
-								duplicated = true;
-								break;
-							}
+		
+			
+		for(int x=0; x < paths.size(); ++x) {
+			for(int i=0 ; i < journeys.length; ++i) {
+				/* Three conditions:
+					-> if the Journey starts where the path is at this moment
+					-> if the Journey doesn't go to a already visited place	
+					-> if the the current position not the destination 
+				*/ 
+				if(journeys[i].getOrigin().getId() == paths.get(x).getPosition() && 
+						!paths.get(x).checkAlreadyVisited(journeys[i].getDestination().getId()) &&
+						paths.get(x).getPosition() != destination_id ) {
+					// create a new path using the current one (Hard Copy) and adding the journey
+					Path p = new Path(paths.get(x));
+					p.addStep(journeys[i]);
+					paths.add(p);
+					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
+					System.out.println("Paths Size: "+paths.size()+" x:"+x);
+					
+					
+					// Logging paths -- Remove later
+					System.out.println("-> Paths: ");
+					for(Path pz : paths) {
+											
+						for(Journey jy : pz.getPath()) {
+							System.out.print(jy.getOrigin().getId() + " -> "+jy.getDestination().getId()+" ");
 						}
-						
-						if(!duplicated) {
-							System.out.println("adding to "+paths.get(x).getPosition());
-							paths.add(p);
-							changed = true;	
-						} else {
-							System.out.println("Skipping Duplicated");
-						}
-						
-						
-							
-
-						
-						
-						
-						
-						
-						
-						
-						
-						System.out.println("Paths 2: ");
-						for(Path pz : paths) {
-												
-							for(Journey jy : pz.getPath()) {
-								System.out.print(jy.getOrigin().getId() + " -> "+jy.getDestination().getId()+" ");
-							}
-							System.out.println("= Vis:"+pz.getVisited()+"\n");
-						}
-						System.out.println("Fim Paths: ");
-						
-					} 
+						System.out.println("= Vis:"+pz.getVisited()+"\n");
+					}
+					System.out.println("----Fim Paths---\n");
+					// end of log
+					
+				} 
+			}
+			System.out.println("--------Fim Loop JOURNEYS-------\n");
+		}
+		System.out.println("--------Fim Loop PATHS-------\n");
+		System.out.println();
+		
+		//Removing incomplete paths
+		for(int x=1; x < paths.size(); ++x) {
+			// If current position != destination, drop
+			if(paths.get(x).getPosition() != destination_id) {
+				paths.remove(x);
+				--x; //Backing X after index changed
+			}
+			// If Path is good, refresh timestamp
+			else {
+				ArrayList<Journey> journeysOfPath = paths.get(x).getPath();
+				long minimal = System.currentTimeMillis();
+				for(int i=0; i < journeysOfPath.size() ; ++i) {
+					System.out.println("Minimal: "+minimal+ " route: "+journeysOfPath.get(i).getId());
+					System.out.println("New Start: "+journeysOfPath.get(i).getNextPossible(minimal));
+					journeysOfPath.get(i).setStart(journeysOfPath.get(i).getNextPossible(minimal));
+					minimal = journeysOfPath.get(i).getArrival().getTime();
+					System.out.println();
 				}
 			}
 		}
-		
-		System.out.println();
-		
-				
-		//paths.add(p1);
-		//paths.add(p1);
-		//paths.add(p1);
-		//System.out.println(paths);
+
 		return paths;
 	}
 	
@@ -123,8 +122,8 @@ public class PackageController {
 		return list;
 	}
 	
-	@ModelAttribute("nextJourneys")
-	public Journey[] getNextJourneys() {
+	@ModelAttribute("Journeys")
+	public Journey[] getJourneys() {
 		
 		RouteController rc = new RouteController();
 		ArrayList<Route> routes = rc.getAll();
@@ -134,8 +133,6 @@ public class PackageController {
 		Journey j;
 		for(Route route : routes) {
 			j = new Journey(route);
-			j.setStart(route.getNextPossible(System.currentTimeMillis()));
-			
 			journeys.add(j);
 		}
 		return journeys.toArray(new Journey[journeys.size()]);
