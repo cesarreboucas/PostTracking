@@ -88,7 +88,7 @@ public class PackageController {
 		System.out.println();
 		
 		//Removing incomplete paths
-		for(int x=1; x < paths.size(); ++x) {
+		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
 			if(paths.get(x).getPosition() != destination_id) {
 				paths.remove(x);

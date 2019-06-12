@@ -8,16 +8,19 @@
 		<ul>
 			<li>Lista</li>
   			<li th:each="journey : ${Journeys}" th:text="${journey.getId()}"></li>
-  			<li th:text="'Exemplo: '+${chave}">aa</li>
+  			<li th:text="'Exemplo: '+${chave}"></li>
 		</ul>
 		Table
 		<table>
     		<tr th:each="var : ${#vars}">
-        		<td th:text="${var.key}">a</td>
+        		<td th:text="${var.key}"></td>
         		<td th:text="${var.value}"></td>
     		</tr>
 		</table>
+		<button class="btn btn-sm btn-primary" id="btnSeekPath">Seek Path</button>
+		<div id="paths"></div>
 		
 	<footer th:insert="index/footer.html"></footer>
+	<script src="/script/seekPath.js"></script>
 </body>
 </html>
