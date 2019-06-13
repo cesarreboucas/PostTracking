@@ -1,4 +1,4 @@
-package com.PostTracking.Application;
+package com.PostTracking.Boundaries;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

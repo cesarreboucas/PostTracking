@@ -1,7 +1,16 @@
 package com.PostTracking.Entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Vehicle")
 public class Vehicle {
 	
+	@javax.persistence.Id
+	@GeneratedValue
+	private int Id = 0;
 	private String description;
 	private int maxWeight; // Kg
 	private int maxVolume; // dc3
@@ -14,8 +23,12 @@ public class Vehicle {
 		this.maxVolume = maxVolume;
 	}
 	
+	public int getId() {
+		return Id;
+	}
+	
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
