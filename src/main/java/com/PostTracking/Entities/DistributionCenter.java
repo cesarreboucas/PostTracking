@@ -10,17 +10,20 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="DistributionCenter")
 public class DistributionCenter {
+	
 	@javax.persistence.Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
-	private int id = 0;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+   	private int id;
 	private String name = "";
 	private String address = "";
 	private String city = "";
 	private String province = "";
 	private String zipCode = "";
+	
+	public DistributionCenter() {
+		// TODO Auto-generated constructor stub
+	}
     
-
     public DistributionCenter(int id, String name) {
     	//this.id = id;
     	this.name = name;
@@ -43,7 +46,7 @@ public class DistributionCenter {
     }
     
     public String getAddress() {
-		return address;
+		return this.address;
 	}
 
 	public void setAddress(String address) {
@@ -67,7 +70,7 @@ public class DistributionCenter {
 	}
 
 	public String getZipCode() {
-		return zipCode;
+		return this.zipCode;
 	}
 
 	public void setZipCode(String zipCode) {

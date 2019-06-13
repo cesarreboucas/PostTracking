@@ -15,7 +15,9 @@ public class Vehicle {
 	private int maxWeight; // Kg
 	private int maxVolume; // dc3
 	
-	
+	public Vehicle() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public Vehicle(String description, int maxWeight, int maxVolume) {
 		this.description = description;
