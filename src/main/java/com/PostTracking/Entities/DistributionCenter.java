@@ -5,8 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-
 @Entity
 @Table(name="DistributionCenter")
 public class DistributionCenter {
@@ -20,22 +18,20 @@ public class DistributionCenter {
 	private String province = "";
 	private String zipCode = "";
 	
-	public DistributionCenter() {
-		// TODO Auto-generated constructor stub
+	
+	public DistributionCenter() {}
+	
+	public DistributionCenter(String name, String address, String city, String province, String zipCode) {
+		this.name = name;
+		this.address = address;
+		this.city = city;
+		this.province = province;
+		this.zipCode = zipCode;
 	}
-    
-    public DistributionCenter(int id, String name) {
-    	//this.id = id;
-    	this.name = name;
-    }
 
 	public int getId() {
         return this.id;
     }
-    
-    /*public void setId(int id ) {
-    	this.id = id;
-    }*/
     
     public String getName() {
         return this.name;

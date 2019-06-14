@@ -1,7 +1,9 @@
 package com.PostTracking.Controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Path;
@@ -16,6 +19,9 @@ import com.PostTracking.Entities.Route;
 
 @Controller
 public class PackageController {
+	
+	@Autowired
+	RouteDAO rDAO;
 	
 	@GetMapping("/packages")
 	public String showAll() {
@@ -125,8 +131,7 @@ public class PackageController {
 	@ModelAttribute("Journeys")
 	public Journey[] getJourneys() {
 		
-		RouteController rc = new RouteController();
-		ArrayList<Route> routes = rc.getAll();
+		List<Route> routes = rDAO.getRoutes();
 		
 		ArrayList<Journey> journeys = new ArrayList<Journey>();
 		

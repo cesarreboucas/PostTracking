@@ -19,4 +19,9 @@ public class DistributionCenterDAO {
 		dc = entityManager.merge(dc);
 		return dc.getId();
 	}
+	
+	public DistributionCenter getDistributionCenter(int id) {
+		DistributionCenter dc = entityManager.find(DistributionCenter.class, id);
+		return dc;
+	}
 }

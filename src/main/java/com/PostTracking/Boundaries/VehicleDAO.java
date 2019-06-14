@@ -19,4 +19,9 @@ public class VehicleDAO {
 		return v.getId();
 	}
 	
+	public Vehicle getVehicle(int id) {
+		Vehicle v = entityManager.find(Vehicle.class, id);
+		return v;
+	}
+	
 }

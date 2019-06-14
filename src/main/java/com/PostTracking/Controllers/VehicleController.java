@@ -30,10 +30,10 @@ public class VehicleController {
 		Vehicle v = new Vehicle("Truck001", 1500, 1500);
 		vdao.createVehicle(v);
 		
-		DistributionCenter dc = new DistributionCenter(15003,"name");
+		/*DistributionCenter dc = new DistributionCenter(15003,"name");
 		dc.setName("name");
 		dc.setAddress("address");
-		dao.createDistributionCenter(dc);
+		dao.createDistributionCenter(dc);*/
 		return "vehicles/vehicles";
 		
 	}

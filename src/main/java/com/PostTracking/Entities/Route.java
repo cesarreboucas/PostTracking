@@ -2,22 +2,42 @@ package com.PostTracking.Entities;
 
 import java.sql.Timestamp;
 
-public class Route {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="Route")
+@NamedQuery(name="Route.findAll", query="SELECT a FROM Route a")
+public class Route {
+	
+	@javax.persistence.Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     protected int id;
+	@ManyToOne
+    @JoinColumn(name="fk_vehicle")
     protected Vehicle vehicle;
+    @ManyToOne
+    @JoinColumn(name="fk_origin")
     protected DistributionCenter origin;
+    @ManyToOne
+    @JoinColumn(name="fk_destination")
     protected DistributionCenter destination;
     protected Timestamp start;
     protected int duration;
     protected int restart;
     protected boolean available;
 	
-    public Route(int id, Vehicle vehicle, DistributionCenter origin,
+    public Route() {}
+    
+    public Route(Vehicle vehicle, DistributionCenter origin,
                     DistributionCenter destination,
                     Timestamp start, int duration,
                     int restart, boolean available) {
-        this.id = id;
         this.vehicle = vehicle;
         this.origin = origin;
         this.destination = destination;
@@ -26,23 +46,63 @@ public class Route {
         this.restart = restart;
         this.available = available;
 	}
+	
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	public DistributionCenter getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(DistributionCenter origin) {
+		this.origin = origin;
+	}
+
+	public DistributionCenter getDestination() {
+		return destination;
+	}
+
+	public void setDestination(DistributionCenter destination) {
+		this.destination = destination;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public int getRestart() {
+		return restart;
+	}
+
+	public void setRestart(int restart) {
+		this.restart = restart;
+	}
+
+	public boolean isAvailable() {
+		return available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
-	
-	public DistributionCenter getOrigin() {
-		return this.origin;
-	}
-	
-	public DistributionCenter getDestination() {
-		return this.destination;
-	}
-	
+
 	public Timestamp getStart() {
-		return this.start;
+		return start;
 	}
-	
+
 	public Timestamp getArrival() {
 		return new Timestamp(this.start.getTime() + this.duration);
 	}

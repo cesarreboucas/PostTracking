@@ -2,12 +2,14 @@ package com.PostTracking.Controllers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
-
+import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,15 +17,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 public class RouteController {
 
+	@Autowired
+	RouteDAO rDAO;
+	
 	@GetMapping("/routes")
 	public String showAll() {
 		return "routes/routes";
 	}
 
 	@ModelAttribute("routes")
-	public ArrayList<Route> getAll() {
+	public List<Route> getAll() {
 		
-		DistributionCenter surrey = new DistributionCenter(1, "Surrey");
+		
+		List<Route> list = rDAO.getRoutes();
+		/*DistributionCenter surrey = new DistributionCenter(1, "Surrey");
 		DistributionCenter newWestminster = new DistributionCenter(2, "New Westminster");
 		DistributionCenter vancouver = new DistributionCenter(3, "Vancouver");
 		DistributionCenter burnaby = new DistributionCenter(4, "Burnaby");
@@ -33,14 +40,14 @@ public class RouteController {
 		DistributionCenter mapleRidge = new DistributionCenter(8, "Maple Ridge");
 		DistributionCenter delta = new DistributionCenter(9, "Delta");
 		DistributionCenter northvan = new DistributionCenter(10, "North Vancouver");
-		DistributionCenter westPointGrey = new DistributionCenter(11, "West Point Grey");
+		DistributionCenter westPointGrey = new DistributionCenter(11, "West Point Grey");*/
 
-		Vehicle v1 = new Vehicle("Truck_001", 1500, 1500);
+		/*Vehicle v1 = new Vehicle("Truck_001", 1500, 1500);
 		Vehicle v2 = new Vehicle("Truck_002", 2500, 2500);
 		Vehicle v3 = new Vehicle("Truck_003", 3500, 3500);
-		Vehicle v4 = new Vehicle("Truck_004", 2500, 2500);
+		Vehicle v4 = new Vehicle("Truck_004", 2500, 2500);*/
 
-		ArrayList<Route> list = new ArrayList<Route>();
+		/*
 		list.add(new Route(1,v1,surrey,	newWestminster,
 				new Timestamp(1558087200000L), // 17 - May - 2019 10:00
 				7200000, //2 hours
@@ -107,7 +114,7 @@ public class RouteController {
 				new Timestamp(1558110600000L), 
 				5400000, // 1.5 hours
 				86400000, // 1 days
-				true));
+				true));*/
 		
 		return list;
 		

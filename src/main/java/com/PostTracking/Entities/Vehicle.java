@@ -2,6 +2,7 @@ package com.PostTracking.Entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 @Entity
@@ -9,15 +10,13 @@ import javax.persistence.Table;
 public class Vehicle {
 	
 	@javax.persistence.Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int Id = 0;
 	private String description;
 	private int maxWeight; // Kg
 	private int maxVolume; // dc3
 	
-	public Vehicle() {
-		// TODO Auto-generated constructor stub
-	}
+	public Vehicle() {}
 	
 	public Vehicle(String description, int maxWeight, int maxVolume) {
 		this.description = description;
