@@ -1,20 +1,23 @@
 package com.PostTracking.Controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.DistributionCenter;
+import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Vehicle;
 
 
 @Controller
 public class VehicleController {
 	
-	@Autowired
-	DistributionCenterDAO dao;
 	@Autowired
 	VehicleDAO vdao;
 	
@@ -24,17 +27,15 @@ public class VehicleController {
 		
 	}
 	
+	@ModelAttribute("vehicles")
+	public List<Vehicle> getAll() {
+		List<Vehicle>  list = vdao.getVehicles();
+		return list;
+	}
+	
 	@GetMapping("/vehicles/add")
 	public String CreateVehicle() {
-		/*VehicleDAO vd = new VehicleDAO();*/
-		Vehicle v = new Vehicle("Truck001", 1500, 1500);
-		vdao.createVehicle(v);
-		
-		/*DistributionCenter dc = new DistributionCenter(15003,"name");
-		dc.setName("name");
-		dc.setAddress("address");
-		dao.createDistributionCenter(dc);*/
-		return "vehicles/vehicles";
+		return null;
 		
 	}
 }
