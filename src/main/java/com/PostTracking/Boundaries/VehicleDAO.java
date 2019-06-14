@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
-import com.PostTracking.Entities.Route;
+
 import com.PostTracking.Entities.Vehicle;
 
 @Component
