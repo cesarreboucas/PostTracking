@@ -22,6 +22,12 @@ public class VehicleDAO {
 		return v.getId();
 	}
 	
+	@Transactional
+	public Vehicle updateVehicle(Vehicle v) {
+		entityManager.merge(v);
+		return v;
+	}
+	
 	public Vehicle getVehicle(int id) {
 		Vehicle v = entityManager.find(Vehicle.class, id);
 		return v;
