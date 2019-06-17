@@ -3,6 +3,7 @@ package com.PostTracking.Entities;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
@@ -11,14 +12,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Route")
+@Table(name="route")
 @NamedQuery(name="Route.findAll", query="SELECT a FROM Route a")
 public class Route {
 	
 	@javax.persistence.Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     protected int id;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_vehicle")
     protected Vehicle vehicle;
     @ManyToOne
@@ -125,6 +126,4 @@ public class Route {
 		return ts;
 		
 	}
-    
-    
 }
