@@ -1,24 +1,41 @@
 package com.PostTracking.Entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Customer")
 public class Customer {
 	
+	@javax.persistence.Id
+	@GeneratedValue
 	private int id = 0;
 	private String firstName = "";
 	private String lastName = "";
-	private int phoneNumber = 0;
+	private String phoneNumber = "";
 	private String emailAddress = "";
 	private String address = "";
 	private String city = "";
 	private String province = "";
 	private String zipCode = "";
 	
+	public Customer() {}
+	
+	public Customer(String firstName, String lastName, String phoneNumber, String emailAddress, String address, String city, String province, String zipCode) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		this.emailAddress = emailAddress;
+		this.address = address;
+		this.city = city;
+		this.province = province;
+		this.zipCode = zipCode;
+	}
+	
 	
 	public int getId() {
 		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	public String getFirstName() {
@@ -37,11 +54,11 @@ public class Customer {
 		this.lastName = lastName;
 	}
 	
-	public int getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 	
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 	
