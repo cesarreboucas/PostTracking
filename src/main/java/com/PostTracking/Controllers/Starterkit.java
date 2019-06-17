@@ -34,7 +34,8 @@ public class Starterkit {
 		
 		/****************Distribution Centers ***************/
 		
-		ArrayList<DistributionCenter> dcArrayList = new ArrayList<DistributionCenter>(); 
+		ArrayList<DistributionCenter> dcArrayList = new ArrayList<DistributionCenter>();
+		
 		dcArrayList.add(new DistributionCenter("Surrey","Street s", "SurreyCity", "BC", "XNX NXN"));
 		dcArrayList.add(new DistributionCenter("New Westminster","Street s", "New West", "BC", "XNX NXN"));
 		dcArrayList.add(new DistributionCenter("Vancouver","Street s", "VanCity", "BC", "XNX NXN"));
@@ -61,60 +62,50 @@ public class Starterkit {
 			vDAO.createVehicle(v);
 		}
 		
-		DistributionCenter dc = dcDAO.getDistributionCenter(12);
-		System.out.println(dc.getName());
+		return "{\"ok\"=1}";
+	}
+	
+	@GetMapping("/start2")
+	@ResponseBody
+	public String start2() {
 		
 		ArrayList<Route> rArrayList = new ArrayList<Route>();
 		rArrayList.add(new Route(vDAO.getVehicle(1) ,dcDAO.getDistributionCenter(1),dcDAO.getDistributionCenter(2),
-				new Timestamp(1558087200000L), 	7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
 		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.getDistributionCenter(2), dcDAO.getDistributionCenter(6),
-				new Timestamp(1558098000000L),7200000, 86400000, true));
+				new Timestamp(1558098000000L), 7200000, 86400000, true));
 		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.getDistributionCenter(6),	dcDAO.getDistributionCenter(1),
-				new Timestamp(1558108800000L), 	7200000, 86400000,true));
+				new Timestamp(1558108800000L), 7200000, 86400000,true));
+		
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(2),	dcDAO.getDistributionCenter(4),
+				new Timestamp(1558080000000L), 7200000, 86400000, true));
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(4),dcDAO.getDistributionCenter(3),
+				new Timestamp(1558090800000L), 7200000, 86400000, true));
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(3),dcDAO.getDistributionCenter(5),
+				new Timestamp(1558105200000L), 5400000, 86400000, true));
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(5),dcDAO.getDistributionCenter(2),
+				new Timestamp(1558116000000L), 5400000, 86400000, true));
+		
+		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.getDistributionCenter(1),	dcDAO.getDistributionCenter(7),
+				new Timestamp(1558087200000L), 7200000, 86400000, true));
+		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.getDistributionCenter(7), dcDAO.getDistributionCenter(8),
+				new Timestamp(1558098000000L), 7200000, 86400000,true));
+		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.getDistributionCenter(8),	dcDAO.getDistributionCenter(1),
+				new Timestamp(1558108800000L), 7200000, 86400000,true));
+		
+		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.getDistributionCenter(10),dcDAO.getDistributionCenter(3),
+				new Timestamp(1558090800000L),3600000, 86400000,true));
+		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.getDistributionCenter(3), dcDAO.getDistributionCenter(4),
+				new Timestamp(1558099800000L),5400000, 86400000,true));
+		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.getDistributionCenter(4),	dcDAO.getDistributionCenter(10),
+				new Timestamp(1558110600000L),5400000, 86400000,true));
 		
 		for(Route r : rArrayList) {
 			rDAO.createRoute(r);
 		}
 		
-		/*
+/*
 		
-		// V2
-		list.add(new Route(4,v2,newWestminster,	burnaby,
-				new Timestamp(1558080000000L), // 17 - May - 2019 8:00
-				7200000, // 2 horas
-				86400000, // 1 days
-				true));
-		list.add(new Route(5,v2,burnaby,vancouver,
-				new Timestamp(1558090800000L), // 17 - May - 2019 11:00
-				7200000, // 2 horas
-				86400000, // 1 days
-				true));
-		list.add(new Route(6,v2,vancouver,richmond,
-				new Timestamp(1558105200000L), // 17 - May - 2019 15:00
-				5400000, // 1.5 horas
-				86400000, // 1 days
-				true));
-		list.add(new Route(7,v2,richmond,newWestminster,
-				new Timestamp(1558116000000L), // 17 - May - 2019 18:00
-				5400000, // 1.5 horas
-				86400000, // 1 days
-				true));
-		// V3
-		list.add(new Route(8,v3,surrey,	langley,
-				new Timestamp(1558087200000L), // 17 - May - 2019 10:00
-				7200000, //2 hours
-				86400000, // 1 days
-				true));
-		list.add(new Route(9,v3,langley, mapleRidge,
-				new Timestamp(1558098000000L), // 17 - May - 2019 13:00
-				7200000, //2 hours
-				86400000, // 1 days
-				true));
-		list.add(new Route(10,v3,mapleRidge,	surrey,
-				new Timestamp(1558108800000L), // 17 - May - 2019 16:00
-				7200000, // 2 hours
-				86400000, // 1 days
-				true));
 		// V4
 		list.add(new Route(11,v4,northvan,	vancouver,
 				new Timestamp(1558090800000L),3600000,86400000,true));
@@ -136,6 +127,7 @@ public class Starterkit {
 		dc.setName("name");
 		dc.setAddress("address");
 		dcDAO.createDistributionCenter(dc);*/
+		
 		return "{\"ok\"=2}";
 	}
 }

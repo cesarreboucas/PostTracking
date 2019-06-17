@@ -5,7 +5,31 @@
 </head>
 <body>
 	<header th:replace="index/header.html"></header>
-		<p>Routes!</p>
+		<h1>Routes</h1>
+		
+		<div th:each="vehicle : ${vehicles}" class="card">
+		  <div th:text="${vehicle.getDescription()}" class="card-header">
+		  </div>
+		  <div class="card-body">
+
+		  		<table class="table">
+					<tr>
+						<th>Origin</th>
+						<th>Destination</th>
+						<th>Start</th>
+						<th>Arrival</th>
+						<th>Restart (h)</th>
+					</tr>
+					<tr th:each="route : ${vehicle.getRoutes()}">
+						<td th:text="${ route.getOrigin().getName() }"></td>
+						<td th:text="${ route.getDestination().getName() }"></td>
+						<td th:text="${ route.getStart() }"></td>
+						<td th:text="${ route.getArrival() }"></td>
+						<td th:text="${ (route.getRestart()/1000/60/60) }"></td>
+				</table>		  	
+		  </div>
+		</div>
+		
 		
 	<footer th:insert="index/footer.html"></footer>
 </body>

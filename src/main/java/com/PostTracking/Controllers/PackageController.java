@@ -40,7 +40,7 @@ public class PackageController {
 		//test from 1 to 3
 		ArrayList<Path> paths = new ArrayList<Path>();
 		Journey[] journeys = getJourneys();
-		
+		System.out.println(journeys[0]);
 		int origin_id = 0;
 		int destination_id = 0;
 		try {
@@ -53,8 +53,6 @@ public class PackageController {
 		
 		// Initializing paths to the first iteration
 		paths.add(new Path(origin_id));
-				
-		
 			
 		for(int x=0; x < paths.size(); ++x) {
 			for(int i=0 ; i < journeys.length; ++i) {
@@ -68,7 +66,7 @@ public class PackageController {
 						paths.get(x).getPosition() != destination_id ) {
 					// create a new path using the current one (Hard Copy) and adding the journey
 					Path p = new Path(paths.get(x));
-					p.addStep(journeys[i]);
+					p.addStep(new Journey(journeys[i]));
 					paths.add(p);
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
 					System.out.println("Paths Size: "+paths.size()+" x:"+x);
@@ -83,15 +81,11 @@ public class PackageController {
 						}
 						System.out.println("= Vis:"+pz.getVisited()+"\n");
 					}
-					System.out.println("----Fim Paths---\n");
-					// end of log
-					
 				} 
 			}
-			System.out.println("--------Fim Loop JOURNEYS-------\n");
+		
 		}
-		System.out.println("--------Fim Loop PATHS-------\n");
-		System.out.println();
+		
 		
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {

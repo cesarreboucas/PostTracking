@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="DistributionCenter")
+@Table(name="distribution_center")
 public class DistributionCenter {
 	
 	@javax.persistence.Id

@@ -5,7 +5,65 @@
 </head>
 <body>
 	<header th:replace="index/header.html"></header>
-		<p>Vehicles!</p>
+		<h1>Vehicles</h1>
+		<table class="table">
+			<tr>
+				<th>Description</th>
+				<th>Max Volume</th>
+				<th>Max Weight</th>
+				<th>Action</th>
+			<tr>
+			<tr th:each="vehicle : ${vehicles}">
+				<td th:text="${vehicle.getDescription()}"></td> 
+				<td th:text="${vehicle.getMaxVolume()}"></td>
+				<td th:text="${vehicle.getMaxWeight()}"></td>
+				<td>
+					<button th:data-vehicle="${vehicle.getId()}" type="button" class="btn btn-primary"
+						 data-toggle="modal" data-target="#modalForm">Edit</button>
+				</td>
+			</tr>
+		</table>
+		<p class="text-right"><button data-vehicle="0" type="button" class="btn btn-primary"
+						 data-toggle="modal" data-target="#modalForm">Add</button></p>
+						 
+		<!-- START MODAL -->
+		<div class="modal" tabindex="-1" role="dialog" id="modalForm">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="modalTitle"></h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	<form action="#" th:action="@{/vehicles/0}" th:object="${vehicle}" method="POST" id="VehicleForm">
+				  <div class="form-group">
+				  	<input type="hidden" th:field="*{Id}" id="txtId">
+				    <label for="txtDescription">Description</label>
+				    <input type="text" class="form-control" id="txtDescription" th:field="*{description}">
+				  </div>
+				  <div class="form-group">
+				    <label for="txtMaxVolume">Max Volume</label>
+				    <input type="text" class="form-control" id="txtMaxVolume" th:field="*{maxVolume}">
+				  </div>
+				  <div class="form-group">
+				    <label for="txtMaxWeight">Max Weight</label>
+				    <input type="text" class="form-control" id="txtMaxWeight" th:field="*{maxWeight}">
+				  </div>
+				  <div class="form-check" id="divDelete">
+    				<input type="checkbox" class="form-check-input" id="chkDelete" name="chkDelete">
+    				<label class="form-check-label" for="chkDelete">Delete-me!</label>
+  				  </div>
+				  	<button type="submit" class="btn btn-primary">Save changes</button>
+		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- END MODAL -->
+		<script src="/script/vehicle.js"></script>
 		
 	<footer th:insert="index/footer.html"></footer>
 </body>

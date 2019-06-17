@@ -1,12 +1,19 @@
 package com.PostTracking.Controllers;
 
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.VehicleDAO;
-import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Vehicle;
 
 
@@ -14,27 +21,46 @@ import com.PostTracking.Entities.Vehicle;
 public class VehicleController {
 	
 	@Autowired
-	DistributionCenterDAO dao;
-	@Autowired
 	VehicleDAO vdao;
 	
 	@GetMapping("/vehicles")
-	public String ShowAll() {
+	public String ShowAll(Model model) {
+		// Needed to the form
+		model.addAttribute("vehicle", new Vehicle());
 		return "vehicles/vehicles";
 		
 	}
 	
-	@GetMapping("/vehicles/add")
-	public String CreateVehicle() {
-		/*VehicleDAO vd = new VehicleDAO();*/
-		Vehicle v = new Vehicle("Truck001", 1500, 1500);
-		vdao.createVehicle(v);
+	@PostMapping("/vehicles/{id}")
+	public String createVehicleView(@ModelAttribute Vehicle v, @PathVariable int id, 
+			@RequestParam(required=false,name="chkDelete") String chkDelete) {
+		// chkDelete can be null or on!
+		if(id==0) {
+			vdao.createVehicle(v);
+		} else {
+			Vehicle v_db = vdao.getVehicle(id);
+			v_db.setDescription(v.getDescription());
+			v_db.setMaxVolume(v.getMaxVolume());
+			v_db.setMaxWeight(v.getMaxWeight());
+			vdao.updateVehicle(v_db);
+		}
 		
-		/*DistributionCenter dc = new DistributionCenter(15003,"name");
-		dc.setName("name");
-		dc.setAddress("address");
-		dao.createDistributionCenter(dc);*/
-		return "vehicles/vehicles";
-		
+		return "redirect:/vehicles";
 	}
+	
+	@GetMapping("/vehicles/{id}")
+	@ResponseBody
+	public Vehicle seekPath(@PathVariable String id) {
+		try {
+			return vdao.getVehicle(Integer.parseInt(id));
+		} catch(Exception ex) {
+			return new Vehicle();
+		}
+	}
+	
+	@ModelAttribute("vehicles")
+	public List<Vehicle> getAll() {
+		return vdao.getVehicles();
+	}
+	
 }

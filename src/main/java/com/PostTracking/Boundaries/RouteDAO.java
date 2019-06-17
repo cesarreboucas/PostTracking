@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
 import com.PostTracking.Entities.Route;
+import com.PostTracking.Entities.Vehicle;
 
 @Component
 public class RouteDAO {
@@ -30,9 +32,15 @@ public class RouteDAO {
 	public List<Route> getRoutes() {
 		List<Route> routes = new ArrayList<Route>();
 		
-		/* Nor working YET!!!  */
-		//routes = entityManager.createQuery("Route.findAll").getResultList();
+		routes = entityManager.createQuery("from Route order by fk_vehicle", Route.class).getResultList();
 		return routes;
 	}
+	
+	/*public List<Route> getRoutes(Vehicle v) {
+		TypedQuery<Route> q = entityManager.createQuery("SELECT i FROM Route i JOIN FETCH i.vehicle where i.vehicle="+v.getId(), Route.class);
+		q.setFirstResult(0);
+		//q.setMaxResults(5);
+		return q.getResultList();
+	}*/
 
 }
