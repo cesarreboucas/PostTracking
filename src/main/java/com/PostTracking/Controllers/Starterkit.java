@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Boundaries.VehicleDAO;
+import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
@@ -20,9 +22,12 @@ import com.PostTracking.Entities.Vehicle;
 public class Starterkit {
 	
 	@Autowired
-	DistributionCenterDAO dcDAO;
+	CustomerDAO cDAO;
 	
 	@Autowired
+	DistributionCenterDAO dcDAO;
+	
+	@Autowired	
 	VehicleDAO vDAO;
 	
 	@Autowired
@@ -61,6 +66,14 @@ public class Starterkit {
 		for(Vehicle v : vArrayList) {
 			vDAO.createVehicle(v);
 		}
+		
+		/**************** Customer **************/
+		ArrayList<Customer> cArrayList = new ArrayList<Customer>(); 
+		cArrayList.add(new Customer("Jon", "Snow", "123-456-7890", "jon.snow@winter.com", "Castle Black", "Frickin Cold", "Westeros", "S0o-F4R"));
+		for(Customer c : cArrayList) {
+			cDAO.createCustomer(c);
+		}
+		
 		
 		return "{\"ok\"=1}";
 	}
