@@ -3,9 +3,11 @@
 
 window.onload = function() {
     document.getElementById("btnSeekPath").addEventListener('click', function() {
+    	let origin = document.getElementById("selOrigin").value;
+    	let destination = document.getElementById("selDestination").value;
 		$.ajax({
 			dataType: "json",
-			url: "/packages/seekpath/7/5"
+			url: "/packages/seekpath/"+origin+"/"+destination
 		}).done(function(data) {
 			// Walking Paths
 			$('#paths').html("");

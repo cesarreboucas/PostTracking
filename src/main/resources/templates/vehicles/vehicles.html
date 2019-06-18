@@ -37,7 +37,7 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		      	<form action="#" th:action="@{/vehicles/0}" th:object="${vehicle}" method="POST" id="VehicleForm">
+		      	<form action="#" th:action="@{/vehicles/0}" th:object="${vehicle}" th:method="POST" id="VehicleForm">
 				  <div class="form-group">
 				  	<input type="hidden" th:field="*{Id}" id="txtId">
 				    <label for="txtDescription">Description</label>

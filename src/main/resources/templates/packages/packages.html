@@ -5,7 +5,7 @@
 </head>
 <body>
 	<header th:replace="index/header.html"></header>
-		<p>Packages!</p>
+		<h1>Packages</h1>
 		<ul>
   			<li th:each="package : ${packages}" th:text="${'Peso: '+package.getWeight()+' Volume'+package.getVolume()}">Hello </li>
 		</ul>
