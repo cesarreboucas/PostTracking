@@ -2,14 +2,15 @@ package com.PostTracking.Entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Customer")
+@Table(name="customer")
 public class Customer {
 	
 	@javax.persistence.Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id = 0;
 	private String firstName = "";
 	private String lastName = "";

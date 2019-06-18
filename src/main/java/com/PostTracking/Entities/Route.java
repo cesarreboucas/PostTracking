@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="route")
+@Inheritance(strategy = InheritanceType.JOINED)
 @NamedQuery(name="Route.findAll", query="SELECT a FROM Route a")
 public class Route {
 	
@@ -22,10 +25,10 @@ public class Route {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_vehicle")
     protected Vehicle vehicle;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_origin")
     protected DistributionCenter origin;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_destination")
     protected DistributionCenter destination;
     protected Timestamp start;
@@ -110,20 +113,5 @@ public class Route {
 	
 	public void setStart(Timestamp t) {
 		this.start = t;
-	}
-	
-	public Timestamp getNextPossible(long from) {
-		//System.out.println("Now: "+from);
-		//System.out.println("Start: "+this.start);
-		//System.out.println("Restart (hours): "+((double)this.restart/1000.0/60.0/60.0));
-		// Number of times the route was executed till now.
-		int x = (int) Math.ceil((from - this.start.getTime())/ (float)this.restart);
-		//System.out.println("x: "+x+" x*res:"+(x*this.restart));
-		Timestamp ts = new Timestamp((x*(long)this.restart) + this.start.getTime());
-		//System.out.println("Restart to next:"+x);
-		//System.out.println("Next: "+ts);
-		//System.out.println();
-		return ts;
-		
 	}
 }

@@ -46,5 +46,16 @@ public class Path {
 		return this.visited.contains(position);
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(Journey jy : this.getPath()) {
+			sb.append(jy.getOrigin().getId() + " => "+jy.getDestination().getId()+" | ");
+		}
+		sb.append(" - Vis:"+this.getVisited()+"\n");
+		return sb.toString();
+		
+	}
+	
 }
 

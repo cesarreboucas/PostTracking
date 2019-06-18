@@ -4,19 +4,51 @@
 <body>
 	<header th:replace="index/header.html"></header>
 	
-		<p>Add Packages!</p>
-		<ul>
-			<li>Lista</li>
-  			<li th:each="journey : ${Journeys}" th:text="${journey.getId()}"></li>
-  			<li th:text="'Exemplo: '+${chave}"></li>
-		</ul>
-		Table
-		<table>
-    		<tr th:each="var : ${#vars}">
-        		<td th:text="${var.key}"></td>
-        		<td th:text="${var.value}"></td>
-    		</tr>
-		</table>
+		<h1>Add Package</h1>
+		<form action="#" th:action="@{/packages/}" th:object="${package}" th:method="POST" id="PackageForm">
+		  <div class="form-group">
+		  	<input type="hidden" th:field="*{id}" id="txtId">
+		    <label for="txtDescription">Weigth</label>
+		    <input type="number" class="form-control" id="txtWeight" th:field="*{weight}">
+		  </div>
+		  <div class="form-group">
+		    <label for="txtVolume">Volume</label>
+		    <input type="number" class="form-control" id="txtVolume" th:field="*{volume}">
+		  </div>
+		  <div class="form-group">
+		    <label for="txtRecipient">Recipient</label>
+		    <input type="text" class="form-control" id="txtRecipient" th:field="*{recipient}">
+		  </div>
+		  <div class="form-group">
+		    <label for="txtAddress">Address</label>
+		    <input type="text" class="form-control" id="txtAddress" th:field="*{address}">
+		  </div>
+		  <div class="form-group">
+		    <label for="txtCity">City</label>
+		    <input type="text" class="form-control" id="txtCity" th:field="*{city}">
+		  </div>
+		  <div class="form-group">
+		    <label for="txtProvince">Province</label>
+		    <input type="text" class="form-control" id="txtProvince" th:field="*{province}">
+		  </div>
+		  <div class="form-group">
+		    <label for="txtZipCode">ZipCode</label>
+		    <input type="text" class="form-control" id="txtZipCode" th:field="*{zipCode}">
+		  </div>
+		  <div class="form-group">
+		    <label for="selOrigin">Origin</label>
+		    <select id="selOrigin" class="form-control" th:field="*{origin}">
+		    	<option th:each="dc : ${distributionCenters}" th:value="${dc.getId()}" th:text="${dc.getName()}"></option> 
+		    </select>
+		  </div>
+		  <div class="form-group">
+		    <label for="selDestination">Destination</label>
+		    <select id="selDestination" class="form-control" th:field="*{destination}">
+		    	<option th:each="dc : ${distributionCenters}" th:value="${dc.getId()}" th:text="${dc.getName()}"></option> 
+		    </select>
+		  </div>
+		  	<button type="submit" class="btn btn-primary">Add</button>
+		</form>
 		<button class="btn btn-sm btn-primary" id="btnSeekPath">Seek Path</button>
 		<div id="paths"></div>
 		

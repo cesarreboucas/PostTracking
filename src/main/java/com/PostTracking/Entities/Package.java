@@ -1,8 +1,29 @@
 package com.PostTracking.Entities;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="package")
 public class Package {
 
+	@javax.persistence.Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="fk_origin")
+	private DistributionCenter origin;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="fk_destination")
+	private DistributionCenter destination;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="fk_position")
+	private DistributionCenter position;
 	private double weight;
 	private double volume;
 	private String recipient;
@@ -10,6 +31,8 @@ public class Package {
 	private String city;
 	private String province;
 	private String zipCode;
+	
+	public Package() {}
 	
 	public Package(double weight, double volume) {
 		this.weight = weight;
@@ -74,5 +97,29 @@ public class Package {
 	
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+	
+	public DistributionCenter getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(DistributionCenter origin) {
+		this.origin = origin;
+	}
+
+	public DistributionCenter getDestination() {
+		return destination;
+	}
+
+	public void setDestination(DistributionCenter destination) {
+		this.destination = destination;
+	}
+
+	public DistributionCenter getPosition() {
+		return position;
+	}
+
+	public void setPosition(DistributionCenter position) {
+		this.position = position;
 	}
 }

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.RouteDAO;
+import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Path;
@@ -22,6 +24,8 @@ public class PackageController {
 	
 	@Autowired
 	RouteDAO rDAO;
+	@Autowired
+	DistributionCenterDAO dcDAO;
 	
 	@GetMapping("/packages")
 	public String showAll() {
@@ -30,7 +34,7 @@ public class PackageController {
 	
 	@GetMapping("/packages/add")
 	public String insert(Model model) {
-		model.addAttribute("chave", "Valor");
+		model.addAttribute("package", new Package());
 		return "packages/add";
 	}
 	
@@ -71,15 +75,10 @@ public class PackageController {
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
 					System.out.println("Paths Size: "+paths.size()+" x:"+x);
 					
-					
 					// Logging paths -- Remove later
 					System.out.println("-> Paths: ");
 					for(Path pz : paths) {
-											
-						for(Journey jy : pz.getPath()) {
-							System.out.print(jy.getOrigin().getId() + " -> "+jy.getDestination().getId()+" ");
-						}
-						System.out.println("= Vis:"+pz.getVisited()+"\n");
+						System.out.println(pz);
 					}
 				} 
 			}
@@ -93,10 +92,14 @@ public class PackageController {
 			if(paths.get(x).getPosition() != destination_id) {
 				paths.remove(x);
 				--x; //Backing X after index changed
+				System.out.println("Deleting: Paths Size ->"+paths.size());
 			}
 			// If Path is good, refresh timestamp
 			else {
+				System.out.println("Working ON: Paths Size ->"+paths.size());
 				ArrayList<Journey> journeysOfPath = paths.get(x).getPath();
+				System.out.println(paths.get(x));
+	
 				long minimal = System.currentTimeMillis();
 				for(int i=0; i < journeysOfPath.size() ; ++i) {
 					System.out.println("Minimal: "+minimal+ " route: "+journeysOfPath.get(i).getId());
@@ -107,28 +110,26 @@ public class PackageController {
 				}
 			}
 		}
-
+		
 		return paths;
 	}
 	
 	@ModelAttribute("packages")
 	public ArrayList<Package> getAll() {
-		
 		ArrayList<Package> list = new ArrayList<Package>();
-		list.add(new Package(2.0,2.0));
-		list.add(new Package(3.0,3.0));
-		list.add(new Package(4.0,4.0));
-		list.add(new Package(5.0,5.0));
 		return list;
 	}
 	
-	@ModelAttribute("Journeys")
+	@ModelAttribute("distributionCenters")
+	public List<DistributionCenter> getDistributionCentes() {
+		return dcDAO.getDistributionCenters();
+	}
+	
+	@ModelAttribute("journeys")
 	public Journey[] getJourneys() {
 		
-		List<Route> routes = rDAO.getRoutes();
-		
+		List<Route> routes = rDAO.getRoutes();		
 		ArrayList<Journey> journeys = new ArrayList<Journey>();
-		
 		Journey j;
 		for(Route route : routes) {
 			j = new Journey(route);
