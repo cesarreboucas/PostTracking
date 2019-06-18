@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
+/**
+ * Represents the Distribution Center entity
+ */
 @Entity
 @Table(name="distribution_center")
 public class DistributionCenter {

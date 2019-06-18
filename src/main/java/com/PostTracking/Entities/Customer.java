@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
+/**
+ * Represents the Customer entity
+ */
 @Entity
 @Table(name="customer")
 public class Customer {

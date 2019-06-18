@@ -13,6 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * Represents the Route entity
+ * Associates with Vehicle and Distribution Center entities
+ */
 @Entity
 @Table(name="route")
 @Inheritance(strategy = InheritanceType.JOINED)

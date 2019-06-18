@@ -12,7 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
-
+/**
+ * Represents the Vehicle entity
+ */
 @Entity
 @Table(name="vehicle")
 public class Vehicle {
