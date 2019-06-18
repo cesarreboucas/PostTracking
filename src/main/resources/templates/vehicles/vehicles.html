@@ -19,12 +19,17 @@
 				<td th:text="${vehicle.getMaxWeight()}"></td>
 				<td>
 					<button th:data-vehicle="${vehicle.getId()}" type="button" class="btn btn-primary"
-						 data-toggle="modal" data-target="#modalForm">Edit</button>
+						 data-toggle="modal" data-target="#modalForm" th:data-method="PUT">Edit</button>
+					<form action="/vehicles" th:method="DELETE">
+						<input type="submit" class="btn btn-danger" value="DELETE">
+						<input type="hidden" th:value="${vehicle.getId()}" id="deleteId" name="id">						
+					</form>
+					
 				</td>
 			</tr>
 		</table>
 		<p class="text-right"><button data-vehicle="0" type="button" class="btn btn-primary"
-						 data-toggle="modal" data-target="#modalForm">Add</button></p>
+						 data-toggle="modal" data-target="#modalForm" th:data-method="POST">Add</button></p>
 						 
 		<!-- START MODAL -->
 		<div class="modal" tabindex="-1" role="dialog" id="modalForm">
@@ -37,9 +42,9 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		      	<form action="#" th:action="@{/vehicles/0}" th:object="${vehicle}" method="POST" id="VehicleForm">
+		      	<form th:object="${vehicle}" id="VehicleForm" action="/vehicles" method="POST">
 				  <div class="form-group">
-				  	<input type="hidden" th:field="*{Id}" id="txtId">
+				  	<input type="hidden" th:field="*{Id}" id="txtId" name="Id">
 				    <label for="txtDescription">Description</label>
 				    <input type="text" class="form-control" id="txtDescription" th:field="*{description}">
 				  </div>
@@ -51,10 +56,6 @@
 				    <label for="txtMaxWeight">Max Weight</label>
 				    <input type="text" class="form-control" id="txtMaxWeight" th:field="*{maxWeight}">
 				  </div>
-				  <div class="form-check" id="divDelete">
-    				<input type="checkbox" class="form-check-input" id="chkDelete" name="chkDelete">
-    				<label class="form-check-label" for="chkDelete">Delete-me!</label>
-  				  </div>
 				  	<button type="submit" class="btn btn-primary">Save changes</button>
 		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</form>
