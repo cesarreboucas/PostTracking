@@ -36,6 +36,10 @@ public class Vehicle {
 		this.maxVolume = maxVolume;
 	}
 	
+	public int setId(int Id) {
+		return this.Id = Id;
+	}
+	
 	public int getId() {
 		return this.Id;
 	}
@@ -73,6 +77,15 @@ public class Vehicle {
 
 	public void addRoute(Route r) {
 		this.routes.add(r);
+	}
+	
+	@Override
+	public String toString() {
+		return 
+		String.format("Vehicle ID: %d\n" +
+					  "Description: %s\n" +
+					  "Max Volume: %d\n" +
+					  "Max Weight: %d\n", Id, description, maxVolume, maxWeight);
 	}
 	
 }
