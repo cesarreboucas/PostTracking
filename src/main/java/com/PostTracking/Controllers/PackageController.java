@@ -19,6 +19,11 @@ import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Path;
 import com.PostTracking.Entities.Route;
 
+/**
+ * Controls the endpoints for the Packages
+ * @author 300296145
+ *
+ */
 @Controller
 public class PackageController {
 	
@@ -27,17 +32,32 @@ public class PackageController {
 	@Autowired
 	DistributionCenterDAO dcDAO;
 	
+	/**
+	 * Maps the /packages (List of Packages)
+	 * @return the view of /packages
+	 */
 	@GetMapping("/packages")
 	public String showAll() {
 		return "packages/packages";
 	}
 	
+	/**
+	 * Maps the /packages/add
+	 * @param model Adds the Package object to fill the form
+	 * @return the View to Add the package
+	 */
 	@GetMapping("/packages/add")
 	public String insert(Model model) {
 		model.addAttribute("package", new Package());
 		return "packages/add";
 	}
 	
+	/**
+	 * Seeks the path between two distribution centers to route a package
+	 * @param origin The origin DC 
+	 * @param destination the destination DC 
+	 * @return The JSON with possible Paths to reach the destination
+	 */
 	@GetMapping("/packages/seekpath/{origin}/{destination}")
 	@ResponseBody
 	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination) {
@@ -114,17 +134,30 @@ public class PackageController {
 		return paths;
 	}
 	
+	/**
+	 * Makes the packages list available to the views
+	 * @return list of packages
+	 */
 	@ModelAttribute("packages")
 	public ArrayList<Package> getAll() {
 		ArrayList<Package> list = new ArrayList<Package>();
 		return list;
 	}
 	
+	/**
+	 * Makes the Distribution Centers list available to the view Add package
+	 * @return list of distribution centers
+	 */
 	@ModelAttribute("distributionCenters")
 	public List<DistributionCenter> getDistributionCentes() {
 		return dcDAO.getDistributionCenters();
 	}
 	
+	/**
+	 * TODO move to propper place
+	 * Generate the journey list from Routes 
+	 * @return
+	 */
 	@ModelAttribute("journeys")
 	public Journey[] getJourneys() {
 		

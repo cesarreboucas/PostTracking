@@ -13,18 +13,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Entities.DistributionCenter;
 
-
+/**
+ * Controls the endpoints for the Distribution Centers
+ * @author 300296145
+ *
+ */
 @Controller
 public class DCController {
 	
 	@Autowired
 	DistributionCenterDAO dcDAO;
 	
+	/**
+	 * Maps /dcs (List of all Distribution Centers)
+	 * @return
+	 */
 	@GetMapping("/dcs")
 	public String ShowAll() {
 		return "dcs/dcs";	
 	}
 	
+	/**
+	 * Returns a customer object from an ID
+	 * @param id The id of the Distribution Center
+	 * @return the JSON of the Distributuion Center
+	 */
 	@GetMapping("/dc/{id}")
 	@ResponseBody
 	public DistributionCenter seekPath(@PathVariable String id) {
@@ -36,6 +49,10 @@ public class DCController {
 		
 	}
 	
+	/**
+	 * Makes Distribution centers list available in the view.
+	 * @return List of Distribution Centers
+	 */
 	@ModelAttribute("dcs")
 	public List<DistributionCenter> getAll() {
 		return dcDAO.getDistributionCenters();
