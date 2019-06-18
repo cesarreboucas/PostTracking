@@ -8,6 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Represents the Package entity
+ * Associates with Distribution Center entity
+ */
 @Entity
 @Table(name="package")
 public class Package {

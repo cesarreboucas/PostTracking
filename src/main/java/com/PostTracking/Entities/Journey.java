@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 
+/**
+ * Represents the Journey entity
+ * Associates with Vehicle and Distribution Center entities
+ */
 @Entity
 @Table(name="journey")
 public class Journey extends Route {
