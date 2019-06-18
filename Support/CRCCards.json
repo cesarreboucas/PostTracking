@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Customer",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Identify the Customer",
+      "Defines First Name",
+      "Defines Last Name",
+      "Defines Phone Number",
+      "Defines Email Address",
+      "Defines Address",
+      "Defines City",
+      "Defines Province",
+      "Defines Zip Code",
+      "Hands a new package"
+    ],
+    "collaborators": [
+      "Package"
+    ]
+  },
+  {
+    "name": "Distribution Center",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Identify the Distribution Center",
+      "Defines the name",
+      "Defines Address",
+      "Defines City",
+      "Defines Province",
+      "Defines Zip Code",
+      "Incorporate Vehicle",
+      "Incorporate Vehicle route"
+    ],
+    "collaborators": [
+      "Vehicle",
+      "Vehicle Route"
+    ]
+  },
+  {
+    "name": "Vehicle",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Identifies the Vehicle",
+      "Provides description",
+      "Defines maximum weight",
+      "Defines maximum volume",
+      "Check for availability"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "Package",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Identifies a Package",
+      "Identifies the Customer that handed the package",
+      "Identifies the Distribution Center origin",
+      "Identifies the Distribution Center destination",
+      "Identifies the position of the package",
+      "Defines the weight of the package",
+      "Defines the volume of the package",
+      "Defines First Name",
+      "Defines Last Name",
+      "Defines Phone Number",
+      "Defines Email Address",
+      "Defines Address",
+      "Defines City",
+      "Defines Province",
+      "Defines Zip Code"
+    ],
+    "collaborators": [
+      "Customer",
+      "Distribution Center"
+    ]
+  },
+  {
+    "name": "Vehicle Route",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Identifies the vehicle route",
+      "Identifies the vehicle",
+      "Identifies the Distribution Center origin",
+      "Identifies the Distribution Center destination",
+      "Defines the start timestamp",
+      "Defines the duration of the route",
+      "Manages restart",
+      "Check availability"
+    ],
+    "collaborators": [
+      "Vehicle",
+      "Distribution Center"
+    ]
+  }
+]

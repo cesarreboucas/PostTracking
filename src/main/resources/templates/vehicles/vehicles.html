@@ -18,18 +18,18 @@
 				<td th:text="${vehicle.getMaxVolume()}"></td>
 				<td th:text="${vehicle.getMaxWeight()}"></td>
 				<td>
-					<button th:data-vehicle="${vehicle.getId()}" type="button" class="btn btn-primary"
+					<button th:data-vehicle="${vehicle.getId()}" type="button" class="btn-sm btn-primary"
 						 data-toggle="modal" data-target="#modalForm" th:data-method="PUT">Edit</button>
 					<form action="/vehicles" th:method="DELETE">
-						<input type="submit" class="btn btn-danger" value="DELETE">
+						<input type="submit" class="btn-sm btn-warning" value="Delete">
 						<input type="hidden" th:value="${vehicle.getId()}" id="deleteId" name="id">						
 					</form>
 					
 				</td>
 			</tr>
 		</table>
-		<p class="text-right"><button data-vehicle="0" type="button" class="btn btn-primary"
-						 data-toggle="modal" data-target="#modalForm" th:data-method="POST">Add</button></p>
+		<p class="text-right"><button data-vehicle="0" type="button" class="btn-sm btn-secondary"
+						 data-toggle="modal" data-target="#modalForm" th:data-method="POST">Add vehicle</button></p>
 						 
 		<!-- START MODAL -->
 		<div class="modal" tabindex="-1" role="dialog" id="modalForm">

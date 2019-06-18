@@ -28,13 +28,13 @@
 				<td th:text="${customer.getProvince()}"></td>
 				<td th:text="${customer.getZipCode()}"></td>
 				<td>
-					<button th:data-customer="${customer.getId()}" type="button" class="btn btn-primary"
+					<button th:data-customer="${customer.getId()}" type="button" class="btn-sm btn-primary"
 						 data-toggle="modal" data-target="#modalForm">Edit</button>
 				</td>
 			</tr>
 		</table>
-		<p class="text-right"><button data-customer="0" type="button" class="btn btn-primary"
-						 data-toggle="modal" data-target="#modalForm">Add</button></p>
+		<p class="text-right"><button data-customer="0" type="button" class="btn-sm btn-secondary"
+						 data-toggle="modal" data-target="#modalForm">Add customer</button></p>
 						 
 		<!-- START MODAL -->
 		<div class="modal" tabindex="-1" role="dialog" id="modalForm">

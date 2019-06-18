@@ -9,7 +9,7 @@
 		<ul>
   			<li th:each="package : ${packages}" th:text="${'Peso: '+package.getWeight()+' Volume'+package.getVolume()}">Hello </li>
 		</ul>
-		<a href="/packages/add" role="button" class="btn btn-sm btn-primary">Add Package</a>
+		<a href="/packages/add" role="button" class="btn btn-sm btn-secondary">Add Package</a>
 	<footer th:insert="index/footer.html"></footer>
 </body>
 </html>
