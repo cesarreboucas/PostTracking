@@ -15,6 +15,7 @@ import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
+import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
 

@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.DistributionCenterDAO;
+import com.PostTracking.Boundaries.JourneyDAO;
 import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Entities.DistributionCenter;
-import com.PostTracking.Entities.Journey;
+import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Path;
-import com.PostTracking.Entities.Route;
+import com.PostTracking.Entities.Journey;
 
 /**
  * Controls the endpoints for the Packages
@@ -29,6 +30,8 @@ public class PackageController {
 	
 	@Autowired
 	RouteDAO rDAO;
+	@Autowired
+	JourneyDAO jDAO;
 	@Autowired
 	DistributionCenterDAO dcDAO;
 	
@@ -94,7 +97,6 @@ public class PackageController {
 					paths.add(p);
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
 					System.out.println("Paths Size: "+paths.size()+" x:"+x);
-					
 					// Logging paths -- Remove later
 					System.out.println("-> Paths: ");
 					for(Path pz : paths) {
@@ -111,7 +113,7 @@ public class PackageController {
 			if(paths.get(x).getPosition() != destination_id) {
 				paths.remove(x);
 				--x; //Backing X after index changed
-				System.out.println("Deleting: Paths Size ->"+paths.size());
+				//System.out.println("Deleting: Paths Size ->"+paths.size());
 			}
 			// If Path is good, refresh timestamp
 			else {
@@ -124,6 +126,7 @@ public class PackageController {
 					System.out.println("Minimal: "+minimal);
 					System.out.println("New Start: "+journeysOfPath.get(i).getNextPossible(minimal));
 					journeysOfPath.get(i).setStart(journeysOfPath.get(i).getNextPossible(minimal));
+					//jDAO.createJourney(journeysOfPath.get(i));
 					minimal = journeysOfPath.get(i).getArrival().getTime();
 					System.out.println();
 				}
@@ -164,10 +167,10 @@ public class PackageController {
 		ArrayList<Journey> journeys = new ArrayList<Journey>();
 		Journey j;
 		for(Route route : routes) {
-			j = new Journey(route);
+			j = (Journey) route;
 			journeys.add(j);
 		}
-		return journeys.toArray(new Journey[journeys.size()]);
+		return journeys.toArray(new Route[journeys.size()]);
 	}
 	
 }

@@ -33,7 +33,7 @@ public class Package {
     @JoinColumn(name="fk_position")
 	private DistributionCenter position;
 	@ManyToMany(mappedBy = "tags")
-    private List<Journey> journeys = new ArrayList<Journey>();	
+    private List<Route> journeys = new ArrayList<Route>();	
 	private double weight;
 	private double volume;
 	private String recipient;

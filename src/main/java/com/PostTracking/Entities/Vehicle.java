@@ -28,7 +28,7 @@ public class Vehicle {
 	private boolean available = true;
 	
 	@Transient
-	List<Route> routes = new ArrayList<Route>();
+	List<Journey> routes = new ArrayList<Journey>();
 	
 	public Vehicle() {}
 	
@@ -73,11 +73,11 @@ public class Vehicle {
 		this.available = available;
 	}
 
-	public List<Route> getRoutes() {
+	public List<Journey> getRoutes() {
 		return routes;
 	}
 
-	public void addRoute(Route r) {
+	public void addRoute(Journey r) {
 		this.routes.add(r);
 	}
 	
