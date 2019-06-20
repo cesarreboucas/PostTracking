@@ -14,9 +14,6 @@ public class PostTrackingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PostTrackingApplication.class, args);
 		
-		//Starterkit sk = new Starterkit();
-		//sk.start();
-		
 	}
 
 }

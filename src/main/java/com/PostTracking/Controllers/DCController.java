@@ -26,7 +26,7 @@ public class DCController {
 	
 	/**
 	 * Maps /dcs (List of all Distribution Centers)
-	 * @return
+	 * @return the View for all Distribution Centers
 	 */
 	@GetMapping("/dcs")
 	public String ShowAll() {

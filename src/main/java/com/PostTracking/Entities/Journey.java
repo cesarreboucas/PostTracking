@@ -1,18 +1,36 @@
 package com.PostTracking.Entities;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+
+
 
 
 /**
  * Represents the Journey entity
  * Associates with Vehicle and Distribution Center entities
+ *
  */
 @Entity
 @Table(name="journey")
 public class Journey extends Route {
+	
+	@ManyToMany(cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE
+	    })
+	@JoinTable(name = "package_journey",
+	        joinColumns = @JoinColumn(name = "post_id"),
+	        inverseJoinColumns = @JoinColumn(name = "tag_id"))
+	private List<Package> tags = new ArrayList<Package>();
 	
 	public Journey(Route r) {
 		super(r.vehicle, r.origin, r.destination, r.start,

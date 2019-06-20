@@ -105,7 +105,6 @@ public class PackageController {
 		
 		}
 		
-		
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
@@ -122,7 +121,7 @@ public class PackageController {
 	
 				long minimal = System.currentTimeMillis();
 				for(int i=0; i < journeysOfPath.size() ; ++i) {
-					System.out.println("Minimal: "+minimal+ " route: "+journeysOfPath.get(i).getId());
+					System.out.println("Minimal: "+minimal);
 					System.out.println("New Start: "+journeysOfPath.get(i).getNextPossible(minimal));
 					journeysOfPath.get(i).setStart(journeysOfPath.get(i).getNextPossible(minimal));
 					minimal = journeysOfPath.get(i).getArrival().getTime();
@@ -156,7 +155,7 @@ public class PackageController {
 	/**
 	 * TODO move to propper place
 	 * Generate the journey list from Routes 
-	 * @return
+	 * @return An Array of Journeys
 	 */
 	@ModelAttribute("journeys")
 	public Journey[] getJourneys() {

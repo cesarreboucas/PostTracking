@@ -1,10 +1,14 @@
 package com.PostTracking.Entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,6 +32,8 @@ public class Package {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_position")
 	private DistributionCenter position;
+	@ManyToMany(mappedBy = "tags")
+    private List<Journey> journeys = new ArrayList<Journey>();	
 	private double weight;
 	private double volume;
 	private String recipient;
@@ -44,7 +50,7 @@ public class Package {
 	}
 	
 	public int getId() {
-		return id;
+		return this.id;
 	}
 	
 	public double getWeight() {
