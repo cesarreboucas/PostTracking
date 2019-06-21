@@ -66,8 +66,8 @@ public class PackageController {
 	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination) {
 		//test from 1 to 3
 		ArrayList<Path> paths = new ArrayList<Path>();
-		Journey[] journeys = getJourneys();
-		System.out.println(journeys[0]);
+		List<Route> routes = rDAO.getRoutes();
+		System.out.println(routes.get(0));
 		int origin_id = 0;
 		int destination_id = 0;
 		try {
@@ -82,18 +82,18 @@ public class PackageController {
 		paths.add(new Path(origin_id));
 			
 		for(int x=0; x < paths.size(); ++x) {
-			for(int i=0 ; i < journeys.length; ++i) {
+			for(int i=0 ; i < routes.size(); ++i) {
 				/* Three conditions:
 					-> if the Journey starts where the path is at this moment
 					-> if the Journey doesn't go to a already visited place	
 					-> if the the current position not the destination 
 				*/ 
-				if(journeys[i].getOrigin().getId() == paths.get(x).getPosition() && 
-						!paths.get(x).checkAlreadyVisited(journeys[i].getDestination().getId()) &&
+				if(routes.get(i).getOrigin().getId() == paths.get(x).getPosition() && 
+						!paths.get(x).checkAlreadyVisited(routes.get(i).getDestination().getId()) &&
 						paths.get(x).getPosition() != destination_id ) {
 					// create a new path using the current one (Hard Copy) and adding the journey
 					Path p = new Path(paths.get(x));
-					p.addStep(new Journey(journeys[i]));
+					p.addStep(new Route(routes.get(i)));
 					paths.add(p);
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
 					System.out.println("Paths Size: "+paths.size()+" x:"+x);
@@ -104,7 +104,6 @@ public class PackageController {
 					}
 				} 
 			}
-		
 		}
 		
 		//Removing incomplete paths
@@ -118,16 +117,17 @@ public class PackageController {
 			// If Path is good, refresh timestamp
 			else {
 				System.out.println("Working ON: Paths Size ->"+paths.size());
-				ArrayList<Journey> journeysOfPath = paths.get(x).getPath();
+				ArrayList<Route> routesOfPath = paths.get(x).getPath();
 				System.out.println(paths.get(x));
 	
 				long minimal = System.currentTimeMillis();
-				for(int i=0; i < journeysOfPath.size() ; ++i) {
+				for(int i=0; i < routesOfPath.size() ; ++i) {
+					System.out.println(routesOfPath.get(i).getRestart());
 					System.out.println("Minimal: "+minimal);
-					System.out.println("New Start: "+journeysOfPath.get(i).getNextPossible(minimal));
-					journeysOfPath.get(i).setStart(journeysOfPath.get(i).getNextPossible(minimal));
-					//jDAO.createJourney(journeysOfPath.get(i));
-					minimal = journeysOfPath.get(i).getArrival().getTime();
+					System.out.println("New Start: "+routesOfPath.get(i).getNextPossible(minimal));
+					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
+					//jDAO.createJourney(routesOfPath.get(i));
+					minimal = routesOfPath.get(i).getArrival().getTime();
 					System.out.println();
 				}
 			}
@@ -160,6 +160,7 @@ public class PackageController {
 	 * Generate the journey list from Routes 
 	 * @return An Array of Journeys
 	 */
+	/*
 	@ModelAttribute("journeys")
 	public Journey[] getJourneys() {
 		
@@ -172,5 +173,5 @@ public class PackageController {
 		}
 		return journeys.toArray(new Route[journeys.size()]);
 	}
-	
+	*/
 }

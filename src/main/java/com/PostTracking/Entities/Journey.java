@@ -51,7 +51,6 @@ public class Journey {
 	private List<Package> tags = new ArrayList<Package>();
     protected Timestamp start;
     protected int duration;
-    protected int restart;
     protected boolean available;
 	
     public Journey() {}
@@ -62,20 +61,17 @@ public class Journey {
         this.destination = j.destination;
         this.start = j.start;
         this.duration = j.duration;
-        this.restart = j.restart;
         this.available = j.available;
 	}
     
     public Journey(Vehicle vehicle, DistributionCenter origin,
                     DistributionCenter destination,
-                    Timestamp start, int duration,
-                    int restart, boolean available) {
+                    Timestamp start, int duration, boolean available) {
         this.vehicle = vehicle;
         this.origin = origin;
         this.destination = destination;
         this.start = start;
         this.duration = duration;
-        this.restart = restart;
         this.available = available;
 	}
 	
@@ -111,14 +107,6 @@ public class Journey {
 		this.duration = duration;
 	}
 
-	public int getRestart() {
-		return restart;
-	}
-
-	public void setRestart(int restart) {
-		this.restart = restart;
-	}
-
 	public boolean isAvailable() {
 		return available;
 	}
@@ -141,19 +129,5 @@ public class Journey {
 	
 	public void setStart(Timestamp t) {
 		this.start = t;
-	}
-	
-	public Timestamp getNextPossible(long from) {
-		//System.out.println("Now: "+from);
-		//System.out.println("Start: "+this.start);
-		//System.out.println("Restart (hours): "+((double)this.restart/1000.0/60.0/60.0));
-		// Number of times the route was executed till now.
-		int x = (int) Math.ceil((from - this.start.getTime())/ (float)this.restart);
-		//System.out.println("x: "+x+" x*res:"+(x*this.restart));
-		Timestamp ts = new Timestamp((x*(long)this.restart) + this.start.getTime());
-		//System.out.println("Restart to next:"+x);
-		//System.out.println("Next: "+ts);
-		//System.out.println();
-		return ts;	
 	}
 }
