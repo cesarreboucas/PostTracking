@@ -1,5 +1,6 @@
 package com.PostTracking.Boundaries;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +20,9 @@ public class JourneyDAO {
 	private EntityManager entityManager;
 	
 	@Transactional
-	public int createJourney(Journey j) {
+	public Journey createJourney(Journey j) {
 		entityManager.merge(j);
-		return j.getId();
+		return j;
 	}
 	
 	public Journey getRoute(int id) {
@@ -29,10 +30,10 @@ public class JourneyDAO {
 		return j;
 	}
 	
-	public List<Journey> getJourneys() {
+	public List<Journey> getJourneys(long minimal) {
 		List<Journey> routes = new ArrayList<Journey>();
 		
-		routes = entityManager.createQuery("from Journey order by fk_vehicle", Journey.class).getResultList();
+		routes = entityManager.createQuery("from Journey where start >="+minimal, Journey.class).getResultList();
 		return routes;
 	}
 

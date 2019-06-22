@@ -105,6 +105,12 @@ public class PackageController {
 				} 
 			}
 		}
+
+		//Setting the minimal time for journeys
+		long minimal = System.currentTimeMillis();
+		// Get the list of journeys ahead
+		List<Journey> journeys = jDAO.getJourneys(minimal);
+		
 		
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
@@ -116,16 +122,26 @@ public class PackageController {
 			}
 			// If Path is good, refresh timestamp
 			else {
-				System.out.println("Working ON: Paths Size ->"+paths.size());
-				ArrayList<Route> routesOfPath = paths.get(x).getPath();
+				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
+				ArrayList<Journey> routesOfPath = paths.get(x).getPath();
 				System.out.println(paths.get(x));
 	
-				long minimal = System.currentTimeMillis();
 				for(int i=0; i < routesOfPath.size() ; ++i) {
-					System.out.println(routesOfPath.get(i).getRestart());
 					System.out.println("Minimal: "+minimal);
 					System.out.println("New Start: "+routesOfPath.get(i).getNextPossible(minimal));
+					// Get the Possible Journey
 					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
+					// Check if there is already a journey created
+					Journey j = routesOfPath.get(i).checkExistingJourney(journeys);
+					if(j.getId() == 0) {
+						jDAO.createJourney(j);
+						journeys.add(j);
+						System.out.println("Created Journey:"+j.getId());
+					}
+					// Swaping the route for the Journey
+					//routesOfPath.set(i, j );
+					
+					System.out.println(j.getId());
 					//jDAO.createJourney(routesOfPath.get(i));
 					minimal = routesOfPath.get(i).getArrival().getTime();
 					System.out.println();

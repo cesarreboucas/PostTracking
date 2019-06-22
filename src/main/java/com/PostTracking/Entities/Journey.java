@@ -2,7 +2,9 @@ package com.PostTracking.Entities;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -46,12 +48,13 @@ public class Journey {
 	        CascadeType.MERGE
 	    })
 	@JoinTable(name = "package_journey",
-	        joinColumns = @JoinColumn(name = "post_id"),
-	        inverseJoinColumns = @JoinColumn(name = "tag_id"))
-	private List<Package> tags = new ArrayList<Package>();
+	        joinColumns = @JoinColumn(name = "journey_id"),
+	        inverseJoinColumns = @JoinColumn(name = "package_id"))
+	private Set<Package> packages = new HashSet<Package>();
     protected Timestamp start;
     protected int duration;
     protected boolean available;
+    protected long restart;
 	
     public Journey() {}
 	
@@ -62,16 +65,18 @@ public class Journey {
         this.start = j.start;
         this.duration = j.duration;
         this.available = j.available;
+        this.restart = j.restart;
 	}
     
     public Journey(Vehicle vehicle, DistributionCenter origin,
                     DistributionCenter destination,
-                    Timestamp start, int duration, boolean available) {
+                    Timestamp start, int duration, long restart, boolean available) {
         this.vehicle = vehicle;
         this.origin = origin;
         this.destination = destination;
         this.start = start;
         this.duration = duration;
+        this.restart = restart;
         this.available = available;
 	}
 	
@@ -129,5 +134,43 @@ public class Journey {
 	
 	public void setStart(Timestamp t) {
 		this.start = t;
+	}
+	
+	public long getRestart() {
+		return this.restart;
+	}
+
+	public void setRestart(int restart) {
+		this.restart = restart;
+	}
+	
+	public Journey checkExistingJourney(List<Journey> journeys) {
+		System.out.println("Checking Journey");
+		System.out.println("Journeys Size: "+journeys.size());
+		for(Journey j : journeys) {
+			//System.out.println("Start: "+this.start.equals(j.start));
+			//System.out.println("Vehicle: "+this.vehicle.equals(j.vehicle));
+			//System.out.println("Origin: "+this.origin.equals(j.origin));
+			if(this.start.equals(j.start) && this.vehicle.equals(j.vehicle) && this.origin.equals(j.origin)) {
+				System.out.println("return existing");
+				return j;
+			}
+		}
+		System.out.println("return new");
+		return new Journey(this);
+	}
+	
+	public Timestamp getNextPossible(long from) {
+		//System.out.println("Now: "+from);
+		//System.out.println("Start: "+this.start);
+		//System.out.println("Restart (hours): "+((double)this.restart/1000.0/60.0/60.0));
+		// Number of times the route was executed till now.
+		int x = (int) Math.ceil((from - this.start.getTime())/ (float)this.restart);
+		//System.out.println("x: "+x+" x*res:"+(x*this.restart));
+		Timestamp ts = new Timestamp((x*(long)this.restart) + this.start.getTime());
+		//System.out.println("Restart to next:"+x);
+		//System.out.println("Next: "+ts);
+		//System.out.println();
+		return ts;	
 	}
 }

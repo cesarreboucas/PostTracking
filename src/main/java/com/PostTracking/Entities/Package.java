@@ -1,7 +1,9 @@
 package com.PostTracking.Entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,8 +34,8 @@ public class Package {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_position")
 	private DistributionCenter position;
-	@ManyToMany(mappedBy = "tags")
-    private List<Route> journeys = new ArrayList<Route>();	
+	@ManyToMany(mappedBy = "packages")
+    private Set<Journey> journeys = new HashSet<Journey>();	
 	private double weight;
 	private double volume;
 	private String recipient;

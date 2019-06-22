@@ -16,7 +16,7 @@ public class JourneyController {
 	JourneyDAO jDAO;
 	
 	@ModelAttribute("journeys")
-	public List<Journey> getAll() {
-		return jDAO.getJourneys();
+	public List<Journey> getAll() {	
+		return jDAO.getJourneys(1);
 	}
 }
