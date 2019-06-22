@@ -145,29 +145,25 @@ public class Journey {
 	}
 	
 	public Journey checkExistingJourney(List<Journey> journeys) {
-		System.out.println("Checking Journey");
-		System.out.println("Journeys Size: "+journeys.size());
 		for(Journey j : journeys) {
 			//System.out.println("Start: "+this.start.equals(j.start));
 			//System.out.println("Vehicle: "+this.vehicle.equals(j.vehicle));
 			//System.out.println("Origin: "+this.origin.equals(j.origin));
 			if(this.start.equals(j.start) && this.vehicle.equals(j.vehicle) && this.origin.equals(j.origin)) {
-				System.out.println("return existing");
 				return j;
 			}
 		}
-		System.out.println("return new");
 		return new Journey(this);
 	}
 	
 	public Timestamp getNextPossible(long from) {
+		// Number of times the route was executed till now.
+		int x = (int) Math.ceil((from - this.start.getTime())/ (float)this.restart);
+		Timestamp ts = new Timestamp((x*(long)this.restart) + this.start.getTime());
 		//System.out.println("Now: "+from);
 		//System.out.println("Start: "+this.start);
 		//System.out.println("Restart (hours): "+((double)this.restart/1000.0/60.0/60.0));
-		// Number of times the route was executed till now.
-		int x = (int) Math.ceil((from - this.start.getTime())/ (float)this.restart);
 		//System.out.println("x: "+x+" x*res:"+(x*this.restart));
-		Timestamp ts = new Timestamp((x*(long)this.restart) + this.start.getTime());
 		//System.out.println("Restart to next:"+x);
 		//System.out.println("Next: "+ts);
 		//System.out.println();

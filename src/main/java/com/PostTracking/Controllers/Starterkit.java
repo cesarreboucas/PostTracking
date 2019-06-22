@@ -98,7 +98,7 @@ public class Starterkit {
 		}
 		
 		
-		return "{\"ok\"=1}";
+		return "<a href=\"/start2\">Second Part</a>";
 	}
 	
 	@GetMapping("/start2")
@@ -164,6 +164,6 @@ public class Starterkit {
 		dc.setAddress("address");
 		dcDAO.createDistributionCenter(dc);*/
 		
-		return "{\"ok\"=2}";
+		return "<a href=\"/\">Index</a>";
 	}
 }

@@ -118,7 +118,6 @@ public class PackageController {
 			if(paths.get(x).getPosition() != destination_id) {
 				paths.remove(x);
 				--x; //Backing X after index changed
-				//System.out.println("Deleting: Paths Size ->"+paths.size());
 			}
 			// If Path is good, refresh timestamp
 			else {
@@ -127,8 +126,6 @@ public class PackageController {
 				System.out.println(paths.get(x));
 	
 				for(int i=0; i < routesOfPath.size() ; ++i) {
-					System.out.println("Minimal: "+minimal);
-					System.out.println("New Start: "+routesOfPath.get(i).getNextPossible(minimal));
 					// Get the Possible Journey
 					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
 					// Check if there is already a journey created
@@ -136,13 +133,9 @@ public class PackageController {
 					if(j.getId() == 0) {
 						jDAO.createJourney(j);
 						journeys.add(j);
-						System.out.println("Created Journey:"+j.getId());
 					}
 					// Swaping the route for the Journey
-					//routesOfPath.set(i, j );
-					
-					System.out.println(j.getId());
-					//jDAO.createJourney(routesOfPath.get(i));
+					routesOfPath.set(i, j );
 					minimal = routesOfPath.get(i).getArrival().getTime();
 					System.out.println();
 				}
