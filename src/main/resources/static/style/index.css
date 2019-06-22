@@ -1,5 +1,7 @@
 body {
 	background-color: #F4F4F4;
+	min-height: 100vh;
+	position: relative;
 }
 
 .btn-primary, .btn-primary:hover {
@@ -27,7 +29,7 @@ header img{
 }
 
 footer {
-	position: fixed;
+	position: absolute;
     left: 0;
     bottom: 0;
     height: auto;

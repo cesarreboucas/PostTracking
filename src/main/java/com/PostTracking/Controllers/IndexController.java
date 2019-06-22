@@ -14,7 +14,7 @@ public class IndexController {
 	
 	/**
 	 * Maps the index of the application
-	 * @return
+	 * @return the Index View
 	 */
 	@GetMapping("/")
 	public String home(  ) {

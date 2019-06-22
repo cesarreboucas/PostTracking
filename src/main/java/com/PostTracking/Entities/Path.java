@@ -3,7 +3,7 @@ package com.PostTracking.Entities;
 import java.util.ArrayList;
 
 public class Path {
-	private ArrayList<Journey> path = new ArrayList<Journey>();
+	private ArrayList<Journey> path = new ArrayList<>();
 	private int position; // Distribution Center ID
 	private ArrayList<Integer> visited = new ArrayList<Integer>();
 	
@@ -26,9 +26,9 @@ public class Path {
 		return position;
 	}
 
-	public void addStep(Journey j) {
-		this.path.add(j);
-		this.position = j.getDestination().getId();
+	public void addStep(Route r) {
+		this.path.add(r);
+		this.position = r.getDestination().getId();
 		this.visited.add(this.position);
 		//System.out.println(this.position);
 		

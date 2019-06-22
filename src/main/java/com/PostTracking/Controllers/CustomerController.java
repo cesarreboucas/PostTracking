@@ -28,7 +28,7 @@ public class CustomerController {
 	/**
 	 * Maps the /customers (List of all customers)
 	 * @param model sends the customer Object to the view to fill the html form
-	 * @return
+	 * @return the view of Customers (list)
 	 */
 	@GetMapping("/customers")
 	public String ShowAll(Model model) {

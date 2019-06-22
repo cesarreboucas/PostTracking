@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.DistributionCenterDAO;
+import com.PostTracking.Boundaries.JourneyDAO;
 import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Entities.DistributionCenter;
-import com.PostTracking.Entities.Journey;
+import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Path;
-import com.PostTracking.Entities.Route;
+import com.PostTracking.Entities.Journey;
 
 /**
  * Controls the endpoints for the Packages
@@ -29,6 +30,8 @@ public class PackageController {
 	
 	@Autowired
 	RouteDAO rDAO;
+	@Autowired
+	JourneyDAO jDAO;
 	@Autowired
 	DistributionCenterDAO dcDAO;
 	
@@ -63,8 +66,8 @@ public class PackageController {
 	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination) {
 		//test from 1 to 3
 		ArrayList<Path> paths = new ArrayList<Path>();
-		Journey[] journeys = getJourneys();
-		System.out.println(journeys[0]);
+		List<Route> routes = rDAO.getRoutes();
+		System.out.println(routes.get(0));
 		int origin_id = 0;
 		int destination_id = 0;
 		try {
@@ -79,22 +82,21 @@ public class PackageController {
 		paths.add(new Path(origin_id));
 			
 		for(int x=0; x < paths.size(); ++x) {
-			for(int i=0 ; i < journeys.length; ++i) {
+			for(int i=0 ; i < routes.size(); ++i) {
 				/* Three conditions:
 					-> if the Journey starts where the path is at this moment
 					-> if the Journey doesn't go to a already visited place	
 					-> if the the current position not the destination 
 				*/ 
-				if(journeys[i].getOrigin().getId() == paths.get(x).getPosition() && 
-						!paths.get(x).checkAlreadyVisited(journeys[i].getDestination().getId()) &&
+				if(routes.get(i).getOrigin().getId() == paths.get(x).getPosition() && 
+						!paths.get(x).checkAlreadyVisited(routes.get(i).getDestination().getId()) &&
 						paths.get(x).getPosition() != destination_id ) {
 					// create a new path using the current one (Hard Copy) and adding the journey
 					Path p = new Path(paths.get(x));
-					p.addStep(new Journey(journeys[i]));
+					p.addStep(new Route(routes.get(i)));
 					paths.add(p);
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
 					System.out.println("Paths Size: "+paths.size()+" x:"+x);
-					
 					// Logging paths -- Remove later
 					System.out.println("-> Paths: ");
 					for(Path pz : paths) {
@@ -102,8 +104,12 @@ public class PackageController {
 					}
 				} 
 			}
-		
 		}
+
+		//Setting the minimal time for journeys
+		long minimal = System.currentTimeMillis();
+		// Get the list of journeys ahead
+		List<Journey> journeys = jDAO.getJourneys(minimal);
 		
 		
 		//Removing incomplete paths
@@ -112,20 +118,25 @@ public class PackageController {
 			if(paths.get(x).getPosition() != destination_id) {
 				paths.remove(x);
 				--x; //Backing X after index changed
-				System.out.println("Deleting: Paths Size ->"+paths.size());
 			}
 			// If Path is good, refresh timestamp
 			else {
-				System.out.println("Working ON: Paths Size ->"+paths.size());
-				ArrayList<Journey> journeysOfPath = paths.get(x).getPath();
+				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
+				ArrayList<Journey> routesOfPath = paths.get(x).getPath();
 				System.out.println(paths.get(x));
 	
-				long minimal = System.currentTimeMillis();
-				for(int i=0; i < journeysOfPath.size() ; ++i) {
-					System.out.println("Minimal: "+minimal+ " route: "+journeysOfPath.get(i).getId());
-					System.out.println("New Start: "+journeysOfPath.get(i).getNextPossible(minimal));
-					journeysOfPath.get(i).setStart(journeysOfPath.get(i).getNextPossible(minimal));
-					minimal = journeysOfPath.get(i).getArrival().getTime();
+				for(int i=0; i < routesOfPath.size() ; ++i) {
+					// Get the Possible Journey
+					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
+					// Check if there is already a journey created
+					Journey j = routesOfPath.get(i).checkExistingJourney(journeys);
+					if(j.getId() == 0) {
+						jDAO.createJourney(j);
+						journeys.add(j);
+					}
+					// Swaping the route for the Journey
+					routesOfPath.set(i, j );
+					minimal = routesOfPath.get(i).getArrival().getTime();
 					System.out.println();
 				}
 			}
@@ -156,8 +167,9 @@ public class PackageController {
 	/**
 	 * TODO move to propper place
 	 * Generate the journey list from Routes 
-	 * @return
+	 * @return An Array of Journeys
 	 */
+	/*
 	@ModelAttribute("journeys")
 	public Journey[] getJourneys() {
 		
@@ -165,10 +177,10 @@ public class PackageController {
 		ArrayList<Journey> journeys = new ArrayList<Journey>();
 		Journey j;
 		for(Route route : routes) {
-			j = new Journey(route);
+			j = (Journey) route;
 			journeys.add(j);
 		}
-		return journeys.toArray(new Journey[journeys.size()]);
+		return journeys.toArray(new Route[journeys.size()]);
 	}
-	
+	*/
 }
