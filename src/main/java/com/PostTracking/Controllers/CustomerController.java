@@ -48,9 +48,9 @@ public class CustomerController {
 			@RequestParam(required=false,name="chkDelete") String chkDelete) {
 		// chkDelete can be null or on!
 		if(id==0) {
-			cdao.createCustomer(cust);
+			cdao.save(cust);
 		} else {
-			Customer cust_db = cdao.getCustomer(id);
+			Customer cust_db = cdao.findById(id).get();
 			cust_db.setFirstName(cust.getFirstName());
 			cust_db.setLastName(cust.getLastName());
 			cust_db.setPhoneNumber(cust.getPhoneNumber());
@@ -59,7 +59,7 @@ public class CustomerController {
 			cust_db.setCity(cust.getCity());
 			cust_db.setProvince(cust.getProvince());
 			cust_db.setZipCode(cust.getZipCode());
-			cdao.updateCustomer(cust_db);
+			cdao.save(cust_db);
 		}
 		
 		return "redirect:/customers";
@@ -74,7 +74,7 @@ public class CustomerController {
 	@ResponseBody
 	public Customer seekPath(@PathVariable String id) {
 		try {
-			return cdao.getCustomer(Integer.parseInt(id));
+			return cdao.findById(Integer.parseInt(id)).get();
 		} catch(Exception ex) {
 			return new Customer();
 		}
@@ -85,8 +85,8 @@ public class CustomerController {
 	 * @return List of custommers
 	 */
 	@ModelAttribute("customers")
-	public List<Customer> getAll() {
-		return cdao.listCustomers();
+	public Iterable<Customer> getAll() {
+		return cdao.findAll();
 	}
 	
 }

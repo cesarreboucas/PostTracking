@@ -5,9 +5,14 @@
 	<header th:replace="index/header.html"></header>
 	
 		<h1>Add Package</h1>
-		<form action="#" th:action="@{/packages/}" th:object="${package}" th:method="POST" id="PackageForm">
+		<form action="#" th:action="@{/packages/}" th:object="${pack}" th:method="POST" id="PackageForm">
+			<div class="form-group">
+		    <label for="selcustomer">Customer</label>
+		     <select id="selcustomer" class="form-control" th:field="*{customer}">
+					<option th:each="c : ${customers}"  th:value="${c.id}" th:text="${c.getFullName()}"></option>
+		    </select>
+		  </div>
 		  <div class="form-group">
-		  	<input type="hidden" th:field="*{id}" id="txtId">
 		    <label for="txtDescription">Weigth</label>
 		    <input type="number" class="form-control" id="txtWeight" th:field="*{weight}">
 		  </div>
@@ -38,19 +43,20 @@
 		  <div class="form-group">
 		    <label for="selOrigin">Origin</label>
 		    <select id="selOrigin" class="form-control" th:field="*{origin}">
-		    	<option th:each="dc : ${distributionCenters}" th:value="${dc.getId()}" th:text="${dc.getName()}"></option> 
+		    	<option th:each="dcOrigin : ${distributionCenters}" th:value="${dcOrigin.id}" th:text="${dcOrigin.getName()}"></option> 
 		    </select>
 		  </div>
 		  <div class="form-group">
 		    <label for="selDestination">Destination</label>
 		    <select id="selDestination" class="form-control" th:field="*{destination}">
-		    	<option th:each="dc : ${distributionCenters}" th:value="${dc.getId()}" th:text="${dc.getName()}"></option> 
+		    	<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.id}" th:text="${dcDest.getName()}"></option>  
 		    </select>
-		  </div>
-		  	<button type="submit" class="btn-sm btn-secondary">Add</button>
+			</div>
+				<input type="hidden" id="txtJourneys" th:field="*{journeys}">
+		  	<button type="button" class="btn btn-sm btn-primary" id="btnSeekPath">Seek Path</button>
+		  	<button type="submit">aaa</submit>
 		</form>
-		<button class="btn btn-sm btn-primary" id="btnSeekPath">Seek Path</button>
-		<div id="paths"></div>
+		<div id="paths" style="margin-top: 1em;"></div>
 		
 	<footer th:insert="index/footer.html"></footer>
 	<script src="/script/seekPath.js"></script>

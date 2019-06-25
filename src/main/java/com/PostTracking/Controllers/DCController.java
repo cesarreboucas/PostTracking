@@ -2,6 +2,7 @@ package com.PostTracking.Controllers;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,13 +41,18 @@ public class DCController {
 	 */
 	@GetMapping("/dc/{id}")
 	@ResponseBody
-	public DistributionCenter seekPath(@PathVariable String id) {
+	public DistributionCenter getDistributionCenter(@PathVariable String id) {
 		try {
-			return dcDAO.getDistributionCenter(Integer.parseInt(id));
+			Optional<DistributionCenter> dc = dcDAO.findById(Integer.parseInt(id));
+			if(dc.isPresent()) {
+				return dc.get();	
+			} else {
+				return new DistributionCenter();
+			}
+			
 		} catch(Exception ex) {
 			return new DistributionCenter();
 		}
-		
 	}
 	
 	/**
@@ -54,8 +60,8 @@ public class DCController {
 	 * @return List of Distribution Centers
 	 */
 	@ModelAttribute("dcs")
-	public List<DistributionCenter> getAll() {
-		return dcDAO.getDistributionCenters();
+	public Iterable<DistributionCenter> getAll() {
+		return dcDAO.findAll();
 	}
 	
 	
