@@ -1,7 +1,10 @@
 package com.PostTracking.Controllers;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,11 +12,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.JourneyDAO;
+import com.PostTracking.Boundaries.PackageDAO;
 import com.PostTracking.Boundaries.RouteDAO;
+import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Package;
@@ -34,6 +42,10 @@ public class PackageController {
 	JourneyDAO jDAO;
 	@Autowired
 	DistributionCenterDAO dcDAO;
+	@Autowired
+	PackageDAO pDAO;
+	@Autowired
+	CustomerDAO cDAO;
 	
 	/**
 	 * Maps the /packages (List of Packages)
@@ -51,8 +63,20 @@ public class PackageController {
 	 */
 	@GetMapping("/packages/add")
 	public String insert(Model model) {
-		model.addAttribute("package", new Package());
+		model.addAttribute("pack", new Package());
 		return "packages/add";
+	}
+
+	@PostMapping("/packages")
+	@ResponseBody
+	public Package createPackage( @ModelAttribute Package pack) {
+		pack.setPosition(pack.getOrigin());
+		
+		pack = pDAO.save(pack);
+		
+		
+		return pack;
+		//return "redirect:/packages";
 	}
 	
 	/**
@@ -109,9 +133,7 @@ public class PackageController {
 		//Setting the minimal time for journeys
 		long minimal = System.currentTimeMillis();
 		// Get the list of journeys ahead
-		List<Journey> journeys = jDAO.getJourneys(minimal);
-		
-		
+		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
@@ -131,11 +153,13 @@ public class PackageController {
 					// Check if there is already a journey created
 					Journey j = routesOfPath.get(i).checkExistingJourney(journeys);
 					if(j.getId() == 0) {
-						jDAO.createJourney(j);
+						// J receives the managed Entity (With ID :))
+						j = jDAO.save(j);
+						System.out.println(j.getId());
 						journeys.add(j);
 					}
 					// Swaping the route for the Journey
-					routesOfPath.set(i, j );
+					routesOfPath.set(i, j);
 					minimal = routesOfPath.get(i).getArrival().getTime();
 					System.out.println();
 				}
@@ -160,8 +184,17 @@ public class PackageController {
 	 * @return list of distribution centers
 	 */
 	@ModelAttribute("distributionCenters")
-	public List<DistributionCenter> getDistributionCentes() {
-		return dcDAO.getDistributionCenters();
+	public Iterable<DistributionCenter> getDistributionCentes() {
+		return dcDAO.findAll();
+	}
+
+	/**
+	 * Makes the Customer list available to the view Add package
+	 * @return list of Customers
+	 */
+	@ModelAttribute("customers")
+	public Iterable<Customer> getCustomers() {
+		return cDAO.findAll();
 	}
 	
 	/**

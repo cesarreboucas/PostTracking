@@ -19,8 +19,6 @@ import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
 
-// https://mockaroo.com/
-
 @Controller
 public class Starterkit {
 	
@@ -57,7 +55,7 @@ public class Starterkit {
 		dcArrayList.add(new DistributionCenter("West Point Grey","WestCity s", "WestCity", "BC", "XNX NXN"));
 		
 		for(DistributionCenter dc : dcArrayList) {
-			dcDAO.createDistributionCenter(dc);
+			dcDAO.save(dc);
 		}
 		
 		/**************** Vehicles **************/
@@ -94,7 +92,7 @@ public class Starterkit {
 		cArrayList.add(new Customer("Elana", "Tripet", "328-662-7976", "etripeti@cocolog-nifty.com", "44 Meadow Vale Parkway", "Vancouver", "British Columbia", "V6L"));
 		cArrayList.add(new Customer("Eduard", "Catterell", "360-163-7077", "ecatterellj@who.int", "0 Sherman Hill", "North Vancouver", "British Columbia", "M2J"));
 		for(Customer c : cArrayList) {
-			cDAO.createCustomer(c);
+			cDAO.save(c);
 		}
 		
 		
@@ -106,34 +104,34 @@ public class Starterkit {
 	public String start2() {
 		
 		ArrayList<Route> rArrayList = new ArrayList<Route>();
-		rArrayList.add(new Route(vDAO.getVehicle(1) ,dcDAO.getDistributionCenter(1),dcDAO.getDistributionCenter(2),
+		rArrayList.add(new Route(vDAO.getVehicle(1) ,dcDAO.findById(1).get(),dcDAO.findById(2).get(),
 				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
-		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.getDistributionCenter(2), dcDAO.getDistributionCenter(6),
+		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.findById(2).get(), dcDAO.findById(6).get(),
 				new Timestamp(1558098000000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.getDistributionCenter(6),	dcDAO.getDistributionCenter(1),
+		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.findById(6).get(),	dcDAO.findById(1).get(),
 				new Timestamp(1558108800000L), 7200000, 86400000,true));
 		
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(2),	dcDAO.getDistributionCenter(4),
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(2).get(),dcDAO.findById(4).get(),
 				new Timestamp(1558080000000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(4),dcDAO.getDistributionCenter(3),
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(4).get(),dcDAO.findById(3).get(),
 				new Timestamp(1558090800000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(3),dcDAO.getDistributionCenter(5),
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(3).get(),dcDAO.findById(5).get(),
 				new Timestamp(1558105200000L), 5400000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.getDistributionCenter(5),dcDAO.getDistributionCenter(2),
+		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(5).get(),dcDAO.findById(2).get(),
 				new Timestamp(1558116000000L), 5400000, 86400000, true));
 		
-		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.getDistributionCenter(1),	dcDAO.getDistributionCenter(7),
+		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.findById(1).get(),	dcDAO.findById(7).get(),
 				new Timestamp(1558087200000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.getDistributionCenter(7), dcDAO.getDistributionCenter(8),
+		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.findById(7).get(), dcDAO.findById(8).get(),
 				new Timestamp(1558098000000L), 7200000, 86400000,true));
-		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.getDistributionCenter(8),	dcDAO.getDistributionCenter(1),
+		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.findById(8).get(),	dcDAO.findById(1).get(),
 				new Timestamp(1558108800000L), 7200000, 86400000,true));
 		
-		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.getDistributionCenter(10),dcDAO.getDistributionCenter(3),
+		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.findById(10).get(),dcDAO.findById(3).get(),
 				new Timestamp(1558090800000L),3600000, 86400000,true));
-		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.getDistributionCenter(3), dcDAO.getDistributionCenter(4),
+		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.findById(3).get(), dcDAO.findById(4).get(),
 				new Timestamp(1558099800000L),5400000, 86400000,true));
-		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.getDistributionCenter(4),	dcDAO.getDistributionCenter(10),
+		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.findById(4).get(),	dcDAO.findById(10).get(),
 				new Timestamp(1558110600000L),5400000, 86400000,true));
 		
 		for(Route r : rArrayList) {

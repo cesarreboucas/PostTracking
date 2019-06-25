@@ -1,6 +1,5 @@
 package com.PostTracking.Controllers;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,7 @@ public class JourneyController {
 	JourneyDAO jDAO;
 	
 	@ModelAttribute("journeys")
-	public List<Journey> getAll() {	
-		return jDAO.getJourneys(1);
+	public Iterable<Journey> getAll() {	
+		return jDAO.findAll();
 	}
 }
