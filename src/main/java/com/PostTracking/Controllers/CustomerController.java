@@ -36,14 +36,7 @@ public class CustomerController {
 		return "customers/customers";
 	}
 	
-	
-	
-	/**
-	 * Handles the new customer and the edition of an existing customer                                                                                                              
-	 * @param cust Customer that comes from the form
-	 * @return The view /Customer
-	 */
-	
+
 	/**
 	 * Creates a new Customer
 	 * @param customer The new customer
