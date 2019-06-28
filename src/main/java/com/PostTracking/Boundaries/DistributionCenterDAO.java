@@ -9,5 +9,5 @@ import com.PostTracking.Entities.DistributionCenter;
 
 @Component
 public interface DistributionCenterDAO extends CrudRepository<DistributionCenter, Integer> {
-
+    public Iterable<DistributionCenter> findAllByOrderByNameAsc();
 }
