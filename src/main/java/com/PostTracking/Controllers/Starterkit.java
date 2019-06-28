@@ -71,7 +71,7 @@ public class Starterkit {
 		vArrayList.add(new Vehicle("GMC Sierra 3500HD", 3500, 3500));
 		vArrayList.add(new Vehicle("Honda Ridgeline", 2500, 2500));
 		for(Vehicle v : vArrayList) {
-			vDAO.createVehicle(v);
+			vDAO.save(v);
 		}
 		
 		/**************** Customer **************/
@@ -118,38 +118,38 @@ public class Starterkit {
 	public String start2() {
 		
 		ArrayList<Route> rArrayList = new ArrayList<Route>();
-		rArrayList.add(new Route(vDAO.getVehicle(1) ,dcDAO.findById(1).get(),dcDAO.findById(2).get(),
+		rArrayList.add(new Route(vDAO.findById(1).get() ,dcDAO.findById(1).get(),dcDAO.findById(2).get(),
 				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
-		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.findById(2).get(), dcDAO.findById(6).get(),
+		rArrayList.add(new Route(vDAO.findById(1).get(),dcDAO.findById(2).get(), dcDAO.findById(6).get(),
 				new Timestamp(1558098000000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(1),dcDAO.findById(6).get(),	dcDAO.findById(1).get(),
+		rArrayList.add(new Route(vDAO.findById(1).get(),dcDAO.findById(6).get(),dcDAO.findById(1).get(),
 				new Timestamp(1558108800000L), 7200000, 86400000,true));
 		
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(2).get(),dcDAO.findById(4).get(),
+		rArrayList.add(new Route(vDAO.findById(2).get(),dcDAO.findById(2).get(),dcDAO.findById(4).get(),
 				new Timestamp(1558080000000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(4).get(),dcDAO.findById(3).get(),
+		rArrayList.add(new Route(vDAO.findById(2).get(),dcDAO.findById(4).get(),dcDAO.findById(3).get(),
 				new Timestamp(1558090800000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(3).get(),dcDAO.findById(5).get(),
+		rArrayList.add(new Route(vDAO.findById(2).get(),dcDAO.findById(3).get(),dcDAO.findById(5).get(),
 				new Timestamp(1558105200000L), 5400000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(2),dcDAO.findById(5).get(),dcDAO.findById(2).get(),
+		rArrayList.add(new Route(vDAO.findById(2).get(),dcDAO.findById(5).get(),dcDAO.findById(2).get(),
 				new Timestamp(1558116000000L), 5400000, 86400000, true));
 		
-		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.findById(1).get(),	dcDAO.findById(7).get(),
+		rArrayList.add(new Route(vDAO.findById(3).get(),dcDAO.findById(1).get(),dcDAO.findById(7).get(),
 				new Timestamp(1558087200000L), 7200000, 86400000, true));
-		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.findById(7).get(), dcDAO.findById(8).get(),
+		rArrayList.add(new Route(vDAO.findById(3).get(),dcDAO.findById(7).get(), dcDAO.findById(8).get(),
 				new Timestamp(1558098000000L), 7200000, 86400000,true));
-		rArrayList.add(new Route(vDAO.getVehicle(3),dcDAO.findById(8).get(),	dcDAO.findById(1).get(),
+		rArrayList.add(new Route(vDAO.findById(3).get(),dcDAO.findById(8).get(),dcDAO.findById(1).get(),
 				new Timestamp(1558108800000L), 7200000, 86400000,true));
 		
-		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.findById(10).get(),dcDAO.findById(3).get(),
+		rArrayList.add(new Route(vDAO.findById(4).get(),dcDAO.findById(10).get(),dcDAO.findById(3).get(),
 				new Timestamp(1558090800000L),3600000, 86400000,true));
-		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.findById(3).get(), dcDAO.findById(4).get(),
+		rArrayList.add(new Route(vDAO.findById(4).get(),dcDAO.findById(3).get(), dcDAO.findById(4).get(),
 				new Timestamp(1558099800000L),5400000, 86400000,true));
-		rArrayList.add(new Route(vDAO.getVehicle(4),dcDAO.findById(4).get(),	dcDAO.findById(10).get(),
+		rArrayList.add(new Route(vDAO.findById(4).get(),dcDAO.findById(4).get(),dcDAO.findById(10).get(),
 				new Timestamp(1558110600000L),5400000, 86400000,true));
 		
 		for(Route r : rArrayList) {
-			rDAO.createRoute(r);
+			rDAO.save(r);
 		}
 		
 /*

@@ -2,9 +2,7 @@ package com.PostTracking.Controllers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,14 +46,29 @@ public class PackageController {
 	CustomerDAO cDAO;
 	
 	/**
-	 * Maps the /packages (List of Packages)
+	 * Maps the /packages (Filters to Packages)
 	 * @return the view of /packages
 	 */
 	@GetMapping("/packages")
-	public String showAll() {
+	public String fiterPackages() {
 		return "packages/packages";
 	}
+
 	
+	@PostMapping("/packages/search")
+	@ResponseBody
+	public Iterable<com.PostTracking.Entities.Package> showPackages(@RequestParam String origin_id,@RequestParam String destination_id,@RequestParam String customer_id) {
+		Customer customer = null;
+		DistributionCenter origin = null;
+		DistributionCenter destination = null;
+		
+		if(!origin_id.equals("0")) {origin = dcDAO.findById(Integer.parseInt(origin_id)).get();}
+		if(!destination_id.equals("0")) {destination = dcDAO.findById(Integer.parseInt(destination_id)).get();}
+		if(!customer_id.equals("0")) { customer = cDAO.findById(Integer.parseInt(customer_id)).get();}
+		return pDAO.findBy(origin, destination, customer);
+		//return "packages/search";
+	}
+
 	/**
 	 * Maps the /packages/add
 	 * @param model Adds the Package object to fill the form
@@ -67,14 +80,17 @@ public class PackageController {
 		return "packages/add";
 	}
 
+	/**
+	 * Handles the creation of new Package.
+	 * @param pack the Entity to be saved
+	 * @return JSON Entity?
+	 */
 	@PostMapping("/packages")
 	@ResponseBody
-	public Package createPackage( @ModelAttribute Package pack) {
+	public Package createPackage(@ModelAttribute Package pack) {
 		pack.setPosition(pack.getOrigin());
-		
 		pack = pDAO.save(pack);
-		
-		
+		//TODO change to the /package/{id} after created
 		return pack;
 		//return "redirect:/packages";
 	}
@@ -90,7 +106,8 @@ public class PackageController {
 	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination) {
 		//test from 1 to 3
 		ArrayList<Path> paths = new ArrayList<Path>();
-		List<Route> routes = rDAO.getRoutes();
+		List<Route> routes = new ArrayList<Route>();
+		rDAO.findAll().iterator().forEachRemaining(routes::add);
 		System.out.println(routes.get(0));
 		int origin_id = 0;
 		int destination_id = 0;
@@ -174,9 +191,8 @@ public class PackageController {
 	 * @return list of packages
 	 */
 	@ModelAttribute("packages")
-	public ArrayList<Package> getAll() {
-		ArrayList<Package> list = new ArrayList<Package>();
-		return list;
+	public Iterable<Package> getAll() {
+		return pDAO.findAll();
 	}
 	
 	/**
@@ -185,7 +201,7 @@ public class PackageController {
 	 */
 	@ModelAttribute("distributionCenters")
 	public Iterable<DistributionCenter> getDistributionCentes() {
-		return dcDAO.findAll();
+		return dcDAO.findAllByOrderByNameAsc();
 	}
 
 	/**
@@ -196,24 +212,4 @@ public class PackageController {
 	public Iterable<Customer> getCustomers() {
 		return cDAO.findAll();
 	}
-	
-	/**
-	 * TODO move to propper place
-	 * Generate the journey list from Routes 
-	 * @return An Array of Journeys
-	 */
-	/*
-	@ModelAttribute("journeys")
-	public Journey[] getJourneys() {
-		
-		List<Route> routes = rDAO.getRoutes();		
-		ArrayList<Journey> journeys = new ArrayList<Journey>();
-		Journey j;
-		for(Route route : routes) {
-			j = (Journey) route;
-			journeys.add(j);
-		}
-		return journeys.toArray(new Route[journeys.size()]);
-	}
-	*/
 }
