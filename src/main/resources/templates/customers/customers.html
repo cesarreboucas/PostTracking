@@ -10,31 +10,31 @@
 			<tr>
 				<th>First Name</th>
 				<th>Last Name</th>
-				<th>Phone Number</th>
 				<th>Email Address</th>
 				<th>Address</th>
 				<th>City</th>
 				<th>Province</th>
-				<th>Zip Code</th>
 				<th>Action</th>
 			<tr>
 			<tr th:each="customer : ${customers}">
 				<td th:text="${customer.getFirstName()}"></td> 
 				<td th:text="${customer.getLastName()}"></td>
-				<td th:text="${customer.getPhoneNumber()}"></td>
 				<td th:text="${customer.getEmailAddress()}"></td>
 				<td th:text="${customer.getAddress()}"></td>
 				<td th:text="${customer.getCity()}"></td>
 				<td th:text="${customer.getProvince()}"></td>
-				<td th:text="${customer.getZipCode()}"></td>
-				<td>
+				<td style="white-space: nowrap;">
 					<button th:data-customer="${customer.getId()}" type="button" class="btn-sm btn-primary"
-						 data-toggle="modal" data-target="#modalForm">Edit</button>
+						 data-toggle="modal" data-target="#modalForm" th:data-method="PUT">Edit</button>
+					<form action="customers" th:method="DELETE" style="display: inline;">
+						<input type="submit" class="btn-sm btn-warning" value="Delete">
+						<input type="hidden" th:value="${customer.getId()}" id="deleteId" name="id">						
+					</form>
 				</td>
 			</tr>
 		</table>
 		<p class="text-right"><button data-customer="0" type="button" class="btn-sm btn-secondary"
-						 data-toggle="modal" data-target="#modalForm">Add customer</button></p>
+						 data-toggle="modal" data-target="#modalForm" th:data-method="POST">Add customer</button></p>
 						 
 		<!-- START MODAL -->
 		<div class="modal" tabindex="-1" role="dialog" id="modalForm">
@@ -47,7 +47,7 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		      	<form action="#" th:action="@{/customers/0}" th:object="${customer}" method="POST" id="CustomerForm">
+		      	<form action="#" th:action="@{/customers}" th:object="${customer}" method="POST" id="CustomerForm">
 				  <div class="form-group">
 				  	<input type="hidden" th:field="*{Id}" id="txtId">
 				    <label for="txtFirstName">First Name</label>
@@ -81,10 +81,6 @@
 				    <label for="txtZipCode">Zip Code</label>
 				    <input type="text" class="form-control" id="txtZipCode" th:field="*{zipCode}">
 				  </div>
-				  <div class="form-check" id="divDelete">
-    				<input type="checkbox" class="form-check-input" id="chkDelete" name="chkDelete">
-    				<label class="form-check-label" for="chkDelete">Delete-me!</label>
-  				  </div>
 				  	<button type="submit" class="btn btn-primary">Save changes</button>
 		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</form>

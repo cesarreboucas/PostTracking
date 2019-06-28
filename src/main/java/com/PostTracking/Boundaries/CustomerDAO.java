@@ -9,5 +9,5 @@ import com.PostTracking.Entities.Customer;
 
 @Component
 public interface CustomerDAO extends CrudRepository<Customer, Integer> {
-	
+	Iterable<Customer> findAllByOrderByFirstNameAsc();
 }

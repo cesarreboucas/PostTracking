@@ -3,15 +3,16 @@
 $('#modalForm').on('show.bs.modal', function (event) {
 	let button = $(event.relatedTarget); // Button that triggered the modal
 	let customer = button.data('customer'); // Extract info from data-* attributes
+	let method = button.data('method');
+	console.log('[METHOD]', method);
+	let inputMethod = `<input name="_method" type="hidden" value="${method}" />`;
+	$("#CustomerForm").append(inputMethod);
 	let modal = $(this);
 	if(customer!=0) {
 		$.ajax({
 			dataType: "json",
 			url: "/customers/"+customer
 		}).done(function(data) {
-			$("#divDelete").css("display:none;");
-			$("#chkDelete").prop("checked", false);
-			$("#customerForm").attr("action", "/customers/"+data.id);
 			document.getElementById("txtId").value = data.id;
 			document.getElementById("txtFirstName").value = data.firstName;
 			document.getElementById("txtLastName").value = data.lastName;
@@ -24,8 +25,6 @@ $('#modalForm').on('show.bs.modal', function (event) {
 			modal.find("#modalTitle").text('Editing customer');
 		});
 	} else {
-		$("#customerForm").attr("action", "/customers/0");
-		$("#divDelete").css("display:none;");
 		document.getElementById("txtId").value = 0;
 		document.getElementById("txtFirstName").value = "";
 		document.getElementById("txtLastName").value = "";
@@ -37,6 +36,5 @@ $('#modalForm').on('show.bs.modal', function (event) {
 		document.getElementById("txtZipCode").value = "";
 		modal.find("#modalTitle").text('Adding customer');
 	}
-	
   })
 

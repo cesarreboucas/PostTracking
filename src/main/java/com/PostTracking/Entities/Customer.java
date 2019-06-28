@@ -23,10 +23,11 @@ public class Customer {
 	private String city = "";
 	private String province = "";
 	private String zipCode = "";
+	private boolean active = true;
 	
 	public Customer() {}
 	
-	public Customer(String firstName, String lastName, String phoneNumber, String emailAddress, String address, String city, String province, String zipCode) {
+	public Customer(String firstName, String lastName, String phoneNumber, String emailAddress, String address, String city, String province, String zipCode, boolean active) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
@@ -35,11 +36,16 @@ public class Customer {
 		this.city = city;
 		this.province = province;
 		this.zipCode = zipCode;
+		this.active = active;
 	}
 	
 	
 	public int getId() {
 		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getFirstName() {
@@ -104,6 +110,14 @@ public class Customer {
 	
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+	
+	public boolean getActive() {
+		return active;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public String getFullName() {
