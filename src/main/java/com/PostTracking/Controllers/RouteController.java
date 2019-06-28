@@ -1,6 +1,8 @@
 package com.PostTracking.Controllers;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.PostTracking.Boundaries.RouteDAO;
@@ -23,10 +25,14 @@ public class RouteController {
 	
 	@GetMapping("/routes")
 	public String showAll(Model m) {
-		List<Vehicle> vehicles = vController.getAll();
-		List<Route> routes = rDAO.getRoutes();
+		
+		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		vController.getAll().iterator().forEachRemaining(vehicles::add);
+		
+		List<Route> routes = new ArrayList<Route>();
+		rDAO.findAll().iterator().forEachRemaining(routes::add);
 		for(int i=0; i < routes.size(); ++i) {
-			int pos = vehicles.indexOf(routes.get(i).getVehicle());
+			int pos =  vehicles.indexOf(routes.get(i).getVehicle());
 			vehicles.get(pos).addRoute(routes.get(i));
 		}
 		m.addAttribute("vehicles", vehicles);
@@ -34,9 +40,8 @@ public class RouteController {
 	}
 
 	@ModelAttribute("routes")
-	public List<Route> getAll() {
-		List<Route> list = rDAO.getRoutes();
-		return list;
+	public Iterable<Route> getAll() {
+		return rDAO.findAll();
 	}
 }
 

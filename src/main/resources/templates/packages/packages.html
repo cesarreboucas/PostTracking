@@ -6,10 +6,46 @@
 <body>
 	<header th:replace="index/header.html"></header>
 		<h1>Packages</h1>
-		<ul>
-  			<li th:each="package : ${packages}" th:text="${'Peso: '+package.getWeight()+' Volume'+package.getVolume()}">Hello </li>
-		</ul>
-		<a href="/packages/add" role="button" class="btn btn-sm btn-secondary">Add Package</a>
+		
+		<form action="/packages/search" method="POST">
+  		<table class="table">
+		
+			<tr>
+				<th colspan="2">Please, fill the criteria</th>
+			</tr>
+			<tr>
+				<th>Origin</th>
+				<td>
+					<select id="selOrigin" name="origin_id" class="form-control">
+						<option value="0">Select</option>
+						<option th:each="dcOrigin : ${distributionCenters}" th:value="${dcOrigin.id}" th:text="${dcOrigin.getName()}"></option> 
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Destination</th>
+				<td>
+					<select id="selDestination" name="destination_id" class="form-control">
+							<option value="0">Select</option>
+							<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.id}" th:text="${dcDest.getName()}"></option>  
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Customer</th>
+				<td>
+					<select id="selCustomer" name="customer_id" class="form-control">
+							<option value="0">Select</option>
+							<option th:each="cust : ${customers}"  th:value="${cust.id}" th:text="${cust.getFullName()}"></option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<div style="text-align: right;">
+			<input type="submit" id="btnSearch" class="btn btn-sm btn-secondary" value="Search"><br/><br/>
+			<a href="/packages/add" role="button" class="btn btn-sm btn-secondary">Add Package</a>
+		</div>
+		</form>
 	<footer th:insert="index/footer.html"></footer>
 </body>
 </html>

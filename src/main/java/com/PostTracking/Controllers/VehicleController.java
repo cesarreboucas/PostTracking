@@ -49,7 +49,7 @@ public class VehicleController {
 	@ResponseBody
 	public Vehicle seekPath(@PathVariable String id) {
 		try {
-			return vdao.getVehicle(Integer.parseInt(id));
+			return vdao.findById(Integer.parseInt(id)).get();
 		} catch(Exception ex) {
 			return new Vehicle();
 		}
@@ -64,7 +64,7 @@ public class VehicleController {
 	public String createVehicle(@ModelAttribute Vehicle vehicle) {
 		System.out.println("POST");
 		System.out.println(vehicle);
-		vdao.createVehicle(vehicle);
+		vdao.save(vehicle);
 		return "redirect:/vehicles";
 	}
 	
@@ -75,14 +75,14 @@ public class VehicleController {
 	 */
 	@PutMapping("/vehicles")
 	public String updateVehicle(@ModelAttribute Vehicle vehicle) {
-		Vehicle hibernateVehicle = vdao.getVehicle(vehicle.getId());
+		Vehicle hibernateVehicle = vdao.findById(vehicle.getId()).get();
 		hibernateVehicle.setDescription(vehicle.getDescription());
 		hibernateVehicle.setMaxVolume(vehicle.getMaxVolume());
 		hibernateVehicle.setMaxWeight(vehicle.getMaxWeight());
 		
 		System.out.println("POST");
 		System.out.println(hibernateVehicle);
-		vdao.updateVehicle(hibernateVehicle);
+		vdao.save(hibernateVehicle);
 		return "redirect:/vehicles";
 	}
 	
@@ -97,7 +97,7 @@ public class VehicleController {
 	 */
 	@DeleteMapping("/vehicles")
 	public String deleteVehicle(@RequestParam int id) {
-		Vehicle hibernateVehicle = vdao.getVehicle(id);
+		Vehicle hibernateVehicle = vdao.findById(id).get();
 		//vdao.deleteVehicle(v_db);
 		System.out.println("DELETE");
 		System.out.println(hibernateVehicle);
@@ -108,8 +108,8 @@ public class VehicleController {
 	 * @return The list of all vehicles available on the database.
 	 */
 	@ModelAttribute("vehicles")
-	public List<Vehicle> getAll() {
-		return vdao.getVehicles();
+	public Iterable<Vehicle> getAll() {
+		return vdao.findAll();
 	}
 	
 }
