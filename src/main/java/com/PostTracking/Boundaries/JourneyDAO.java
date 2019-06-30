@@ -13,7 +13,7 @@ import com.PostTracking.Entities.Journey;
 
 @Component
 public interface JourneyDAO extends CrudRepository<Journey, Integer> {
-	@Query("SELECT a FROM Journey a WHERE a.start=:minimal")
+	@Query("SELECT a FROM Journey a WHERE a.start>=:minimal")
     List<Journey> fetchFrom(@Param("minimal") java.sql.Timestamp mininmal);
 
 }

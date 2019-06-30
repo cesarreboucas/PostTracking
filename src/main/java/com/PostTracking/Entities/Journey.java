@@ -146,12 +146,21 @@ public class Journey {
 	
 	public Journey checkExistingJourney(List<Journey> journeys) {
 		for(Journey j : journeys) {
-			//System.out.println("Start: "+this.start.equals(j.start));
-			//System.out.println("Vehicle: "+this.vehicle.equals(j.vehicle));
-			//System.out.println("Origin: "+this.origin.equals(j.origin));
-			if(this.start.equals(j.start) && this.vehicle.equals(j.vehicle) && this.origin.equals(j.origin)) {
+			System.out.println("Start: "+this.start.equals(j.start));
+			System.out.println("J.Vehivle = "+j.vehicle.getDescription());
+			System.out.println("Vehicle: "+this.vehicle.equals(j.vehicle));
+			System.out.println("Origin: "+this.origin.equals(j.origin));
+			if(this.origin.equals(j.origin)) {
+				if(this.vehicle.equals(j.vehicle)) {
+					if(this.start.equals(j.start)) {
+						System.out.println("OK!!!");
+						return j;
+					}else {System.out.println("Start Differente");}
+				}else {System.out.println("Vehicle Differente");}
+			}else {System.out.println("Origin Differente");}
+			/*if(this.start.equals(j.start) && this.vehicle.equals(j.vehicle) && this.origin.equals(j.origin)) {
 				return j;
-			}
+			}*/
 		}
 		return new Journey(this);
 	}
@@ -169,4 +178,25 @@ public class Journey {
 		//System.out.println();
 		return ts;	
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
+		result = prime * result + duration;
+		result = prime * result + id;
+		result = prime * result + ((origin == null) ? 0 : origin.hashCode());
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		result = prime * result + ((vehicle == null) ? 0 : vehicle.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Journey j = (Journey) obj;
+		return this.id == j.id;
+	}
+	
+	
 }

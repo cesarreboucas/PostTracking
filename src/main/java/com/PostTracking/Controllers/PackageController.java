@@ -151,6 +151,7 @@ public class PackageController {
 		long minimal = System.currentTimeMillis();
 		// Get the list of journeys ahead
 		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
+		System.out.println("ID na lista (1): "+journeys.get(1).getVehicle().getId());
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
@@ -172,9 +173,9 @@ public class PackageController {
 					if(j.getId() == 0) {
 						// J receives the managed Entity (With ID :))
 						j = jDAO.save(j);
-						System.out.println(j.getId());
 						journeys.add(j);
 					}
+					System.out.println(j.getId());
 					// Swaping the route for the Journey
 					routesOfPath.set(i, j);
 					minimal = routesOfPath.get(i).getArrival().getTime();
