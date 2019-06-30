@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        
+    </head>
+<body>
+    <header th:replace="index/header.html"></header>
+    <h1>Packages of Journey</h1>
+    <p th:text="${journey}"></p>
+    <table class="table">
+        <tr>
+            <th>Pacote</th>
+        </tr>
+        <tr th:each="package : ${journey.getPackages()}">
+            <td th:text="${package}"></td>
+        </tr>
+    <footer th:insert="index/footer.html"></footer>
+</body>
+</html>

@@ -66,7 +66,6 @@ public class PackageController {
 		if(!destination_id.equals("0")) {destination = dcDAO.findById(Integer.parseInt(destination_id)).get();}
 		if(!customer_id.equals("0")) { customer = cDAO.findById(Integer.parseInt(customer_id)).get();}
 		return pDAO.findBy(origin, destination, customer);
-		//return "packages/search";
 	}
 
 	/**
@@ -175,7 +174,6 @@ public class PackageController {
 						j = jDAO.save(j);
 						journeys.add(j);
 					}
-					System.out.println(j.getId());
 					// Swaping the route for the Journey
 					routesOfPath.set(i, j);
 					minimal = routesOfPath.get(i).getArrival().getTime();

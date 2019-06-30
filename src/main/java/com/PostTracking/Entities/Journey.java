@@ -1,7 +1,6 @@
 package com.PostTracking.Entities;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -143,24 +142,28 @@ public class Journey {
 	public void setRestart(int restart) {
 		this.restart = restart;
 	}
+
+	public Set<Package> getPackages() {
+		return this.packages;
+	}
 	
 	public Journey checkExistingJourney(List<Journey> journeys) {
 		for(Journey j : journeys) {
-			System.out.println("Start: "+this.start.equals(j.start));
+			/*System.out.println("Start: "+this.start.equals(j.start));
 			System.out.println("J.Vehivle = "+j.vehicle.getDescription());
 			System.out.println("Vehicle: "+this.vehicle.equals(j.vehicle));
-			System.out.println("Origin: "+this.origin.equals(j.origin));
-			if(this.origin.equals(j.origin)) {
+			System.out.println("Origin: "+this.origin.equals(j.origin));*/
+			/*if(this.origin.equals(j.origin)) {
 				if(this.vehicle.equals(j.vehicle)) {
 					if(this.start.equals(j.start)) {
 						System.out.println("OK!!!");
 						return j;
 					}else {System.out.println("Start Differente");}
 				}else {System.out.println("Vehicle Differente");}
-			}else {System.out.println("Origin Differente");}
-			/*if(this.start.equals(j.start) && this.vehicle.equals(j.vehicle) && this.origin.equals(j.origin)) {
+			}else {System.out.println("Origin Differente");}*/
+			if(this.start.equals(j.start) && this.vehicle.equals(j.vehicle) && this.origin.equals(j.origin)) {
 				return j;
-			}*/
+			}
 		}
 		return new Journey(this);
 	}
