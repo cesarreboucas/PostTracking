@@ -27,7 +27,7 @@ public class Customer {
 	
 	public Customer() {}
 	
-	public Customer(String firstName, String lastName, String phoneNumber, String emailAddress, String address, String city, String province, String zipCode, boolean active) {
+	public Customer(String firstName, String lastName, String phoneNumber, String emailAddress, String address, String city, String province, String zipCode) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
@@ -36,7 +36,7 @@ public class Customer {
 		this.city = city;
 		this.province = province;
 		this.zipCode = zipCode;
-		this.active = active;
+		this.active = true;
 	}
 	
 	

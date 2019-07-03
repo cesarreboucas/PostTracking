@@ -26,7 +26,7 @@
 				<td style="white-space: nowrap;">
 					<button th:data-customer="${customer.getId()}" type="button" class="btn-sm btn-primary"
 						 data-toggle="modal" data-target="#modalForm" th:data-method="PUT">Edit</button>
-					<form action="customers" th:method="DELETE" style="display: inline;">
+					<form action="/customers" th:method="DELETE" style="display: inline;">
 						<input type="submit" class="btn-sm btn-warning" value="Delete">
 						<input type="hidden" th:value="${customer.getId()}" id="deleteId" name="id">						
 					</form>
