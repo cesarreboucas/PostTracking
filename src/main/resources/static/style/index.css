@@ -4,19 +4,19 @@ body {
 	position: relative;
 }
 
-.btn-primary, .btn-primary:hover {
-	background-color: #8DA8BA;
-	border: #8DA8BA;
+.btn-primary, .btn-primary:hover, .btn-primary:active:focus {
+	background-color: #8DA8BA !important;
+	border: #8DA8BA !important;
 }
 
-.btn-secondary, .btn-secondary:hover {
-	background-color: #ABC4AA;
-	border: #ABC4AA;
+.btn-secondary, .btn-secondary:hover, .btn-secondary:active:focus {
+	background-color: #ABC4AA !important;
+	border: #ABC4AA !important;
 }
 
-.btn-warning, .btn-warning:hover {
-	background-color: #E2A7A3;
-	border: #E2A7A3;
+.btn-warning, .btn-warning:hover, .btn-warning:active:focus {
+	background-color: #E2A7A3 !important;
+	border: #E2A7A3 !important;
 }
 
 header{

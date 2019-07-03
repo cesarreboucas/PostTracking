@@ -2,7 +2,7 @@
 
 $('#modalForm').on('show.bs.modal', function (event) {
 	let button = $(event.relatedTarget); // Button that triggered the modal
-	let customer = button.data('dc'); // Extract info from data-* attributes
+	let dc = button.data('dc'); // Extract info from data-* attributes
 	let method = button.data('method');
 	console.log('[METHOD]', method);
 	let inputMethod = `<input name="_method" type="hidden" value="${method}" />`;

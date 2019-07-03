@@ -20,6 +20,7 @@ public class DistributionCenter {
 	private String city = "";
 	private String province = "";
 	private String zipCode = "";
+	private boolean active = true;
 	
 	
 	public DistributionCenter() {}
@@ -30,6 +31,7 @@ public class DistributionCenter {
 		this.city = city;
 		this.province = province;
 		this.zipCode = zipCode;
+		this.active = true;
 	}
 
 	public int getId() {
@@ -78,6 +80,14 @@ public class DistributionCenter {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+	
+	public boolean getActive() {
+		return active;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override

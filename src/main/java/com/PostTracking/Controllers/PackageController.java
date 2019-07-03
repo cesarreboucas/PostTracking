@@ -201,7 +201,7 @@ public class PackageController {
 	 */
 	@ModelAttribute("distributionCenters")
 	public Iterable<DistributionCenter> getDistributionCentes() {
-		return dcDAO.findAllByOrderByNameAsc();
+		return dcDAO.fetchDCs();
 	}
 
 	/**

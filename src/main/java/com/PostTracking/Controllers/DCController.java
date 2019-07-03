@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class DCController {
 	DistributionCenterDAO dcDAO;
 	
 	/**
-	 * Maps /dcs (List of all Distribution Centers)
+	 * Map /dcs (List of all Distribution Centers)
 	 * @return the View for all Distribution Centers
 	 */
 	@GetMapping("/dcs")
@@ -38,11 +39,11 @@ public class DCController {
 	}
 	
 	/**
-	 * Returns a customer object from an ID
+	 * Return a customer object from an ID
 	 * @param id The id of the Distribution Center
 	 * @return the JSON of the Distribution Center
 	 */
-	@GetMapping("/dc/{id}")
+	@GetMapping("/dcs/{id}")
 	@ResponseBody
 	public DistributionCenter getDistributionCenter(@PathVariable String id) {
 		try {
@@ -85,14 +86,27 @@ public class DCController {
 		return "redirect:/dcs";
 	}
 	
+
+	/**
+	 * Delete (Hide) the distribution center
+	 * @param distCenter The distribution center entity
+	 * @return The view of Distribution Center
+	 */
+	@DeleteMapping("/dcs")
+	public String deleteDistributionCenter(@ModelAttribute DistributionCenter distCenter) {
+		DistributionCenter dcs_db = dcDAO.findById(distCenter.getId()).get();
+		dcs_db.setActive(false);
+		dcDAO.save(dcs_db);
+		return "redirect:/dcs";
+	}
 	
 	/**
-	 * Makes Distribution centers list available in the view.
+	 * Make Distribution centers list available in the view.
 	 * @return List of Distribution Centers
 	 */
 	@ModelAttribute("dcs")
 	public Iterable<DistributionCenter> getAll() {
-		return dcDAO.findAllByOrderByNameAsc();
+		return dcDAO.fetchDCs();
 	}
 	
 	
