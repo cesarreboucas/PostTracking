@@ -1,6 +1,7 @@
 package com.PostTracking.Controllers;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,14 @@ public class VehicleController {
 		model.addAttribute("vehicle", new Vehicle());
 		return "vehicles/vehicles";
 		
+	}
+	
+	@GetMapping("/api/vehicles")
+	@ResponseBody
+	public List<Vehicle> getAllVehicles() {
+		ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+		getAll().forEach(v -> vehicles.add(v));
+		return vehicles;
 	}
 	
 	/**

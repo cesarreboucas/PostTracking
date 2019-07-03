@@ -3,6 +3,7 @@ package com.PostTracking.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,6 +72,12 @@ public class CustomerController {
 		return "redirect:/customers";
 	}
 	
+	/**
+	 * Delete (Hide) the customer
+	 * @param customer The customer entity
+	 * @return The view /Customer
+	 */
+	@DeleteMapping("/customers")
 	public String deleteCustomer(@ModelAttribute Customer customer) {
 		Customer cust_db = cdao.findById(customer.getId()).get();
 		cust_db.setActive(false);
@@ -99,7 +106,7 @@ public class CustomerController {
 	 */
 	@ModelAttribute("customers")
 	public Iterable<Customer> getAll() {
-		return cdao.findAllByOrderByFirstNameAsc();
+		return cdao.fetchCustomers();
 	}
 	
 }
