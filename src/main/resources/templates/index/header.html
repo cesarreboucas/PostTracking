@@ -16,6 +16,10 @@
 </nav>-->
 
 <div class="container">
+	<div class="alert alert-info" 
+		th:if="${message != null}"
+		th:text="${message}">
+	</div>
 	<div class="row">
  		<div class="col">
 			<nav class="nav flex-column">
