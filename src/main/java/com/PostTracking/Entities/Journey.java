@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  * Represents the Route entity
  * Associates with Vehicle and Distribution Center entities
@@ -49,6 +51,7 @@ public class Journey {
 	@JoinTable(name = "package_journey",
 	        joinColumns = @JoinColumn(name = "journey_id"),
 	        inverseJoinColumns = @JoinColumn(name = "package_id"))
+    @JsonBackReference
 	private Set<Package> packages = new HashSet<Package>();
     protected Timestamp start;
     protected int duration;
@@ -198,7 +201,7 @@ public class Journey {
 	@Override
 	public boolean equals(Object obj) {
 		Journey j = (Journey) obj;
-		return this.id == j.id;
+		return this.id == j.getId();
 	}
 	
 	

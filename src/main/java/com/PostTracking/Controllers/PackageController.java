@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
@@ -85,13 +86,11 @@ public class PackageController {
 	 * @return JSON Entity?
 	 */
 	@PostMapping("/packages")
-	@ResponseBody
-	public Package createPackage(@ModelAttribute Package pack) {
+	public String createPackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
 		pack.setPosition(pack.getOrigin());
 		pack = pDAO.save(pack);
-		//TODO change to the /package/{id} after created
-		return pack;
-		//return "redirect:/packages";
+		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
+		return "redirect:/packages";
 	}
 	
 	/**
@@ -138,7 +137,7 @@ public class PackageController {
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
 					System.out.println("Paths Size: "+paths.size()+" x:"+x);
 					// Logging paths -- Remove later
-					System.out.println("-> Paths: ");
+					System.out.println("-> Paths");
 					for(Path pz : paths) {
 						System.out.println(pz);
 					}
@@ -150,7 +149,8 @@ public class PackageController {
 		long minimal = System.currentTimeMillis();
 		// Get the list of journeys ahead
 		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
-		System.out.println("ID na lista (1): "+journeys.get(1).getVehicle().getId());
+		System.out.println("Journey size : "+journeys.size());
+		//System.out.println("ID na lista (1): "+journeys.get(1).getVehicle().getId());
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
