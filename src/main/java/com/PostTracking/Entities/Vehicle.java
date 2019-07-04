@@ -89,5 +89,25 @@ public class Vehicle {
 					  "Max Volume: %d\n" +
 					  "Max Weight: %d\n", Id, description, maxVolume, maxWeight);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Id;
+		result = prime * result + (available ? 1231 : 1237);
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + maxVolume;
+		result = prime * result + maxWeight;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Vehicle v = (Vehicle) obj;
+		return this.Id == v.getId();
+	}
+	
+	
 	
 }

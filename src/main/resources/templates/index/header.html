@@ -16,6 +16,10 @@
 </nav>-->
 
 <div class="container">
+	<div class="alert alert-info" 
+		th:if="${message != null}"
+		th:text="${message}">
+	</div>
 	<div class="row">
  		<div class="col">
 			<nav class="nav flex-column">
@@ -23,7 +27,7 @@
 				<a class="nav-link" href="/routes"><img src="/img/route.png" height="32" width="32"> Routes</a>
 				<a class="nav-link" href="/packages"><img src="/img/package.png" height="32" width="32"> Packages</a>
 				<a class="nav-link" href="/customers"><img src="/img/customer.png" height="32" width="32"> Customers</a>
-				<a class="nav-link" href="/dcs"><img src="/img/distributioncenter.png" height="32" width="32"> Dist. Centers</a>
+				<a class="nav-link" href="/dcs"><img src="/img/distributioncenter.png" height="32" width="32"> Dist.Centers</a>
 			</nav>
 		</div>
    		<div class="col-10">

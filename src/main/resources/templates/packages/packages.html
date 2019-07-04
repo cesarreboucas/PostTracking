@@ -6,17 +6,15 @@
 <body>
 	<header th:replace="index/header.html"></header>
 		<h1>Packages</h1>
-		
-		<form action="/packages/search" method="POST">
+		<form action="#" method="POST" id="PackageFilterForm">
   		<table class="table">
-		
 			<tr>
 				<th colspan="2">Please, fill the criteria</th>
 			</tr>
 			<tr>
 				<th>Origin</th>
 				<td>
-					<select id="selOrigin" name="origin_id" class="form-control">
+					<select id="selOriginSearch" name="origin_id" class="form-control">
 						<option value="0">Select</option>
 						<option th:each="dcOrigin : ${distributionCenters}" th:value="${dcOrigin.id}" th:text="${dcOrigin.getName()}"></option> 
 					</select>
@@ -25,7 +23,7 @@
 			<tr>
 				<th>Destination</th>
 				<td>
-					<select id="selDestination" name="destination_id" class="form-control">
+					<select id="selDestinationSearch" name="destination_id" class="form-control">
 							<option value="0">Select</option>
 							<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.id}" th:text="${dcDest.getName()}"></option>  
 					</select>
@@ -34,7 +32,7 @@
 			<tr>
 				<th>Customer</th>
 				<td>
-					<select id="selCustomer" name="customer_id" class="form-control">
+					<select id="selCustomerSearch" name="customer_id" class="form-control">
 							<option value="0">Select</option>
 							<option th:each="cust : ${customers}"  th:value="${cust.id}" th:text="${cust.getFullName()}"></option>
 					</select>
@@ -46,6 +44,13 @@
 			<a href="/packages/add" role="button" class="btn btn-sm btn-secondary">Add Package</a>
 		</div>
 		</form>
+		<div id="packages" style="margin-top: 1em;">
+			<table class="table display" style="background-color: #ffffff" id="packTable"></table>
+			</div>
 	<footer th:insert="index/footer.html"></footer>
+	<link hred="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"></link>
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="/script/package.js"></script>
+	<div th:replace="/packages/detailModal.html"></div>
 </body>
 </html>

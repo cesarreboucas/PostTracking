@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
@@ -50,7 +51,8 @@ public class PackageController {
 	 * @return the view of /packages
 	 */
 	@GetMapping("/packages")
-	public String fiterPackages() {
+	public String fiterPackages(Model model) {
+		model.addAttribute("package", new Package());
 		return "packages/packages";
 	}
 
@@ -66,7 +68,6 @@ public class PackageController {
 		if(!destination_id.equals("0")) {destination = dcDAO.findById(Integer.parseInt(destination_id)).get();}
 		if(!customer_id.equals("0")) { customer = cDAO.findById(Integer.parseInt(customer_id)).get();}
 		return pDAO.findBy(origin, destination, customer);
-		//return "packages/search";
 	}
 
 	/**
@@ -86,13 +87,25 @@ public class PackageController {
 	 * @return JSON Entity?
 	 */
 	@PostMapping("/packages")
-	@ResponseBody
-	public Package createPackage(@ModelAttribute Package pack) {
+	public String createPackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
+		if(!pack.validateMe()) {
+			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
+			return "redirect:/packages";	
+		}
 		pack.setPosition(pack.getOrigin());
 		pack = pDAO.save(pack);
-		//TODO change to the /package/{id} after created
-		return pack;
-		//return "redirect:/packages";
+		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
+		return "redirect:/packages";
+	}
+
+	@GetMapping("/packages/{id}")
+	@ResponseBody
+	public Package getPackage(@PathVariable String id) {
+		try {
+			return pDAO.findById(Integer.parseInt(id)).get();
+		} catch(Exception ex) {
+			return new Package();
+		}
 	}
 	
 	/**
@@ -139,7 +152,7 @@ public class PackageController {
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
 					System.out.println("Paths Size: "+paths.size()+" x:"+x);
 					// Logging paths -- Remove later
-					System.out.println("-> Paths: ");
+					System.out.println("-> Paths");
 					for(Path pz : paths) {
 						System.out.println(pz);
 					}
@@ -151,6 +164,8 @@ public class PackageController {
 		long minimal = System.currentTimeMillis();
 		// Get the list of journeys ahead
 		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
+		System.out.println("Journey size : "+journeys.size());
+		//System.out.println("ID na lista (1): "+journeys.get(1).getVehicle().getId());
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
@@ -161,7 +176,7 @@ public class PackageController {
 			// If Path is good, refresh timestamp
 			else {
 				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
-				ArrayList<Journey> routesOfPath = paths.get(x).getPath();
+				ArrayList<Journey> routesOfPath = paths.get(x).getJourneys();
 				System.out.println(paths.get(x));
 	
 				for(int i=0; i < routesOfPath.size() ; ++i) {
@@ -172,7 +187,6 @@ public class PackageController {
 					if(j.getId() == 0) {
 						// J receives the managed Entity (With ID :))
 						j = jDAO.save(j);
-						System.out.println(j.getId());
 						journeys.add(j);
 					}
 					// Swaping the route for the Journey

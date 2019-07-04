@@ -1,6 +1,5 @@
 package com.PostTracking.Entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -163,6 +162,12 @@ public class Package {
 
 	public void setJourneys(Set<Journey> journeys) {
 		this.journeys = journeys;
+	}
+
+	public boolean validateMe() {
+		return (this.getCustomer() instanceof Customer &&
+			this.getDestination() instanceof DistributionCenter &&
+			this.getOrigin() instanceof DistributionCenter);
 	}
 
 	@Override

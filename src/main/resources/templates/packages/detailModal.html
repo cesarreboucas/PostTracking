@@ -1,0 +1,83 @@
+<div class="modal" tabindex="-1" role="dialog" id="modalPackageEdit">
+	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+		<h5 class="modal-title" id="modalTitle">Package Detail</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		</div>
+		<div class="modal-body">
+		<!-- this form is a PUT form -->
+		<form th:object="${package}" id="PackageForm" action="/packages" method="POST">
+			<input name="_method" type="hidden" value="PUT" />
+			<input name="PackageId" th:field="*{id}" id="txtId" type="hidden" value="0" />
+			<div class="form-group">
+				<label for="selcustomer">Customer</label>
+				<select id="selcustomer" class="form-control" th:field="*{customer}">
+					<option th:each="c : ${customers}"  th:value="${c.id}" th:text="${c.getFullName()}"></option>
+				</select>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="txtDescription">Weigth</label>
+					<input type="number" class="form-control" id="txtWeight" th:field="*{weight}">
+				</div>
+				<div class="form-group col-md-6">
+					<label for="txtVolume">Volume</label>
+					<input type="number" class="form-control" id="txtVolume" th:field="*{volume}">
+				</div>
+			</div>
+			<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="txtCity">City</label>
+						<input type="text" class="form-control" id="txtCity" th:field="*{city}">		
+					</div>
+					<div class="form-group col-md-4">
+						<label for="txtProvince">Province</label>
+						<input type="text" class="form-control" id="txtProvince" th:field="*{province}">		
+					</div>
+					<div class="form-group col-md-4">
+						<label for="txtZipCode">ZipCode</label>
+						<input type="text" class="form-control" id="txtZipCode" th:field="*{zipCode}">		
+					</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="txtRecipient">Recipient</label>
+					<input type="text" class="form-control" id="txtRecipient" th:field="*{recipient}">				
+				</div>
+				<div class="form-group col-md-6">
+					<label for="txtAddress">Address</label>
+					<input type="text" class="form-control" id="txtAddress" th:field="*{address}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="selOrigin">Origin</label>
+				<select id="selOrigin" class="form-control" th:field="*{origin}">
+					<option th:each="dcOrigin : ${distributionCenters}" th:value="${dcOrigin.id}" th:text="${dcOrigin.getName()}"></option> 
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="selDestination">Destination</label>
+				<select id="selDestination" class="form-control" th:field="*{destination}">
+					<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.id}" th:text="${dcDest.getName()}"></option>  
+				</select>
+			</div>
+			<div class="form-group">
+					<label for="selPosition">Position</label>
+					<select id="selPosition" class="form-control" th:field="*{position}">
+						<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.id}" th:text="${dcDest.getName()}"></option>  
+					</select>
+				</div>
+			<button type="submit" class="btn btn-primary">Save changes</button>
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		</form>
+		<br/>
+		<div id="journeysDiv">
+		</div>
+		</div>
+	</div>
+	</div>
+	<script src="script/packageEditModal.js"></script>
+</div>
