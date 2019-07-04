@@ -51,7 +51,8 @@ public class PackageController {
 	 * @return the view of /packages
 	 */
 	@GetMapping("/packages")
-	public String fiterPackages() {
+	public String fiterPackages(Model model) {
+		model.addAttribute("package", new Package());
 		return "packages/packages";
 	}
 
@@ -87,10 +88,24 @@ public class PackageController {
 	 */
 	@PostMapping("/packages")
 	public String createPackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
+		if(!pack.validateMe()) {
+			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
+			return "redirect:/packages";	
+		}
 		pack.setPosition(pack.getOrigin());
 		pack = pDAO.save(pack);
 		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
 		return "redirect:/packages";
+	}
+
+	@GetMapping("/packages/{id}")
+	@ResponseBody
+	public Package getPackage(@PathVariable String id) {
+		try {
+			return pDAO.findById(Integer.parseInt(id)).get();
+		} catch(Exception ex) {
+			return new Package();
+		}
 	}
 	
 	/**
@@ -161,7 +176,7 @@ public class PackageController {
 			// If Path is good, refresh timestamp
 			else {
 				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
-				ArrayList<Journey> routesOfPath = paths.get(x).getPath();
+				ArrayList<Journey> routesOfPath = paths.get(x).getJourneys();
 				System.out.println(paths.get(x));
 	
 				for(int i=0; i < routesOfPath.size() ; ++i) {

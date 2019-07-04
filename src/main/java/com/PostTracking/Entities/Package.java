@@ -164,6 +164,12 @@ public class Package {
 		this.journeys = journeys;
 	}
 
+	public boolean validateMe() {
+		return (this.getCustomer() instanceof Customer &&
+			this.getDestination() instanceof DistributionCenter &&
+			this.getOrigin() instanceof DistributionCenter);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

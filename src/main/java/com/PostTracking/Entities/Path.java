@@ -3,7 +3,7 @@ package com.PostTracking.Entities;
 import java.util.ArrayList;
 
 public class Path {
-	private ArrayList<Journey> path = new ArrayList<>();
+	private ArrayList<Journey> journeys = new ArrayList<>();
 	private int position; // Distribution Center ID
 	private ArrayList<Integer> visited = new ArrayList<Integer>();
 	
@@ -17,7 +17,7 @@ public class Path {
 	}
 	
 	public Path(Path copy) {
-		this.path = (ArrayList<Journey>) copy.getPath().clone();
+		this.journeys = (ArrayList<Journey>) copy.getJourneys().clone();
 		this.position = copy.getPosition();
 		this.visited = (ArrayList<Integer>) copy.getVisited().clone();
 	}
@@ -27,15 +27,15 @@ public class Path {
 	}
 
 	public void addStep(Route r) {
-		this.path.add(r);
+		this.journeys.add(r);
 		this.position = r.getDestination().getId();
 		this.visited.add(this.position);
 		//System.out.println(this.position);
 		
 	}
 	
-	public ArrayList<Journey> getPath() {
-		return path;
+	public ArrayList<Journey> getJourneys() {
+		return journeys;
 	}
 	
 	public ArrayList<Integer> getVisited() {
@@ -49,7 +49,7 @@ public class Path {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for(Journey jy : this.getPath()) {
+		for(Journey jy : this.getJourneys()) {
 			sb.append(jy.getOrigin().getId() + " => "+jy.getDestination().getId()+" | ");
 		}
 		sb.append(" - Vis:"+this.getVisited()+"\n");

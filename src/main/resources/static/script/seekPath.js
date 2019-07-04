@@ -1,7 +1,5 @@
 "use strict";
 
-document.getElementById("selDestination").value = 5;
-
 window.onload = function() {
     document.getElementById("btnSeekPath").addEventListener('click', function() {
     	let origin = document.getElementById("selOrigin").value;
@@ -17,7 +15,8 @@ window.onload = function() {
 				// Walking Paths
 				$('#paths').html("");
 				data.forEach(path => {
-					makeCard(path);				
+					document.getElementById("paths").appendChild(makeCard(path));
+					document.getElementById("paths").appendChild(makeCard(path));				
 				});
 			});
     });
@@ -41,7 +40,7 @@ function makeCard(p) {
 	
 	let journeys = Array();
 
-	p.path.forEach(j => {
+	p.journeys.forEach(j => {
 		// Adding the journey ID
 		journeys.push(j.id);
 		// making the lines of the table
@@ -58,7 +57,6 @@ function makeCard(p) {
 		tr.appendChild(td);
 		table.appendChild(tr);
 	});
-		console.log(journeys);
 
 		tr = document.createElement("tr");
 		th = document.createElement("th");
@@ -81,16 +79,14 @@ function makeCard(p) {
 	mainDiv.className = "card";
 	let headerDiv = document.createElement("div");
 	headerDiv.className = "card-header";
-	headerDiv.textContent = "Rota";
+	headerDiv.textContent = "Journeys";
 	let bodyDiv = document.createElement("div");
 	bodyDiv.className = "card-body";
 	bodyDiv.appendChild(table);
 	mainDiv.appendChild(headerDiv);
 	mainDiv.appendChild(bodyDiv);
 	
-	document.getElementById("paths").appendChild(mainDiv);
-	document.getElementById("paths").appendChild(document.createElement("br"));
-	
+	return mainDiv;
 }
 
 function formatDate(date) {

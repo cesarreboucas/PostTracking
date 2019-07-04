@@ -2,6 +2,7 @@
 
 let form = document.getElementById("PackageFilterForm");
 window.onload = function () {
+    //let  table = $('#packTable').DataTable();
     form.onsubmit = (function (e) {
         e.preventDefault();
         
@@ -9,13 +10,13 @@ window.onload = function () {
             method: "POST",
             dataType: "json",
             data: {
-                "origin_id" : document.getElementById("selOrigin").value,
-                "destination_id" : document.getElementById("selDestination").value,
-                "customer_id" : document.getElementById("selCustomer").value,
+                "origin_id" : document.getElementById("selOriginSearch").value,
+                "destination_id" : document.getElementById("selDestinationSearch").value,
+                "customer_id" : document.getElementById("selCustomerSearch").value,
             },
             url: "/packages/search/"
         }).done(function(packages) {
-            console.log(packages);
+            //console.log(packages);
             let dataset = Array();
             let arrayLine;
             packages.forEach(pack => {
@@ -29,8 +30,25 @@ window.onload = function () {
                 });
                 dataset.push(arrayLine);
             });
+
+            if ( $.fn.dataTable.isDataTable( '#packTable' ) ) {
+                $('#packTable').DataTable().destroy();
+            }
+
             $('#packTable').DataTable({
                 data: dataset,
+                searching: false,
+                "columnDefs": [ {
+                    "targets": 0,
+                    "data": 0,
+                    render : function(data, type, row) {
+                        return '<button data-package="'+data+'" type="button" class="btn-secondary btn-sm btn-block btn-primary" \
+                        data-toggle="modal" data-target="#modalPackageEdit">'+data+'</button>'
+                        /*'<button class="btn btn-sm btn-block" \
+                            onclick="console.log(\''+data+'\')">'+data+'</button>'*/
+
+                    }
+                }],
                 columns: [
                     { title: "#" },
                     { title: "Customer" },
