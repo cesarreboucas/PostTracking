@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Entities.DistributionCenter;
 
@@ -33,6 +36,14 @@ public class DCController {
 	public String ShowAll(Model model) {
 		model.addAttribute("dc", new DistributionCenter());
 		return "dcs/dcs";	
+	}
+
+	@GetMapping("/api/dcs")
+	@ResponseBody
+	public List<DistributionCenter> getDistributionCenters() {
+		List<DistributionCenter> distributionCenters = new ArrayList<DistributionCenter>();
+		dcDAO.findAll().forEach(dc -> distributionCenters.add(dc));
+		return distributionCenters;
 	}
 	
 	/**
