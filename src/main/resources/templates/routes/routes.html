@@ -9,7 +9,7 @@
 
 		<div>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">
-				Adicionar Rota
+				Add route
 			</button>
 		</div>
 		
@@ -42,19 +42,18 @@
 			<div class="modal-dialog mw-100 w-75" role="document">
 				<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="modalTitle">Adicionar rota</h5>
+					<h5 class="modal-title" id="modalTitle">Add route</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<form th:object="${routes}" id="RoutesForm" action="/routes" method="POST">
-						<div id="FormContainer">
+					<div id="FormContainer" style="margin-bottom: 1em">
 
-						</div>
-						<button type="submit" class="btn btn-primary" disabled>Save changes</button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</form>
+					</div>
+					<button type="button" id="CreateRoute" class="btn btn-primary">Save changes</button>
+					<button type="button" id="CreateRow" class="btn btn-primary">Create Row</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
 				</div>
 			</div>
