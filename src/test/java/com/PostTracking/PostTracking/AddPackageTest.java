@@ -26,10 +26,11 @@ private Map<String, Object> vars;
 JavascriptExecutor js;
 @Before
 public void setUp() {
-System.setProperty("webdriver.chrome.driver", "c:/temp/chromedriver.exe");
- driver = new ChromeDriver();
- js = (JavascriptExecutor) driver;
- vars = new HashMap<String, Object>();
+	//System.out.println(System.getProperty("user.dir")+"\\Support\\chromedriver.exe");
+	System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\Support\\chromedriver.exe");
+	driver = new ChromeDriver();
+	js = (JavascriptExecutor) driver;
+	vars = new HashMap<String, Object>();
 }
 @After
 public void tearDown() {
