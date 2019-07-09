@@ -45,35 +45,10 @@ public class RouteController {
 	 */
 	@GetMapping("/routes")
 	public String showAll(Model m) {
-		// TODO Testing model
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		vController.getAll().iterator().forEachRemaining(vehicles::add);
 		List<Route> routes = new ArrayList<Route>();
 		rDAO.findAll().iterator().forEachRemaining(routes::add);
-
-		int pathStart = 0; int pathEnd = 0;
-		List<Route> vehicleRoutes = new ArrayList<>();
-		for(int vIndex = 0; vIndex < vehicles.size(); vIndex++) {
-			Vehicle vehicle = vehicles.get(vIndex);
-			int duration = 0;
-			for(int rIndex = 0; rIndex < routes.size(); rIndex++) {
-				if(routes.get(rIndex).getVehicle().getId() == vehicle.getId()) {
-					vehicleRoutes.add(routes.get(rIndex));
-					duration += routes.get(rIndex).getDuration();
-				}
-			}
-			Route origin = vehicleRoutes.get(0);
-			Route destination = vehicleRoutes.get(vehicleRoutes.size() - 1);
-
-			Timestamp start = origin.getStart();
-			String originName = origin.getOrigin().getName();
-			String destinationName = destination.getOrigin().getName();
-
-			VehiclePath vehiclePath = new VehiclePath(vehicleRoutes, originName, destinationName, start, duration);
-
-			vehicleRoutes = new ArrayList<>();
-			duration = 0;
-		}
 
 		for(int i=0; i < routes.size(); ++i) {
 			int pos =  vehicles.indexOf(routes.get(i).getVehicle());

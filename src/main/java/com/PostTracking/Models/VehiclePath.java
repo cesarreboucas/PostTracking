@@ -9,7 +9,7 @@ import com.PostTracking.Entities.Route;
 
 public class VehiclePath {
     private List<Route> routes;
-    private String vehicleName, origin, arrival;
+    private String origin, arrival;
     private Timestamp start;
     private int duration;
 
@@ -23,10 +23,6 @@ public class VehiclePath {
 
     public List<Route> getRoutes() {
         return this.routes;
-    }
-
-    public String getVehicleName() {
-        return vehicleName;
     }
 
     public String getOrigin() {
