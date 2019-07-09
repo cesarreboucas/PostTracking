@@ -176,7 +176,8 @@ public class PackageController {
 				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
 				ArrayList<Journey> routesOfPath = paths.get(x).getJourneys();
 				System.out.println(paths.get(x));
-	
+				// Backing minimal to now
+				minimal = System.currentTimeMillis();
 				for(int i=0; i < routesOfPath.size() ; ++i) {
 					// Get the Possible Journey
 					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
@@ -190,7 +191,7 @@ public class PackageController {
 					// Swaping the route for the Journey
 					routesOfPath.set(i, j);
 					minimal = routesOfPath.get(i).getArrival().getTime();
-					System.out.println();
+					
 				}
 			}
 		}

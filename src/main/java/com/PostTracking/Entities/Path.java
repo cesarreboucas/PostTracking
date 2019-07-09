@@ -50,7 +50,7 @@ public class Path {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for(Journey jy : this.getJourneys()) {
-			sb.append(jy.getOrigin().getId() + " => "+jy.getDestination().getId()+" | ");
+			sb.append(jy.getOrigin().getId() + " => "+jy.getDestination().getId()+" ("+jy.getVehicle().getId()+") | ");
 		}
 		sb.append(" - Vis:"+this.getVisited()+"\n");
 		return sb.toString();
