@@ -39,14 +39,6 @@ public class DCController {
 		model.addAttribute("dc", new DistributionCenter());
 		return "dcs/dcs";	
 	}
-
-	@GetMapping("/api/dcs")
-	@ResponseBody
-	public List<DistributionCenter> getDistributionCenters() {
-		List<DistributionCenter> distributionCenters = new ArrayList<DistributionCenter>();
-		dcDAO.findAll().forEach(dc -> distributionCenters.add(dc));
-		return distributionCenters;
-	}
 	
 	/**
 	 * Return a customer object from an ID

@@ -203,6 +203,12 @@ public class Journey {
 		Journey j = (Journey) obj;
 		return this.id == j.getId();
 	}
+
+	@Override
+	public String toString() {
+		return String.format("VehicleId: %d\nOriginId: %d\nDestinationId: %d\nStart: %d\nDuration: %d", 
+		vehicle.getId(), origin.getId(), destination.getId(), getStart().getTime(), getDuration());
+	}
 	
 	
 }

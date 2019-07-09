@@ -206,11 +206,11 @@ $('#CreateRoute').click(function() {
     let routes = [];
     const trs = $('#RouteTable').children();
     if(selectedVehicle == null) {
-        alert('Routes need a vehicle');
+        setErrorMessage('Routes need a vehicle');
         return;
     }
     if(trs.length <= 2) {
-        alert('You need at least two nodes to create a route');
+        setErrorMessage('You need at least two nodes to create a route');
         return;
     }
 
@@ -226,13 +226,12 @@ $('#CreateRoute').click(function() {
         const destinationValue = $(selectDestination).find(':selected').val();
 
         if(originValue === destinationValue) {
-            alert(`Error for route ${i}: Origin and destination location shouldn't be the same`);
+            setErrorMessage(`Error for route ${i}: Origin and destination location shouldn't be the same`);
             return;
         }
         if(routes.length > 0) {
-            console.log('[ROUTES]', routes);
             if(originValue !== routes[i - 2].destination) {
-                alert(`Error for route ${i}: Origin for route ${i} should be equal the origin of route ${i-1}`);
+                setErrorMessage(`Error for route ${i}: Origin for route ${i} should be equal the arrival of route ${i-1}`);
                 return;
             }
         }
@@ -242,7 +241,7 @@ $('#CreateRoute').click(function() {
         const originDate = $(dateOrigin).val();
         let originTimeStamp;
         if(!originDate) {
-            alert(`Error for route ${i}: Date of origin should be set`);
+            setErrorMessage(`Error for route ${i}: Date of origin should be set`);
             return;
         } else {
             originTimeStamp = Date.parse(originDate)/1000;
@@ -254,18 +253,18 @@ $('#CreateRoute').click(function() {
         destinationDate = $(dateDestination).val();
         let destinationTimeStamp;
         if(!destinationDate) {
-            alert(`Error for route ${i}: Date of destination should be set`);
+            setErrorMessage(`Error for route ${i}: Date of destination should be set`);
             return;
         } else {
             destinationTimeStamp = Date.parse(destinationDate)/1000;
         }
 
         if(destinationTimeStamp <= originTimeStamp) {
-            alert(`Error for route ${i}: Date of arrival should be bigger than origin`);
+            setErrorMessage(`Error for route ${i}: Date of arrival should be bigger than origin`);
         }
         if(routes.length > 0) {
             if(originTimeStamp <= routes[i-2].destinationDate) {
-                alert(`Error for route ${i}: Date of origin for route ${i} should be bigger than arrival for route ${i-1}`);
+                setErrorMessage(`Error for route ${i}: Date of origin for route ${i} should be bigger than arrival for route ${i-1}`);
             }
         }
 
@@ -277,6 +276,67 @@ $('#CreateRoute').click(function() {
             destinationDate: destinationTimeStamp
         });
     }
+    if(routes[0].origin !== routes[routes.length-1].destination) {
+        setErrorMessage(`Route ${routes.length} destination should be the same as route 1 origin`);
+    }
 
-    console.log('[ROUTES]', routes);
+    const routeModel = routes.map(route => {
+        return {
+            vehicle: {
+                Id: route.vehicleId
+            },
+            origin: {
+                id: route.origin
+            },
+            destination: {
+                id: route.destination
+            },
+            start: route.originDate,
+            duration: route.destinationDate - route.originDate,
+            available: true,
+            restart: 0
+        };
+    });
+
+    console.log('[ROUTES]', routeModel);
+
+    $.ajax({
+        type: "post",
+        contentType: "application/json; charset=utf-8",
+        url: "/api/routes",
+        traditional: true,
+        data: JSON.stringify(routeModel)
+    })
+    .done(function(data) {
+        setErrorMessage(data, 'success');
+    })
+    .fail(function( jqXHR, textStatus, errorThrown ) {
+        setErrorMessage(jqXHR.responseText, 'danger');
+    });
 });
+
+function setErrorMessage(errorMessage, level = 'warn') {
+    let errorMessageDiv = document.getElementById('ErrorMessage');
+    if(errorMessage === '') {
+        errorMessageDiv.hidden = true;
+        return;
+    } else {
+        if(errorMessageDiv.hidden) {
+            errorMessageDiv.hidden = false;
+        }
+    }
+    switch(level) {
+        case 'warn':
+            errorMessageDiv.setAttribute('class', 'alert alert-warning');
+            errorMessageDiv.innerHTML = errorMessage;
+            break;
+        case 'danger':
+            errorMessageDiv.setAttribute('class', 'alert alert-danger');
+            errorMessageDiv.innerHTML = errorMessage;
+            break;
+        case 'success':
+            errorMessageDiv.setAttribute('class', 'alert alert-danger');
+            errorMessageDiv.innerHTML = errorMessage;
+            break;
+    }
+}

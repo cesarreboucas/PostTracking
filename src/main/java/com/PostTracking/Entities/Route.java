@@ -34,6 +34,5 @@ public class Route extends Journey {
             Timestamp start, int duration,
             int restart, boolean available) {
 		super(vehicle, origin, destination, start, duration, restart, available);
-	}
-
+    }
 }
