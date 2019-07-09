@@ -16,7 +16,7 @@ window.onload = function() {
 				$('#paths').html("");
 				data.forEach(path => {
 					document.getElementById("paths").appendChild(makeCard(path));
-					document.getElementById("paths").appendChild(makeCard(path));				
+					document.getElementById("paths").appendChild(document.createElement("br"));				
 				});
 			});
     });
@@ -33,7 +33,7 @@ function makeCard(p) {
 	th = document.createElement("th");
 	th.textContent = "Destination";
 	tr.appendChild(th);
-		th = document.createElement("th");
+	th = document.createElement("th");
 	th.textContent = "Date";
 	tr.appendChild(th);
 	table.appendChild(tr);
