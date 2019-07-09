@@ -175,7 +175,7 @@ function createRow() {
 function onAddTableRow(event) {
     const element = event.srcElement;
     const tr = $(element).closest('tr');
-    createRow(tr);
+    createRow();
 }
 
 function onRemoveRableRow(event) {
@@ -244,7 +244,7 @@ $('#CreateRoute').click(function() {
             setErrorMessage(`Error for route ${i}: Date of origin should be set`);
             return;
         } else {
-            originTimeStamp = Date.parse(originDate)/1000;
+            originTimeStamp = Date.parse(originDate);
         }
         
 
@@ -256,7 +256,7 @@ $('#CreateRoute').click(function() {
             setErrorMessage(`Error for route ${i}: Date of destination should be set`);
             return;
         } else {
-            destinationTimeStamp = Date.parse(destinationDate)/1000;
+            destinationTimeStamp = Date.parse(destinationDate);
         }
 
         if(destinationTimeStamp <= originTimeStamp) {
@@ -283,7 +283,7 @@ $('#CreateRoute').click(function() {
     const routeModel = routes.map(route => {
         return {
             vehicle: {
-                Id: route.vehicleId
+                id: route.vehicleId
             },
             origin: {
                 id: route.origin
@@ -320,11 +320,10 @@ function setErrorMessage(errorMessage, level = 'warn') {
     if(errorMessage === '') {
         errorMessageDiv.hidden = true;
         return;
-    } else {
-        if(errorMessageDiv.hidden) {
-            errorMessageDiv.hidden = false;
-        }
+    } else if(errorMessageDiv.hidden){
+        errorMessageDiv.hidden = false;
     }
+
     switch(level) {
         case 'warn':
             errorMessageDiv.setAttribute('class', 'alert alert-warning');
@@ -335,7 +334,7 @@ function setErrorMessage(errorMessage, level = 'warn') {
             errorMessageDiv.innerHTML = errorMessage;
             break;
         case 'success':
-            errorMessageDiv.setAttribute('class', 'alert alert-danger');
+            errorMessageDiv.setAttribute('class', 'alert alert-success');
             errorMessageDiv.innerHTML = errorMessage;
             break;
     }
