@@ -54,6 +54,16 @@
             <optional>true</optional>
         </dependency>
          -->
+         
+         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+         
+         <!-- SELENIUM -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-java</artifactId>
+		</dependency>
+         
+         
  		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		
 		

@@ -1,5 +1,7 @@
 package com.PostTracking.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -95,6 +97,13 @@ public class DCController {
 		dcs_db.setActive(false);
 		dcDAO.save(dcs_db);
 		return "redirect:/dcs";
+	}
+	
+	
+	@GetMapping("/api/dcs")
+	@ResponseBody
+	public List<DistributionCenter> getAllDistributionCenters() {
+		return (List<DistributionCenter>) getAll();
 	}
 	
 	/**
