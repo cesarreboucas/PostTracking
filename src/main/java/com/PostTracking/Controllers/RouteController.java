@@ -35,6 +35,11 @@ public class RouteController {
 	@Autowired
 	VehicleController vController;
 	
+	/**
+	 * Get all routes from the database.
+	 * @param m The model that will be sent to the view.
+	 * @return The view representing routes
+	 */
 	@GetMapping("/routes")
 	public String showAll(Model m) {
 		
@@ -51,6 +56,12 @@ public class RouteController {
 		return "routes/routes";
 	}
 
+	/**
+	 * Receive a json object of a list of routes. <br>
+	 * This method was made for the api, since it just return respose string and not views.
+	 * @param routes List of routes.
+	 * @return The http status with a response message.
+	 */
 	@PostMapping("/api/routes")
 	public ResponseEntity<?> createRoute(@RequestBody List<Route> routes) {
 		try {
@@ -110,13 +121,16 @@ public class RouteController {
 				routes.get(i).setRestart(routes.size() * 21600);
 			 }
 			 
-			 //rDAO.saveAll(routes);
+			 rDAO.saveAll(routes);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage() ,HttpStatus.INTERNAL_SERVER_ERROR);	
 		}
 		return new ResponseEntity<String>("Routes created successfully", HttpStatus.OK);
 	}
 
+	/**
+	 * @return A model exposed to a web view.
+	 */
 	@ModelAttribute("routes")
 	public Iterable<Route> getAll() {
 		return rDAO.findAll();
