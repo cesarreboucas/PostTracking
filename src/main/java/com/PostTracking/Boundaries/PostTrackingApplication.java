@@ -13,7 +13,6 @@ public class PostTrackingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PostTrackingApplication.class, args);
-		
 	}
 
 }
