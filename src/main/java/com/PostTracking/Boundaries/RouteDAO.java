@@ -8,5 +8,4 @@ import com.PostTracking.Entities.Route;
 
 @Component
 public interface RouteDAO extends CrudRepository<Route, Integer> {
-
 }
