@@ -41,6 +41,10 @@ public class VehicleController {
 		
 	}
 	
+	/**
+	 * Returns a JSON object of Vehicles to the API
+	 * @return JSON vehicles
+	 */
 	@GetMapping("/api/vehicles")
 	@ResponseBody
 	public List<Vehicle> getAllVehicles() {
@@ -56,7 +60,7 @@ public class VehicleController {
 	 */
 	@GetMapping("/vehicles/{id}")
 	@ResponseBody
-	public Vehicle seekPath(@PathVariable String id) {
+	public Vehicle getVehicle(@PathVariable String id) {
 		try {
 			return vdao.findById(Integer.parseInt(id)).get();
 		} catch(Exception ex) {

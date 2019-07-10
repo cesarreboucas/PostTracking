@@ -48,6 +48,7 @@ public class PackageController {
 	
 	/**
 	 * Maps the /packages (Filters to Packages)
+	 * @param model the model to be sent to the view
 	 * @return the view of /packages
 	 */
 	@GetMapping("/packages")
@@ -56,7 +57,13 @@ public class PackageController {
 		return "packages/packages";
 	}
 
-	
+	/**
+	 * Maps the /packages/search and Returns a JSON of packages based on a search query
+	 * @param origin_id the id of the Distribution Center (Origin) 
+	 * @param destination_id the id of the Distribution Center (Destination)
+	 * @param customer_id the id of the Customer
+	 * @return JSON of packages
+	 */
 	@PostMapping("/packages/search")
 	@ResponseBody
 	public Iterable<com.PostTracking.Entities.Package> showPackages(@RequestParam String origin_id,@RequestParam String destination_id,@RequestParam String customer_id) {
@@ -84,7 +91,8 @@ public class PackageController {
 	/**
 	 * Handles the creation of new Package.
 	 * @param pack the Entity to be saved
-	 * @return JSON Entity?
+	 * @param redirAttrs holds the message to the user
+	 * @return Redirects to the view of list packages
 	 */
 	@PostMapping("/packages")
 	public String createPackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
@@ -97,7 +105,12 @@ public class PackageController {
 		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
 		return "redirect:/packages";
 	}
-
+	
+	/**
+	 * Maps /packages/{id} 
+	 * @param id the Id of the Package
+	 * @return the Packae Object
+	 */
 	@GetMapping("/packages/{id}")
 	@ResponseBody
 	public Package getPackage(@PathVariable String id) {

@@ -19,6 +19,11 @@ import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
 
+/**
+ * Populates the Database with basic entities
+ * @author 300296145
+ *
+ */
 @Controller
 public class Starterkit {
 	

@@ -74,7 +74,7 @@ public void addPackage() {
  
  driver.findElement(By.id("btnSeekPath")).click();
  try {
-		Thread.sleep(2000);
+		Thread.sleep(10000);
 	} catch (InterruptedException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

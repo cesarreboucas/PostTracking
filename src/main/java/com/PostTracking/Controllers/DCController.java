@@ -32,6 +32,7 @@ public class DCController {
 	
 	/**
 	 * Map /dcs (List of all Distribution Centers)
+	 * @param model the model to be sent to the view
 	 * @return the View for all Distribution Centers
 	 */
 	@GetMapping("/dcs")
@@ -56,7 +57,7 @@ public class DCController {
 	}
 	
 	/**
-	 * Create a new customer.
+	 * Create a new Distribution Center.
 	 * @param distCenter The new distribution center
 	 * @return The view of Distribution Center
 	 */
@@ -102,7 +103,10 @@ public class DCController {
 		return "redirect:/dcs";
 	}
 	
-	
+	/**
+	 * Maps /api/dcs
+	 * @return Json with Distribution Centers objects
+	 */
 	@GetMapping("/api/dcs")
 	@ResponseBody
 	public List<DistributionCenter> getAllDistributionCenters() {

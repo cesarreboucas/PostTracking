@@ -39,14 +39,6 @@ public class Package {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_customer")
 	private Customer customer;
-
-	/*
-	@ManyToMany
-	@JoinTable(name="usuario_roles"
-		,joinColumns=@JoinColumn(name="usuario_id")
-		,inverseJoinColumns=@JoinColumn(name="role_id")
-	)
-	private Set<Rol> roles;*/
 	
 	@ManyToMany
 	@JoinTable(name = "package_journey", 
