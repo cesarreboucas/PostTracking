@@ -134,7 +134,6 @@ public class PackageController {
 		ArrayList<Path> paths = new ArrayList<Path>();
 		List<Route> routes = new ArrayList<Route>();
 		rDAO.findAll().iterator().forEachRemaining(routes::add);
-		System.out.println(routes.get(0));
 		int origin_id = 0;
 		int destination_id = 0;
 		try {
@@ -178,7 +177,6 @@ public class PackageController {
 		// Get the list of journeys ahead
 		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
 		System.out.println("Journey size : "+journeys.size());
-		//System.out.println("ID na lista (1): "+journeys.get(1).getVehicle().getId());
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
@@ -191,7 +189,8 @@ public class PackageController {
 				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
 				ArrayList<Journey> routesOfPath = paths.get(x).getJourneys();
 				System.out.println(paths.get(x));
-	
+				// Backing minimal to now
+				minimal = System.currentTimeMillis();
 				for(int i=0; i < routesOfPath.size() ; ++i) {
 					// Get the Possible Journey
 					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
@@ -205,7 +204,7 @@ public class PackageController {
 					// Swaping the route for the Journey
 					routesOfPath.set(i, j);
 					minimal = routesOfPath.get(i).getArrival().getTime();
-					System.out.println();
+					
 				}
 			}
 		}
