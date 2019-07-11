@@ -105,6 +105,18 @@ public class PackageController {
 		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
 		return "redirect:/packages";
 	}
+
+	@GetMapping("/packages/updateposition/{position}/{id}")
+	@ResponseBody
+	public int updatePosition(@PathVariable String position,@PathVariable String id) {
+		try {
+			Package p = pDAO.findById(Integer.parseInt(id)).get();
+			p.setPosition(dcDAO.findById(Integer.parseInt(position)).get());
+			pDAO.save(p);
+			return 1;
+		} catch(Exception e) {	}
+		return 0;
+	}
 	
 	/**
 	 * Maps /packages/{id} 

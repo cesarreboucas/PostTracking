@@ -37,14 +37,23 @@ function makeTable(p) {
 	th = document.createElement("th");
 	th.textContent = "Destination";
 	tr.appendChild(th);
-		th = document.createElement("th");
+	th = document.createElement("th");
 	th.textContent = "Date";
+	tr.appendChild(th);
+	th = document.createElement("th");
+	th.textContent = "Vehicle";
 	tr.appendChild(th);
 	table.appendChild(tr);
 	
 	let journeys = Array();
 
+	//Sorting the Journeys
+	p.journeys.sort(function(a,b) {
+		return a.start.localeCompare(b.start);
+	});
+
 	p.journeys.forEach(j => {
+		console.log(p);
 		// Adding the journey ID
 		journeys.push(j.id);
 		// making the lines of the table
@@ -52,6 +61,10 @@ function makeTable(p) {
 		tr = document.createElement("tr");
 		let td = document.createElement("td");
 		td.textContent = j.origin.name;
+		if(p.position.id==j.origin.id) {
+			td.style.fontWeight = "bold";
+			td.style.backgroundColor = "#ADD8E6";
+		}
 		tr.appendChild(td);
 		td = document.createElement("td");
 		td.textContent = j.destination.name;
@@ -59,8 +72,19 @@ function makeTable(p) {
 		td = document.createElement("td");
 		td.textContent = formatDate(date)
 		tr.appendChild(td);
+		td = document.createElement("td");
+		td.textContent = j.vehicle.description;
+		tr.appendChild(td);
 		table.appendChild(tr);
 	});
 	
 	return table;
+}
+
+function formatDate(date) {
+	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	return date.getDate()+"-"+months[date.getMonth()]+"-"+date.getFullYear()+" "+
+			date.getHours().toString().padStart(2,"0")+":"
+			+date.getMinutes().toString().padStart(2,"0")+" ("+days[date.getDay()]+")";
 }
