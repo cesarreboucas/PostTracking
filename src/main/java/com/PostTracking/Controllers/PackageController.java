@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -106,6 +107,32 @@ public class PackageController {
 		return "redirect:/packages";
 	}
 
+	/**
+	 * 
+	 * @param pack 
+	 * @param redirAttrs
+	 * @return
+	 */
+	@PutMapping("/packages")
+	public String updatePackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
+		if(!pack.validateMe()) {
+			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
+			return "redirect:/packages";	
+		}
+		
+		//Solving the "CLEANER Journeys"
+		pack.setJourneys(pDAO.findById(pack.getId()).get().getJourneys());
+		pack = pDAO.save(pack);
+		redirAttrs.addFlashAttribute("message", "The Package has been Updated!");
+		return "redirect:/packages";
+	}
+
+	/**
+	 * Changes the position od a package
+	 * @param position the distribution center id
+	 * @param id the package
+	 * @return 1 for good, 0 when error
+	 */
 	@GetMapping("/packages/updateposition/{position}/{id}")
 	@ResponseBody
 	public int updatePosition(@PathVariable String position,@PathVariable String id) {
