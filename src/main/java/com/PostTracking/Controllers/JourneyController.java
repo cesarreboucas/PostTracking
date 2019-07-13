@@ -1,5 +1,7 @@
 package com.PostTracking.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,50 +16,65 @@ import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Package;
+import com.PostTracking.Helper.JourneyStats;
+
 /**
  * Controller for Journey entity
+ * 
  * @author 300296145
  *
  */
 @Controller
 public class JourneyController {
-	
+
 	@Autowired
 	JourneyDAO jDAO;
 	@Autowired
 	CustomerDAO cDAO;
 	@Autowired
 	DistributionCenterDAO dcDAO;
+
 	/**
 	 * Maps /journeys/{id}
-	 * @param id the Id of the Package
+	 * 
+	 * @param id    the Id of the Package
 	 * @param model the Model to be sent to the view
 	 * @return the view for a specific journey
 	 */
 	@GetMapping("/journeys/{id}")
-	public String showPackages(@PathVariable String id,Model model) {
-		model.addAttribute("journey",jDAO.findById(Integer.parseInt(id)).get());
+	public String showPackages(@PathVariable String id, Model model) {
+		model.addAttribute("journey", jDAO.findById(Long.parseLong(id)).get());
 		model.addAttribute("package", new Package());
 		return "journeys/journeysDetail";
 	}
 
 	@GetMapping("/journeys")
 	public String showJourneys() {
+		
+		//Delete
+		System.out.println("**********START GETTING STATS");
+		List<JourneyStats> jss = jDAO.getWithCapacity();
+		for(JourneyStats js : jss) {
+			System.out.println(js.j.getId() + " - " + js);
+		}
+		System.out.println("********END  GETTING STATS");
+		
 		return "journeys/journeys";
 	}
 
 	@ModelAttribute("journeys")
-	public Iterable<Journey> getAll() {	
+	public Iterable<Journey> getAll() {
 		return jDAO.findAll();
 	}
 
 	@ModelAttribute("filledJourneys")
-	public Iterable<Journey> getAllFilled() {	
+	public Iterable<Journey> getAllFilled() {
 		return jDAO.findFilled();
 	}
 
 	/**
 	 * Makes the Distribution Centers list available to the view Add package
+	 * 
 	 * @return list of distribution centers
 	 */
 	@ModelAttribute("distributionCenters")
@@ -67,6 +84,7 @@ public class JourneyController {
 
 	/**
 	 * Makes the Customer list available to the view Add package
+	 * 
 	 * @return list of Customers
 	 */
 	@ModelAttribute("customers")

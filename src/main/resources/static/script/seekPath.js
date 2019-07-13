@@ -36,6 +36,9 @@ function makeCard(p) {
 	th = document.createElement("th");
 	th.textContent = "Date";
 	tr.appendChild(th);
+	th = document.createElement("th");
+	th.textContent = "Vehicle";
+	tr.appendChild(th);
 	table.appendChild(tr);
 	
 	let journeys = Array();
@@ -54,6 +57,9 @@ function makeCard(p) {
 		tr.appendChild(td);
 		td = document.createElement("td");
 		td.textContent = formatDate(date)
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.textContent = j.vehicle.description;
 		tr.appendChild(td);
 		table.appendChild(tr);
 	});

@@ -160,24 +160,29 @@ public class PackageController {
 		}
 	}
 	
+	//TODO update description
 	/**
 	 * Seeks the path between two distribution centers to route a package
 	 * @param origin The origin DC 
 	 * @param destination the destination DC 
 	 * @return The JSON with possible Paths to reach the destination
 	 */
-	@GetMapping("/packages/seekpath/{origin}/{destination}")
+	@GetMapping("/packages/seekpath/{origin}/{destination}/{weight}/{volume}")
 	@ResponseBody
-	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination) {
-		//test from 1 to 3
+	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination,
+			@PathVariable String weight_s,@PathVariable String volume_s) {
 		ArrayList<Path> paths = new ArrayList<Path>();
 		List<Route> routes = new ArrayList<Route>();
 		rDAO.findAll().iterator().forEachRemaining(routes::add);
 		int origin_id = 0;
 		int destination_id = 0;
+		double weight = 0.0;
+		double volume = 0.0;
 		try {
 			origin_id = Integer.parseInt(origin);
 			destination_id = Integer.parseInt(destination);
+			weight = Double.parseDouble(weight_s);
+			volume = Double.parseDouble(volume_s);
 		} catch(Exception ex) {
 			System.out.println("Unable to parse Origin or Destination on PackageController@seekPath");
 			return null;
@@ -200,13 +205,13 @@ public class PackageController {
 					Path p = new Path(paths.get(x));
 					p.addStep(new Route(routes.get(i)));
 					paths.add(p);
-					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
-					System.out.println("Paths Size: "+paths.size()+" x:"+x);
+					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition()+
+							" Path progress: "+x+"/"+paths.size());
 					// Logging paths -- Remove later
-					System.out.println("-> Paths");
-					for(Path pz : paths) {
+					//System.out.println("-> Paths");
+					/*for(Path pz : paths) {
 						System.out.println(pz);
-					}
+					}*/
 				} 
 			}
 		}
@@ -215,7 +220,6 @@ public class PackageController {
 		long minimal = System.currentTimeMillis();
 		// Get the list of journeys ahead
 		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
-		System.out.println("Journey size : "+journeys.size());
 		//Removing incomplete paths
 		for(int x=0; x < paths.size(); ++x) {
 			// If current position != destination, drop
