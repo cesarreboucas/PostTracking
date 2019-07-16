@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -51,11 +52,17 @@ public class Journey {
 	protected int duration;
 	protected boolean available;
 	protected long restart;
+	
+	@Transient
+	private Double availableVolume;
+	@Transient
+	private Double availableWeight;
 
 	public Journey() {
 	}
 
 	public Journey(Journey j) {
+		this.id = j.id;
 		this.vehicle = j.vehicle;
 		this.origin = j.origin;
 		this.destination = j.destination;
@@ -74,6 +81,35 @@ public class Journey {
 		this.duration = duration;
 		this.restart = restart;
 		this.available = available;
+	}
+	
+	/**
+	 * This constructor is specific to the SeekPath, when testing availability of journeys
+	 * P.S.: The Capacitys of Vehicles are passed to avoid multiple calls when retrieving journeys 
+	 * @param comVolume The commited Volume
+	 * @param comWeight the commited Weight
+	 * @param totalVolume The capacity of Vehicle
+	 * @param totalWeight The capacity of Vehicle
+	 */
+	public Journey(Journey j, double comVolume, double comWeight, int totalVolume, int totalWeight) {
+		this(j);
+		this.availableVolume = (totalVolume - comVolume);
+		this.availableWeight = (totalWeight - comWeight);
+		
+	}
+	
+	public double getAvailableVolume() {
+		if(availableVolume==null) {
+			return getVehicle().getMaxVolume();
+		}
+		return availableVolume.doubleValue();
+	}
+
+	public double getAvailabledWeight() {
+		if(availableWeight==null) {
+			return this.getVehicle().getMaxWeight();
+		}
+		return availableWeight.doubleValue();
 	}
 
 	public Vehicle getVehicle() {
@@ -150,26 +186,24 @@ public class Journey {
 
 	public Journey checkExistingJourney(List<Journey> journeys) {
 		for (Journey j : journeys) {
-			if (this.start.equals(j.start) && this.vehicle.equals(j.vehicle) && this.origin.equals(j.origin)) {
+			if (getStart().equals(j.getStart()) && getVehicle().equals(j.getVehicle()) && getOrigin().equals(j.getOrigin())) {
 				return j;
 			}
 		}
 		return new Journey(this);
 	}
 
-	public Timestamp getNextPossible(long from) {
+	public Journey getNextPossible(long from) {
 		// Number of times the route was executed till now.
 		int x = (int) Math.ceil((from - this.start.getTime()) / (float) this.restart);
-		Timestamp ts = new Timestamp((x * (long) this.restart) + this.start.getTime());
-		// System.out.println("Now: "+from);
-		// System.out.println("Start: "+this.start);
-		// System.out.println("Restart (hours):
-		// "+((double)this.restart/1000.0/60.0/60.0));
-		// System.out.println("x: "+x+" x*res:"+(x*this.restart));
-		// System.out.println("Restart to next:"+x);
-		// System.out.println("Next: "+ts);
-		// System.out.println();
-		return ts;
+		Timestamp ts = new Timestamp((x * this.restart) + this.start.getTime());
+		return new Journey(this.vehicle, this.origin, this.destination, ts, this.duration, this.restart, this.available);
+		
+		
+	}
+	
+	public boolean checkCapacity(double volume, double weight) {
+		return (getAvailabledWeight() >= weight && getAvailableVolume() >=volume);
 	}
 
 	@Override

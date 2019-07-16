@@ -1,5 +1,6 @@
 package com.PostTracking.Controllers;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
@@ -16,7 +18,7 @@ import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Package;
-import com.PostTracking.Helper.JourneyStats;
+
 
 /**
  * Controller for Journey entity
@@ -47,17 +49,18 @@ public class JourneyController {
 		model.addAttribute("package", new Package());
 		return "journeys/journeysDetail";
 	}
-
+	
 	@GetMapping("/journeys")
 	public String showJourneys() {
 		
 		//Delete
+		/*
 		System.out.println("**********START GETTING STATS");
-		List<JourneyStats> jss = jDAO.getWithCapacity();
-		for(JourneyStats js : jss) {
-			System.out.println(js.j.getId() + " - " + js);
+		List<Journey> jss = jDAO.getWithCapacity(new java.sql.Timestamp(System.currentTimeMillis()));
+		for(Journey j : jss) {
+			System.out.println(j.getId() + " - Volume: " + j.getAvailabledWeight());
 		}
-		System.out.println("********END  GETTING STATS");
+		System.out.println("********END  GETTING STATS");*/
 		
 		return "journeys/journeys";
 	}

@@ -21,9 +21,11 @@ import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.JourneyDAO;
 import com.PostTracking.Boundaries.PackageDAO;
 import com.PostTracking.Boundaries.RouteDAO;
+import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Route;
+import com.PostTracking.Entities.Vehicle;
 import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Path;
 import com.PostTracking.Entities.Journey;
@@ -46,6 +48,8 @@ public class PackageController {
 	PackageDAO pDAO;
 	@Autowired
 	CustomerDAO cDAO;
+	@Autowired
+	VehicleDAO vDAO;
 	
 	/**
 	 * Maps the /packages (Filters to Packages)
@@ -160,6 +164,13 @@ public class PackageController {
 		}
 	}
 	
+	@GetMapping("/packages/test")
+	@ResponseBody
+	public List<Journey> getJourneysBody() {
+		return jDAO.getWithCapacity(new Timestamp (System.currentTimeMillis()));
+	}
+	
+	
 	//TODO update description
 	/**
 	 * Seeks the path between two distribution centers to route a package
@@ -167,7 +178,7 @@ public class PackageController {
 	 * @param destination the destination DC 
 	 * @return The JSON with possible Paths to reach the destination
 	 */
-	@GetMapping("/packages/seekpath/{origin}/{destination}/{weight}/{volume}")
+	@GetMapping("/packages/seekpath/{origin}/{destination}/{weight_s}/{volume_s}")
 	@ResponseBody
 	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination,
 			@PathVariable String weight_s,@PathVariable String volume_s) {
@@ -207,48 +218,70 @@ public class PackageController {
 					paths.add(p);
 					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition()+
 							" Path progress: "+x+"/"+paths.size());
-					// Logging paths -- Remove later
-					//System.out.println("-> Paths");
-					/*for(Path pz : paths) {
-						System.out.println(pz);
-					}*/
 				} 
 			}
 		}
 
 		//Setting the minimal time for journeys
-		long minimal = System.currentTimeMillis();
+		final long now = System.currentTimeMillis();
+		long minimal = now;
 		// Get the list of journeys ahead
-		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
-		//Removing incomplete paths
-		for(int x=0; x < paths.size(); ++x) {
-			// If current position != destination, drop
-			if(paths.get(x).getPosition() != destination_id) {
-				paths.remove(x);
-				--x; //Backing X after index changed
-			}
-			// If Path is good, refresh timestamp
-			else {
+		//List<Journey> journeys = jDAO.fetchFrom(new Timestamp (now));
+		List<Journey> journeys = jDAO.getWithCapacity(new Timestamp (now));
+		
+		//Walk through Journeys
+		for(int x=0; x < paths.size(); ++x) {	
+			// This boolean tests the feasibility of the path
+			boolean pathFeasibility = true;
+			// If path is good (Reaches the destination)
+			if(paths.get(x).getPosition() == destination_id) {
 				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
+				// At this moment, this is actually a List of Routes (Child of Journey)
 				ArrayList<Journey> routesOfPath = paths.get(x).getJourneys();
 				System.out.println(paths.get(x));
 				// Backing minimal to now
-				minimal = System.currentTimeMillis();
+				minimal = now;
 				for(int i=0; i < routesOfPath.size() ; ++i) {
-					// Get the Possible Journey
-					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
-					// Check if there is already a journey created
-					Journey j = routesOfPath.get(i).checkExistingJourney(journeys);
-					if(j.getId() == 0) {
-						// J receives the managed Entity (With ID :))
-						j = jDAO.save(j);
-						journeys.add(j);
+					Journey j = routesOfPath.get(i);
+					
+					//Testing the overall Capacity of the Vehicle
+					if(j.getVehicle().getMaxVolume() < volume && j.getVehicle().getMaxWeight() < weight) {
+						pathFeasibility = false;
+						break;
 					}
-					// Swaping the route for the Journey
-					routesOfPath.set(i, j);
-					minimal = routesOfPath.get(i).getArrival().getTime();
+					
+					// This Do-While keeps checking about the capacity (Volume/Weight)
+					do {
+						// Get a new the Possible Journey
+						j = j.getNextPossible(minimal);
+						// Check if there is already a journey created (Persistent)
+						j = j.checkExistingJourney(journeys);
+					
+						if(j.getId() == 0) {
+							// J receives the managed Entity (With ID :))
+							j = jDAO.save(j);
+							journeys.add(j);
+							// Get out of while once the Overall capacity has already been tested and this is 1st Package
+							break;
+						}
+						// Swaping the route for the Journey
+						routesOfPath.set(i, j);
+						minimal = j.getArrival().getTime();
+						
+					} while(j.checkCapacity(volume, weight)==false);
+
+					
 					
 				}
+			// If current position != destination, drop
+			} else {
+				pathFeasibility = false;
+			}
+			
+			//Removing path when there is no feasibility
+			if(pathFeasibility==false ) {
+				paths.remove(x);
+				--x; //Backing X after index changed
 			}
 		}
 		
@@ -280,5 +313,23 @@ public class PackageController {
 	@ModelAttribute("customers")
 	public Iterable<Customer> getCustomers() {
 		return cDAO.findAll();
+	}
+	
+	/**
+	 * This ModeAttribute is necessary because without it, seekpach calls 1 select to each journeys on GetWithCapacity
+	 * @return Iterable of Journeys
+	 */
+	@ModelAttribute("journeys")
+	public Iterable<Journey> getJourneys() {
+		return jDAO.findAll();
+	}
+	
+	/**
+	 * This ModeAttribute is necessary because without it, seekpach calls 1 select to each vehicle
+	 * @return The list of all vehicles available on the database.
+	 */
+	@ModelAttribute("vehicles")
+	public Iterable<Vehicle> getVehicles() {
+		return vDAO.findAll();
 	}
 }
