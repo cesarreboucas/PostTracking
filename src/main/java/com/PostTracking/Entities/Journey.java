@@ -85,9 +85,9 @@ public class Journey {
 	
 	/**
 	 * This constructor is specific to the SeekPath, when testing availability of journeys
-	 * P.S.: The Capacitys of Vehicles are passed to avoid multiple calls when retrieving journeys 
-	 * @param comVolume The commited Volume
-	 * @param comWeight the commited Weight
+	 * P.S.: The Capacities of Vehicles are passed to avoid multiple calls when retrieving journeys 
+	 * @param comVolume The committed Volume
+	 * @param comWeight the committed Weight
 	 * @param totalVolume The capacity of Vehicle
 	 * @param totalWeight The capacity of Vehicle
 	 */

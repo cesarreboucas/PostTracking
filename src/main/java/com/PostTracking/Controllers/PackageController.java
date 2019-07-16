@@ -110,7 +110,7 @@ public class PackageController {
 		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
 		return "redirect:/packages";
 	}
-
+	//TODO update description
 	/**
 	 * 
 	 * @param pack 
@@ -152,7 +152,7 @@ public class PackageController {
 	/**
 	 * Maps /packages/{id} 
 	 * @param id the Id of the Package
-	 * @return the Packae Object
+	 * @return the Package Object
 	 */
 	@GetMapping("/packages/{id}")
 	@ResponseBody
@@ -261,8 +261,6 @@ public class PackageController {
 							// J receives the managed Entity (With ID :))
 							j = jDAO.save(j);
 							journeys.add(j);
-							// Get out of while once the Overall capacity has already been tested and this is 1st Package
-							break;
 						}
 						// Swaping the route for the Journey
 						routesOfPath.set(i, j);
