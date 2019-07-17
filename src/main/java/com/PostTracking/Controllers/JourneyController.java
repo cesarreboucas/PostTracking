@@ -1,15 +1,13 @@
 package com.PostTracking.Controllers;
 
-import java.sql.Timestamp;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
@@ -51,18 +49,32 @@ public class JourneyController {
 	}
 	
 	@GetMapping("/journeys")
-	public String showJourneys() {
-		
-		//Delete
-		/*
-		System.out.println("**********START GETTING STATS");
-		List<Journey> jss = jDAO.getWithCapacity(new java.sql.Timestamp(System.currentTimeMillis()));
-		for(Journey j : jss) {
-			System.out.println(j.getId() + " - Volume: " + j.getAvailabledWeight());
-		}
-		System.out.println("********END  GETTING STATS");*/
-		
+	public String showJourneys() {	
 		return "journeys/journeys";
+	}
+
+	@GetMapping("/journeys/checkpackages/{journey_id}")
+	public ResponseEntity<?> checkPackages(@PathVariable String journey_id) {
+		long id;
+		try{
+			id = Integer.parseInt(journey_id);
+		} catch(Exception e) {
+			return new ResponseEntity<String>("Impossible to recognize the Journey ID", HttpStatus.INTERNAL_SERVER_ERROR);	
+		}
+		Journey j = jDAO.findById(id).get();
+		if(j==null) {
+			return new ResponseEntity<String>("Impossible to request the Journey", HttpStatus.NOT_FOUND);	
+		}
+		for(Package p : j.getPackages()) {
+			/**
+			 * ***************************************
+			 * ***************************************
+			 * ***************************************
+			 */
+			//TODO stopped here
+			System.out.println(p);
+		}
+		return new ResponseEntity<String>("Routes created successfully", HttpStatus.OK);
 	}
 
 	@ModelAttribute("journeys")

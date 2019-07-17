@@ -1,3 +1,5 @@
+"use strict";
+
 function Check(btn) {
     btn.disabled = true;
     $.ajax({
@@ -6,5 +8,14 @@ function Check(btn) {
     }).done(function(data) {
         console.log("Mudou "+data);
     });
-    console.log(btn.dataset.id);
+}
+
+function checkAll(btn) {
+    btn.disabled = true;
+    $.ajax({
+        method: "GET",
+        url: "/journeys/checkpackages/"+btn.dataset.j
+    }).done(function(data) {
+        console.log(data);
+    });
 }

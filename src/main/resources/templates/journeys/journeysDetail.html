@@ -36,10 +36,15 @@
                 </button>
             </td>
         </tr>
+        <tr>
+            <td colspan="6" style="text-align: right;">
+                <button class="btn btn-sm" onclick="checkAll(this)" th:data-j="${journey.getId()}">Check All</button>
+            </td>
+        </tr>
     </table>
     <div th:replace="/packages/detailModal.html"></div>
     <script src="/script/packageEditModal.js"></script>
-
+    
     <script src="/script/journeysDetails.js">
  
     </script>
