@@ -11,7 +11,7 @@
 		<!-- this form is a PUT form -->
 		<form th:object="${package}" id="PackageForm" action="/packages" method="POST">
 			<input name="_method" type="hidden" value="PUT" />
-			<input name="PackageId" th:field="*{id}" id="txtId" type="hidden" value="0" />
+			<input name="PackageId" th:field="*{id}" id="txtId" type="hidden" th:value="*{id}" />
 			<div class="form-group">
 				<label for="selcustomer">Customer</label>
 				<select id="selcustomer" class="form-control" th:field="*{customer}">
@@ -74,10 +74,8 @@
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		</form>
 		<br/>
-		<div id="journeysDiv">
-		</div>
+		<div id="journeysDiv"></div>
 		</div>
 	</div>
 	</div>
-	<script src="script/packageEditModal.js"></script>
 </div>

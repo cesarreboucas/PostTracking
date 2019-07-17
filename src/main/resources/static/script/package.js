@@ -21,13 +21,17 @@ window.onload = function () {
             let arrayLine;
             packages.forEach(pack => {
 
-                arrayLine = [pack.id, pack.customer.fullName, pack.origin.name, pack.destination.name];
+                arrayLine = [pack.id, pack.customer.fullName, pack.origin.name, pack.destination.name, pack.position.name];
                 pack.journeys.forEach(journey => {
                     if(pack.position.id==journey.origin.id) {
                         arrayLine.push("<a href=\"/journeys/"+journey.id+"\">"+pack.position.name+" => "+journey.destination.name+"</a>",
                             formatDate(new Date(journey.start)));
                     }
                 });
+                //handling Done Packages
+                if(arrayLine.length==5) {
+                    arrayLine.push(" Completed ", " - ");
+                }
                 dataset.push(arrayLine);
             });
 
@@ -43,10 +47,7 @@ window.onload = function () {
                     "data": 0,
                     render : function(data, type, row) {
                         return '<button data-package="'+data+'" type="button" class="btn-secondary btn-sm btn-block btn-primary" \
-                        data-toggle="modal" data-target="#modalPackageEdit">'+data+'</button>'
-                        /*'<button class="btn btn-sm btn-block" \
-                            onclick="console.log(\''+data+'\')">'+data+'</button>'*/
-
+                        data-toggle="modal" data-target="#modalPackageEdit">'+data+'</button>';
                     }
                 }],
                 columns: [
@@ -54,6 +55,7 @@ window.onload = function () {
                     { title: "Customer" },
                     { title: "Origin" },
                     { title: "Destination" },
+                    { title: "Position" },
                     { title: "Journey" },
                     { title: "Departure" }
                 ]
@@ -62,10 +64,3 @@ window.onload = function () {
     });
 }
 
-function formatDate(date) {
-	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-	return date.getDate()+"-"+months[date.getMonth()]+"-"+date.getFullYear()+" "+
-			date.getHours().toString().padStart(2,"0")+":"
-			+date.getMinutes().toString().padStart(2,"0")+" ("+days[date.getDay()]+")";
-}

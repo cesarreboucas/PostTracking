@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,9 +21,11 @@ import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.JourneyDAO;
 import com.PostTracking.Boundaries.PackageDAO;
 import com.PostTracking.Boundaries.RouteDAO;
+import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Route;
+import com.PostTracking.Entities.Vehicle;
 import com.PostTracking.Entities.Package;
 import com.PostTracking.Entities.Path;
 import com.PostTracking.Entities.Journey;
@@ -45,6 +48,8 @@ public class PackageController {
 	PackageDAO pDAO;
 	@Autowired
 	CustomerDAO cDAO;
+	@Autowired
+	VehicleDAO vDAO;
 	
 	/**
 	 * Maps the /packages (Filters to Packages)
@@ -105,11 +110,49 @@ public class PackageController {
 		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
 		return "redirect:/packages";
 	}
+	//TODO update description
+	/**
+	 * 
+	 * @param pack 
+	 * @param redirAttrs
+	 * @return
+	 */
+	@PutMapping("/packages")
+	public String updatePackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
+		if(!pack.validateMe()) {
+			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
+			return "redirect:/packages";	
+		}
+		
+		//Solving the "CLEANER Journeys"
+		pack.setJourneys(pDAO.findById(pack.getId()).get().getJourneys());
+		pack = pDAO.save(pack);
+		redirAttrs.addFlashAttribute("message", "The Package has been Updated!");
+		return "redirect:/packages";
+	}
+
+	/**
+	 * Changes the position od a package
+	 * @param position the distribution center id
+	 * @param id the package
+	 * @return 1 for good, 0 when error
+	 */
+	@GetMapping("/packages/updateposition/{position}/{id}")
+	@ResponseBody
+	public int updatePosition(@PathVariable String position,@PathVariable String id) {
+		try {
+			Package p = pDAO.findById(Integer.parseInt(id)).get();
+			p.setPosition(dcDAO.findById(Integer.parseInt(position)).get());
+			pDAO.save(p);
+			return 1;
+		} catch(Exception e) {	}
+		return 0;
+	}
 	
 	/**
 	 * Maps /packages/{id} 
 	 * @param id the Id of the Package
-	 * @return the Packae Object
+	 * @return the Package Object
 	 */
 	@GetMapping("/packages/{id}")
 	@ResponseBody
@@ -121,24 +164,36 @@ public class PackageController {
 		}
 	}
 	
+	@GetMapping("/packages/test")
+	@ResponseBody
+	public List<Journey> getJourneysBody() {
+		return jDAO.getWithCapacity(new Timestamp (System.currentTimeMillis()));
+	}
+	
+	
+	//TODO update description
 	/**
 	 * Seeks the path between two distribution centers to route a package
 	 * @param origin The origin DC 
 	 * @param destination the destination DC 
 	 * @return The JSON with possible Paths to reach the destination
 	 */
-	@GetMapping("/packages/seekpath/{origin}/{destination}")
+	@GetMapping("/packages/seekpath/{origin}/{destination}/{weight_s}/{volume_s}")
 	@ResponseBody
-	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination) {
-		//test from 1 to 3
+	public ArrayList<Path> seekPath(@PathVariable String origin,@PathVariable String destination,
+			@PathVariable String weight_s,@PathVariable String volume_s) {
 		ArrayList<Path> paths = new ArrayList<Path>();
 		List<Route> routes = new ArrayList<Route>();
 		rDAO.findAll().iterator().forEachRemaining(routes::add);
 		int origin_id = 0;
 		int destination_id = 0;
+		double weight = 0.0;
+		double volume = 0.0;
 		try {
 			origin_id = Integer.parseInt(origin);
 			destination_id = Integer.parseInt(destination);
+			weight = Double.parseDouble(weight_s);
+			volume = Double.parseDouble(volume_s);
 		} catch(Exception ex) {
 			System.out.println("Unable to parse Origin or Destination on PackageController@seekPath");
 			return null;
@@ -161,51 +216,70 @@ public class PackageController {
 					Path p = new Path(paths.get(x));
 					p.addStep(new Route(routes.get(i)));
 					paths.add(p);
-					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition());
-					System.out.println("Paths Size: "+paths.size()+" x:"+x);
-					// Logging paths -- Remove later
-					System.out.println("-> Paths");
-					for(Path pz : paths) {
-						System.out.println(pz);
-					}
+					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition()+
+							" Path progress: "+x+"/"+paths.size());
 				} 
 			}
 		}
 
 		//Setting the minimal time for journeys
-		long minimal = System.currentTimeMillis();
+		final long now = System.currentTimeMillis();
+		long minimal = now;
 		// Get the list of journeys ahead
-		List<Journey> journeys = jDAO.fetchFrom(new Timestamp (minimal));
-		System.out.println("Journey size : "+journeys.size());
-		//Removing incomplete paths
-		for(int x=0; x < paths.size(); ++x) {
-			// If current position != destination, drop
-			if(paths.get(x).getPosition() != destination_id) {
-				paths.remove(x);
-				--x; //Backing X after index changed
-			}
-			// If Path is good, refresh timestamp
-			else {
+		//List<Journey> journeys = jDAO.fetchFrom(new Timestamp (now));
+		List<Journey> journeys = jDAO.getWithCapacity(new Timestamp (now));
+		
+		//Walk through Journeys
+		for(int x=0; x < paths.size(); ++x) {	
+			// This boolean tests the feasibility of the path
+			boolean pathFeasibility = true;
+			// If path is good (Reaches the destination)
+			if(paths.get(x).getPosition() == destination_id) {
 				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
+				// At this moment, this is actually a List of Routes (Child of Journey)
 				ArrayList<Journey> routesOfPath = paths.get(x).getJourneys();
 				System.out.println(paths.get(x));
 				// Backing minimal to now
-				minimal = System.currentTimeMillis();
+				minimal = now;
 				for(int i=0; i < routesOfPath.size() ; ++i) {
-					// Get the Possible Journey
-					routesOfPath.get(i).setStart(routesOfPath.get(i).getNextPossible(minimal));
-					// Check if there is already a journey created
-					Journey j = routesOfPath.get(i).checkExistingJourney(journeys);
-					if(j.getId() == 0) {
-						// J receives the managed Entity (With ID :))
-						j = jDAO.save(j);
-						journeys.add(j);
+					Journey j = routesOfPath.get(i);
+					
+					//Testing the overall Capacity of the Vehicle
+					if(j.getVehicle().getMaxVolume() < volume && j.getVehicle().getMaxWeight() < weight) {
+						pathFeasibility = false;
+						break;
 					}
-					// Swaping the route for the Journey
-					routesOfPath.set(i, j);
-					minimal = routesOfPath.get(i).getArrival().getTime();
+					
+					// This Do-While keeps checking about the capacity (Volume/Weight)
+					do {
+						// Get a new the Possible Journey
+						j = j.getNextPossible(minimal);
+						// Check if there is already a journey created (Persistent)
+						j = j.checkExistingJourney(journeys);
+					
+						if(j.getId() == 0) {
+							// J receives the managed Entity (With ID :))
+							j = jDAO.save(j);
+							journeys.add(j);
+						}
+						// Swaping the route for the Journey
+						routesOfPath.set(i, j);
+						minimal = j.getArrival().getTime();
+						
+					} while(j.checkCapacity(volume, weight)==false);
+
+					
 					
 				}
+			// If current position != destination, drop
+			} else {
+				pathFeasibility = false;
+			}
+			
+			//Removing path when there is no feasibility
+			if(pathFeasibility==false ) {
+				paths.remove(x);
+				--x; //Backing X after index changed
 			}
 		}
 		
@@ -237,5 +311,23 @@ public class PackageController {
 	@ModelAttribute("customers")
 	public Iterable<Customer> getCustomers() {
 		return cDAO.findAll();
+	}
+	
+	/**
+	 * This ModeAttribute is necessary because without it, seekpach calls 1 select to each journeys on GetWithCapacity
+	 * @return Iterable of Journeys
+	 */
+	@ModelAttribute("journeys")
+	public Iterable<Journey> getJourneys() {
+		return jDAO.findAll();
+	}
+	
+	/**
+	 * This ModeAttribute is necessary because without it, seekpach calls 1 select to each vehicle
+	 * @return The list of all vehicles available on the database.
+	 */
+	@ModelAttribute("vehicles")
+	public Iterable<Vehicle> getVehicles() {
+		return vDAO.findAll();
 	}
 }

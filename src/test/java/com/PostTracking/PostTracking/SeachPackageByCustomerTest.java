@@ -59,7 +59,7 @@ public void tearDown() {
 	 }
 	 driver.findElement(By.id("selCustomerSearch")).click();
 	 driver.findElement(By.id("btnSearch")).click();
-	 Assert.assertTrue(driver.getPageSource().contains("Jon"));	 
+	 assertTrue(driver.getPageSource().contains("Jon"));	 
 	}
 }
 
