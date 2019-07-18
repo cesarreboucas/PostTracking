@@ -53,7 +53,6 @@ function makeTable(p) {
 	});
 
 	p.journeys.forEach(j => {
-		console.log(p);
 		// Adding the journey ID
 		journeys.push(j.id);
 		// making the lines of the table

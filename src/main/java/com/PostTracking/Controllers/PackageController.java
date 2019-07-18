@@ -2,7 +2,9 @@ package com.PostTracking.Controllers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -285,6 +287,67 @@ public class PackageController {
 		
 		return paths;
 	}
+
+	@GetMapping("/packages/reroute/{id}/{origin}/{destination}/{weight_s}/{volume_s}")
+	public String reRoutePackage(@PathVariable String id, @PathVariable String origin,
+		@PathVariable String destination,@PathVariable String weight_s,@PathVariable String volume_s, Model m) {
+			Package p = new Package();
+			int origin_id = 0;
+			List<Path> paths = new ArrayList<Path>();
+			try {
+				p = pDAO.findById(Integer.parseInt(id)).get();
+				origin_id = Integer.parseInt(origin);
+			} catch(Exception e) {
+
+			}
+			//The current position is the called Origin ID
+			if(p.getPosition().getId()==origin_id) {
+				paths = seekPath(origin, destination, weight_s, volume_s);
+			}
+			m.addAttribute("paths", paths);
+			m.addAttribute("pack", p);
+			return "packages/reroute";
+	}
+
+	/****************************** */
+	/****************************** */
+	/****************************** */
+	/****************************** */
+	//TODO TESTE!!!!!!!!!!!!!!!!!!!!!!!!
+	/****************************** */
+	/****************************** */
+	/****************************** */
+	/****************************** */
+	
+	@PostMapping("/packages/reroute")
+	@ResponseBody
+	public Package executeReRoute(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
+		// Filling the object (just ID and Journeys come from View)
+		List<Journey> newJourneys = new ArrayList<Journey>(pack.getJourneys());
+		pack = pDAO.findById(pack.getId()).get();
+		if(pack.validateMe()) {
+			List<Journey> currentJourneys = new ArrayList<Journey>(pack.getJourneys());
+			Set<Journey> newMergedJourneys = new HashSet<Journey>();
+			for(int i=0; i < currentJourneys.size() ; ++i) {
+				//Finding the Journeys already done (to keep)
+				if(newJourneys.get(0).getOrigin().getId()==currentJourneys.get(i).getOrigin().getId()) {
+					break;
+				} else {
+					newMergedJourneys.add(currentJourneys.get(i));
+				}
+			}
+			newMergedJourneys.addAll(newJourneys);
+			pack.setJourneys(newMergedJourneys);
+			pDAO.save(pack);
+			
+		} else {
+			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
+			//return "redirect:/packages";	
+			System.out.println("fudeu");
+		}
+		return pack;
+	}
+
 	
 	/**
 	 * Makes the packages list available to the views
@@ -331,3 +394,4 @@ public class PackageController {
 		return vDAO.findAll();
 	}
 }
+
