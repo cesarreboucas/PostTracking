@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.JourneyDAO;
+import com.PostTracking.Boundaries.PackageDAO;
 import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Journey;
@@ -33,6 +34,8 @@ public class JourneyController {
 	CustomerDAO cDAO;
 	@Autowired
 	DistributionCenterDAO dcDAO;
+	@Autowired
+	PackageDAO pDAO;
 
 	/**
 	 * Maps /journeys/{id}
@@ -66,15 +69,12 @@ public class JourneyController {
 			return new ResponseEntity<String>("Impossible to request the Journey", HttpStatus.NOT_FOUND);	
 		}
 		for(Package p : j.getPackages()) {
-			/**
-			 * ***************************************
-			 * ***************************************
-			 * ***************************************
-			 */
-			//TODO stopped here
-			System.out.println(p);
+			if(j.getOrigin().getId()==p.getPosition().getId()) {
+				p.setPosition(j.getDestination());
+				pDAO.save(p);
+			} 			
 		}
-		return new ResponseEntity<String>("Routes created successfully", HttpStatus.OK);
+		return new ResponseEntity<String>(j.getDestination().getName(), HttpStatus.OK);
 	}
 
 	@ModelAttribute("journeys")

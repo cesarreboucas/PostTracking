@@ -54,7 +54,7 @@
 			</div>
 			<div class="form-group">
 				<label for="selOrigin">Origin</label>
-				<select id="selOrigin" class="form-control" th:field="*{origin}">
+				<select id="selOrigin" class="form-control" th:field="*{origin}" disabled="true">
 					<option th:each="dcOrigin : ${distributionCenters}" th:value="${dcOrigin.id}" th:text="${dcOrigin.getName()}"></option> 
 				</select>
 			</div>
@@ -71,6 +71,7 @@
 					</select>
 				</div>
 			<button type="submit" class="btn btn-primary">Save changes</button>
+			<a class="btn btn-primary" th:data-id="*{id}" onclick="goReRoute(this)" href="#" role="button">Re-Route</a>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		</form>
 		<br/>
@@ -78,4 +79,25 @@
 		</div>
 	</div>
 	</div>
+	<script>
+	function goReRoute(link) {
+		let id = parseInt(document.getElementById("txtId").value,10);
+		let weight = parseInt(document.getElementById("txtWeight").value,10);
+		let volume = parseInt(document.getElementById("txtVolume").value,10);
+		let destination =  parseInt(document.getElementById("selDestination").value,10);
+		let position =  parseInt(document.getElementById("selPosition").value,10);
+		if(Number.isInteger(id) && 
+				Number.isInteger(weight) && 
+				Number.isInteger(volume) && 
+				Number.isInteger(destination) &&
+				Number.isInteger(position)
+			) {
+			location.href = "/packages/reroute/"+id+"/"+position+"/"+destination+"/"+weight+"/"+volume;
+		} else {
+			console.log("Something went wrong :/");
+		}
+		
+		return false;
+	}
+	</script>
 </div>

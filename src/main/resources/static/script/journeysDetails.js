@@ -15,7 +15,16 @@ function checkAll(btn) {
     $.ajax({
         method: "GET",
         url: "/journeys/checkpackages/"+btn.dataset.j
-    }).done(function(data) {
-        console.log(data);
+    }).done(function(data, textStatus, XHR) {
+        if(XHR.status==200) {
+            document.getElementById("div_info").style.display = 'block';
+            document.getElementById("div_info").innerHTML = "Packages checked successfully";
+            $('td[name=tdPosition]').html(data);
+            $('button[name=btnCheck]').attr("disabled", true);
+
+        } else {
+            document.getElementById("div_info").style.display = 'block';
+            document.getElementById("div_info").innerHTML = "Sorry, something went wrong :/";
+        }
     });
 }
