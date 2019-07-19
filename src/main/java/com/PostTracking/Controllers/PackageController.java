@@ -2,6 +2,9 @@ package com.PostTracking.Controllers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -309,25 +312,25 @@ public class PackageController {
 			return "packages/reroute";
 	}
 
-	/****************************** */
-	/****************************** */
-	/****************************** */
-	/****************************** */
-	//TODO TESTE!!!!!!!!!!!!!!!!!!!!!!!!
-	/****************************** */
-	/****************************** */
-	/****************************** */
-	/****************************** */
-	
 	@PostMapping("/packages/reroute")
 	@ResponseBody
 	public Package executeReRoute(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
+		//Setting Up the Comparator
+		Comparator<Journey> compareByStart = (Journey j1, Journey j2) ->
+                                    j1.getStart().compareTo( j2.getStart() );
+
 		// Filling the object (just ID and Journeys come from View)
 		List<Journey> newJourneys = new ArrayList<Journey>(pack.getJourneys());
+		Collections.sort(newJourneys, compareByStart);
+
+		//Getting other fields from the Database
 		pack = pDAO.findById(pack.getId()).get();
+
 		if(pack.validateMe()) {
 			List<Journey> currentJourneys = new ArrayList<Journey>(pack.getJourneys());
+			Collections.sort(currentJourneys, compareByStart);
 			Set<Journey> newMergedJourneys = new HashSet<Journey>();
+			
 			for(int i=0; i < currentJourneys.size() ; ++i) {
 				//Finding the Journeys already done (to keep)
 				if(newJourneys.get(0).getOrigin().getId()==currentJourneys.get(i).getOrigin().getId()) {
