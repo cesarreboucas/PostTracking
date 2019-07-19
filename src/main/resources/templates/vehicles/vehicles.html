@@ -11,12 +11,14 @@
 				<th>Description</th>
 				<th>Max Volume</th>
 				<th>Max Weight</th>
+				<th>Available</th>
 				<th>Action</th>
 			<tr>
 			<tr th:each="vehicle : ${vehicles}">
 				<td th:text="${vehicle.getDescription()}"></td> 
 				<td th:text="${vehicle.getMaxVolume()}"></td>
 				<td th:text="${vehicle.getMaxWeight()}"></td>
+				<td th:text="${vehicle.isAvailable()} ? 'Yes' : 'No'"></td>
 				<td style="white-space: nowrap;">
 					<button th:data-vehicle="${vehicle.getId()}" type="button" class="btn-sm btn-primary"
 						 data-toggle="modal" data-target="#modalForm" th:data-method="PUT">Edit</button>
@@ -55,6 +57,13 @@
 				  <div class="form-group">
 				    <label for="txtMaxWeight">Max Weight</label>
 				    <input type="text" class="form-control" id="txtMaxWeight" th:field="*{maxWeight}">
+				  </div>
+				  <div class="form-group">
+				    <label for="selectAvailable">Available</label>
+				    <select id="selectAvailable" class="form-control" th:field="*{available}">
+				    	<option value="true">Yes</option>
+				    	<option value="false">No</option>
+				    </select>
 				  </div>
 				  	<button type="submit" class="btn btn-primary">Save changes</button>
 		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

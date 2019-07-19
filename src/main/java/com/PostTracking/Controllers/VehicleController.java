@@ -91,6 +91,7 @@ public class VehicleController {
 		hibernateVehicle.setDescription(vehicle.getDescription());
 		hibernateVehicle.setMaxVolume(vehicle.getMaxVolume());
 		hibernateVehicle.setMaxWeight(vehicle.getMaxWeight());
+		hibernateVehicle.setAvailable(vehicle.isAvailable());
 		
 		System.out.println("POST");
 		System.out.println(hibernateVehicle);

@@ -33,11 +33,11 @@ public class Vehicle {
 	
 	public Vehicle() {}
 	
-	public Vehicle(String description, int maxWeight, int maxVolume) {
+	public Vehicle(String description, int maxWeight, int maxVolume, boolean available) {
 		this.description = description;
 		this.maxWeight = maxWeight;
 		this.maxVolume = maxVolume;
-		this.available = true;
+		this.available = available;
 		this.deleted = false;
 	}
 	
@@ -98,7 +98,8 @@ public class Vehicle {
 		String.format("Vehicle ID: %d\n" +
 					  "Description: %s\n" +
 					  "Max Volume: %d\n" +
-					  "Max Weight: %d\n", Id, description, maxVolume, maxWeight);
+					  "Max Weight: %d\n" +
+					  "Available: %b\n", Id, description, maxVolume, maxWeight, available);
 	}
 
 	@Override
