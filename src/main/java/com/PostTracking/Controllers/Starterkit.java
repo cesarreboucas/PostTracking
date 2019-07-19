@@ -73,23 +73,23 @@ public class Starterkit {
 		/**************** Vehicles **************/
 		ArrayList<Vehicle> vArrayList = new ArrayList<Vehicle>(); 
 		
-		vArrayList.add(new Vehicle("Frederiksborg Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Mustang Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Shire Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Samolaco Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Salty Sea Mare Ship", 1000000, 1000000));
-		vArrayList.add(new Vehicle("Mangalarga Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Dongola Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Sea Queen Ship", 1000000, 1000000));
-		vArrayList.add(new Vehicle("Aurora Ship", 1000000, 1000000));
-		vArrayList.add(new Vehicle("Haflinger Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Giara Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Karabair Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Pampa Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Appaloosa Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Campolina Horse", 2500, 2500));
-		vArrayList.add(new Vehicle("Ghost Ship", 1000000, 1000000));
-		vArrayList.add(new Vehicle("Spiti Horse", 2500, 2500));
+		vArrayList.add(new Vehicle("Frederiksborg Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Mustang Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Shire Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Samolaco Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Salty Sea Mare Ship", 1000000, 1000000, true));
+		vArrayList.add(new Vehicle("Mangalarga Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Dongola Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Sea Queen Ship", 1000000, 1000000, true));
+		vArrayList.add(new Vehicle("Aurora Ship", 1000000, 1000000, true));
+		vArrayList.add(new Vehicle("Haflinger Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Giara Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Karabair Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Pampa Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Appaloosa Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Campolina Horse", 2500, 2500, true));
+		vArrayList.add(new Vehicle("Ghost Ship", 1000000, 1000000, true));
+		vArrayList.add(new Vehicle("Spiti Horse", 2500, 2500, true));
 		
 		/*vArrayList.add(new Vehicle("Ford F-150", 1500, 1500));
 		vArrayList.add(new Vehicle("Dodge Ram 3500", 2500, 2500));

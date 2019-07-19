@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.VehicleDAO;
+import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.Vehicle;
 
 
@@ -43,13 +44,13 @@ public class VehicleController {
 	 * Returns a JSON object of Vehicles to the API
 	 * @return JSON vehicles
 	 */
-	@GetMapping("/api/vehicles")
+	/*@GetMapping("/api/vehicles")
 	@ResponseBody
 	public List<Vehicle> getAllVehicles() {
 		ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 		getAll().forEach(v -> vehicles.add(v));
 		return vehicles;
-	}
+	}*/
 	
 	/**
 	 * Get the car by the id.
@@ -90,6 +91,7 @@ public class VehicleController {
 		hibernateVehicle.setDescription(vehicle.getDescription());
 		hibernateVehicle.setMaxVolume(vehicle.getMaxVolume());
 		hibernateVehicle.setMaxWeight(vehicle.getMaxWeight());
+		hibernateVehicle.setAvailable(vehicle.isAvailable());
 		
 		System.out.println("POST");
 		System.out.println(hibernateVehicle);
@@ -109,9 +111,8 @@ public class VehicleController {
 	@DeleteMapping("/vehicles")
 	public String deleteVehicle(@RequestParam int id) {
 		Vehicle hibernateVehicle = vdao.findById(id).get();
-		//vdao.deleteVehicle(v_db);
-		System.out.println("DELETE");
-		System.out.println(hibernateVehicle);
+		hibernateVehicle.setDeleted(true);
+		vdao.save(hibernateVehicle);
 		return "redirect:/vehicles";
 	}
 	
@@ -120,7 +121,7 @@ public class VehicleController {
 	 */
 	@ModelAttribute("vehicles")
 	public Iterable<Vehicle> getAll() {
-		return vdao.findAll();
+		return vdao.fetchVehicles();
 	}
 	
 }
