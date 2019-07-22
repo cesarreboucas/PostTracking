@@ -14,9 +14,9 @@
 				<th>Available</th>
 				<th>Action</th>
 			<tr>
-			<tr th:each="dc : ${dcs}"
+			<tr th:each="dc : ${distributionCenters}"
 				th:classappend="${dc.isAvailable()} ? '' : 'table-danger' ">
-				<td th:text="${dc.getName()}"></td> 
+				<td><a th:href="${'/dcs/'+dc.getId()+'/packages'}" th:text="${dc.getName()}"></a></td> 
 				<td th:text="${dc.getCity()}"></td>
 				<td th:text="${dc.getProvince()}"></td>
 				<td th:text="${dc.isAvailable()} ? 'Yes' : 'No'"></td>
