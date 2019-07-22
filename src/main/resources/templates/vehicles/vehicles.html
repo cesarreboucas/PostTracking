@@ -14,7 +14,8 @@
 				<th>Available</th>
 				<th>Action</th>
 			<tr>
-			<tr th:each="vehicle : ${vehicles}">
+			<tr th:each="vehicle : ${vehicles}"
+				th:classappend="${vehicle.isAvailable()} ? '' : 'table-danger' ">
 				<td th:text="${vehicle.getDescription()}"></td> 
 				<td th:text="${vehicle.getMaxVolume()}"></td>
 				<td th:text="${vehicle.getMaxWeight()}"></td>

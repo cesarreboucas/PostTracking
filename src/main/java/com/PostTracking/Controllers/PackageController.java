@@ -194,7 +194,7 @@ public class PackageController {
 			@PathVariable String weight_s,@PathVariable String volume_s) {
 		ArrayList<Path> paths = new ArrayList<Path>();
 		List<Route> routes = new ArrayList<Route>();
-		rDAO.findAll().iterator().forEachRemaining(routes::add);
+		rDAO.findAllAvailable().iterator().forEachRemaining(routes::add);
 		int origin_id = 0;
 		int destination_id = 0;
 		double weight = 0.0;

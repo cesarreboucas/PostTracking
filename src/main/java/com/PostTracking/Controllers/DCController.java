@@ -79,9 +79,8 @@ public class DCController {
 		distCenter_db.setCity(distCenter.getCity());
 		distCenter_db.setProvince(distCenter.getProvince());
 		distCenter_db.setZipCode(distCenter.getZipCode());
+		distCenter_db.setAvailable(distCenter.isAvailable());
 		
-		System.out.println("POST");
-		System.out.println(distCenter_db);
 		dcDAO.save(distCenter_db);
 		return "redirect:/dcs";
 	}
@@ -96,6 +95,7 @@ public class DCController {
 	public String deleteDistributionCenter(@ModelAttribute DistributionCenter distCenter) {
 		DistributionCenter dcs_db = dcDAO.findById(distCenter.getId()).get();
 		dcs_db.setActive(false);
+		dcs_db.setAvailable(false);
 		dcDAO.save(dcs_db);
 		return "redirect:/dcs";
 	}

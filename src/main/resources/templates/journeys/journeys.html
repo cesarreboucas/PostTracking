@@ -15,7 +15,9 @@
             <th>Date</th>
             <th>Details</th>
         <tr>
-        <tr th:each="journey : ${filledJourneys}">
+        <tr th:each="journey : ${filledJourneys}"
+            th:classappend="${journey.getVehicle().isAvailable() && journey.getOrigin().isAvailable() &&
+                journey.getDestination().isAvailable() } ? '' : 'table-danger' ">
             <td th:text="${journey.getId()}"></td>
             <td th:text="${journey.getOrigin().getName()}"></td> 
             <td th:text="${journey.getDestination().getName()}"></td>
