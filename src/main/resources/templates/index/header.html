@@ -7,7 +7,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="/style/index.css">
-	<img src="/img/postaltrackingcover.png" >
+	<img src="/img/postaltrackingcover.png">
+	<title>PostTracking</title>
 </header>
 <!--  <nav class="navbar navbar-dark bg-dark">
  	<div class="row">
@@ -19,6 +20,10 @@
 	<div class="alert alert-info" 
 		th:if="${message != null}"
 		th:text="${message}">
+	</div>
+	<div class="alert alert-warning" 
+		th:if="${error != null}"
+		th:text="${error}">
 	</div>
 	<div class="row">
  		<div class="col">

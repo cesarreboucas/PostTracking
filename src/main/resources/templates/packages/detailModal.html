@@ -53,23 +53,25 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="selOrigin">Origin</label>
-				<select id="selOrigin" class="form-control" th:field="*{origin}" disabled="true">
-					<option th:each="dcOrigin : ${distributionCenters}" th:value="${dcOrigin.id}" th:text="${dcOrigin.getName()}"></option> 
+				<label for="selOrigin">Origin*</label>
+				<select id="selOrigin" class="form-control" th:field="*{origin}">
+					<option th:each="dcOrigin : ${distributionCenters}" th:value="${dcOrigin.getId()}" th:text="${dcOrigin.getName()}"></option> 
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="selDestination">Destination</label>
+				<label for="selDestination">Destination*</label>
 				<select id="selDestination" class="form-control" th:field="*{destination}">
-					<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.id}" th:text="${dcDest.getName()}"></option>  
+					<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.getId()}" th:text="${dcDest.getName()}"></option>  
 				</select>
+			</div>
+			<div class="form-group">
+				<smal class="text-danger">*Changing Origin or Destination implies on a new set of Journeys</smal>
 			</div>
 			<div class="form-group">
 					<label for="selPosition">Position</label>
 					<select id="selPosition" class="form-control" th:field="*{position}">
-						<option th:each="dcDest : ${distributionCenters}" th:value="${dcDest.id}" th:text="${dcDest.getName()}"></option>  
 					</select>
-				</div>
+			</div>
 			<button type="submit" class="btn btn-primary">Save changes</button>
 			<a class="btn btn-primary" th:data-id="*{id}" onclick="goReRoute(this)" href="#" role="button">Re-Route</a>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

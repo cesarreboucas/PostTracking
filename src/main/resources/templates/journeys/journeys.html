@@ -11,6 +11,7 @@
             <th>#</th>
             <th>Origin</th>
             <th>Destination</th>
+            <th>Vehicle</th>
             <th>Date</th>
             <th>Details</th>
         <tr>
@@ -18,6 +19,7 @@
             <td th:text="${journey.getId()}"></td>
             <td th:text="${journey.getOrigin().getName()}"></td> 
             <td th:text="${journey.getDestination().getName()}"></td>
+            <td th:text="${journey.getVehicle().getDescription()}"></td>
             <td th:text="${journey.getStart()}"></td>
             <td><a role="button" class="btn btn-sm btn-primary" th:href="${'/journeys/'+journey.getId()}">View</a></td>
         </tr>

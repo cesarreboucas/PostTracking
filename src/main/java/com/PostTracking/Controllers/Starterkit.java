@@ -1,8 +1,9 @@
 package com.PostTracking.Controllers;
 
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
+import com.PostTracking.Boundaries.PackageDAO;
 import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Journey;
+import com.PostTracking.Entities.Package;
+import com.PostTracking.Entities.Path;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
 
@@ -38,6 +42,12 @@ public class Starterkit {
 	
 	@Autowired
 	RouteDAO rDAO;
+
+	@Autowired
+	PackageDAO pDAO;
+
+	@Autowired
+	PackageController packageController;
 	
 	@GetMapping("/start")
 	@ResponseBody
@@ -332,6 +342,43 @@ public class Starterkit {
 		dc.setAddress("address");
 		dcDAO.createDistributionCenter(dc);*/
 		
+		return "<a href=\"/start3\">Third Part</a>";
+	}
+
+	@GetMapping("/start3")
+	@ResponseBody
+	public String start3() {
+		Package p = new Package();
+		p.setCustomer(cDAO.findById(1).get());
+		p.setRecipient("test recipient");
+		p.setAddress("test address");
+		p.setWeight(150);
+		p.setVolume(150);
+		p.setOrigin(dcDAO.findById(3).get());
+		p.setPosition(p.getOrigin());
+		p.setDestination(dcDAO.findById(4).get());
+		List<Path> path = packageController.seekPath(String.valueOf(p.getOrigin().getId()),
+			String.valueOf(p.getDestination().getId()),
+			String.valueOf(p.getWeight()), String.valueOf(p.getVolume()));
+		p.setJourneys(new HashSet<Journey>(path.get(0).getJourneys()));
+		pDAO.save(p);
+
+		p = new Package();
+		p.setCustomer(cDAO.findById(5).get());
+		p.setRecipient("test recipient 2");
+		p.setAddress("test address 2 ");
+		p.setWeight(250);
+		p.setVolume(250);
+		p.setOrigin(dcDAO.findById(4).get());
+		p.setPosition(p.getOrigin());
+		p.setDestination(dcDAO.findById(2).get());
+		path = packageController.seekPath(String.valueOf(p.getOrigin().getId()),
+			String.valueOf(p.getDestination().getId()),
+			String.valueOf(p.getWeight()), String.valueOf(p.getVolume()));
+		p.setJourneys(new HashSet<Journey>(path.get(0).getJourneys()));
+		pDAO.save(p);
+		
+
 		return "<a href=\"/\">Index</a>";
 	}
 }
