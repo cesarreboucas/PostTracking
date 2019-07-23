@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
+import com.PostTracking.Boundaries.PackageDAO;
+import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
+import com.PostTracking.Entities.Package;
 
 /**
  * Controls the endpoints for the Distribution Centers
@@ -29,7 +30,13 @@ public class DCController {
 	
 	@Autowired
 	DistributionCenterDAO dcDAO;
+
+	@Autowired
+	PackageDAO pDAO;
 	
+	@Autowired
+	CustomerDAO cDAO;
+
 	/**
 	 * Map /dcs (List of all Distribution Centers)
 	 * @param model the model to be sent to the view
@@ -54,6 +61,16 @@ public class DCController {
 		} catch(Exception ex) {
 			return new DistributionCenter();
 		}
+	}
+
+	//TODO Update description
+	@GetMapping("/dcs/{id}/packages")
+	public String getPackagesFromDistributionCenter(@PathVariable String id, Model m) {
+			DistributionCenter dc = dcDAO.findById(Integer.parseInt(id)).get();
+			m.addAttribute("dc", dc);
+			m.addAttribute("packages", pDAO.fetchPackagesByDC(dc));
+			m.addAttribute("package", new Package());
+			return "dcs/dcsWithPackages";
 	}
 	
 	/**
@@ -82,9 +99,8 @@ public class DCController {
 		distCenter_db.setCity(distCenter.getCity());
 		distCenter_db.setProvince(distCenter.getProvince());
 		distCenter_db.setZipCode(distCenter.getZipCode());
+		distCenter_db.setAvailable(distCenter.isAvailable());
 		
-		System.out.println("POST");
-		System.out.println(distCenter_db);
 		dcDAO.save(distCenter_db);
 		return "redirect:/dcs";
 	}
@@ -99,6 +115,7 @@ public class DCController {
 	public String deleteDistributionCenter(@ModelAttribute DistributionCenter distCenter) {
 		DistributionCenter dcs_db = dcDAO.findById(distCenter.getId()).get();
 		dcs_db.setActive(false);
+		dcs_db.setAvailable(false);
 		dcDAO.save(dcs_db);
 		return "redirect:/dcs";
 	}
@@ -110,17 +127,24 @@ public class DCController {
 	@GetMapping("/api/dcs")
 	@ResponseBody
 	public List<DistributionCenter> getAllDistributionCenters() {
-		return (List<DistributionCenter>) getAll();
+		return (List<DistributionCenter>) getDistributionCentes();
 	}
-	
+
 	/**
-	 * Make Distribution centers list available in the view.
-	 * @return List of Distribution Centers
+	 * Makes the Distribution Centers list available to the view Add package
+	 * @return list of distribution centers
 	 */
-	@ModelAttribute("dcs")
-	public Iterable<DistributionCenter> getAll() {
+	@ModelAttribute("distributionCenters")
+	public Iterable<DistributionCenter> getDistributionCentes() {
 		return dcDAO.fetchDCs();
 	}
-	
-	
+
+	/**
+	 * Makes the Customer list available to the view Add package
+	 * @return list of Customers
+	 */
+	@ModelAttribute("customers")
+	public Iterable<Customer> getCustomers() {
+		return cDAO.findAll();
+	}
 }

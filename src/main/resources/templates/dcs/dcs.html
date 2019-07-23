@@ -11,14 +11,15 @@
 				<th>Description</th>
 				<th>City</th>
 				<th>Province</th>
-				<th>Zip Code</th>
+				<th>Available</th>
 				<th>Action</th>
 			<tr>
-			<tr th:each="dc : ${dcs}">
-				<td th:text="${dc.getName()}"></td> 
+			<tr th:each="dc : ${distributionCenters}"
+				th:classappend="${dc.isAvailable()} ? '' : 'table-danger' ">
+				<td><a th:href="${'/dcs/'+dc.getId()+'/packages'}" th:text="${dc.getName()}"></a></td> 
 				<td th:text="${dc.getCity()}"></td>
 				<td th:text="${dc.getProvince()}"></td>
-				<td th:text="${dc.getZipCode()}"></td>
+				<td th:text="${dc.isAvailable()} ? 'Yes' : 'No'"></td>
 				<td style="white-space: nowrap;">
 					<button th:data-dc="${dc.getId()}" type="button" class="btn-sm btn-primary"
 						 data-toggle="modal" data-target="#modalForm" th:data-method="PUT">Edit</button>
@@ -64,6 +65,13 @@
 				  <div class="form-group">
 				    <label for="txtZipCode">Zip Code</label>
 				    <input type="text" class="form-control" id="txtZipCode" th:field="*{zipCode}">
+					</div>
+					<div class="form-group">
+				    <label for="selectAvailable">Available</label>
+				    <select id="selectAvailable" class="form-control" th:field="*{available}">
+				    	<option value="true">Yes</option>
+				    	<option value="false">No</option>
+				    </select>
 				  </div>
 				  	<button type="submit" class="btn btn-primary">Save changes</button>
 		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

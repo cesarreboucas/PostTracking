@@ -89,7 +89,6 @@ public class JourneyController {
 
 	/**
 	 * Makes the Distribution Centers list available to the view Add package
-	 * 
 	 * @return list of distribution centers
 	 */
 	@ModelAttribute("distributionCenters")
@@ -99,7 +98,6 @@ public class JourneyController {
 
 	/**
 	 * Makes the Customer list available to the view Add package
-	 * 
 	 * @return list of Customers
 	 */
 	@ModelAttribute("customers")

@@ -15,7 +15,12 @@ $('#modalPackageEdit').on('show.bs.modal', function (event) {
         document.getElementById("txtProvince").value = data.province;
         document.getElementById("txtZipCode").value = data.zipCode;
         document.getElementById("selOrigin").value = data.origin.id;
-        document.getElementById("selDestination").value = data.destination.id;
+		document.getElementById("selDestination").value = data.destination.id;
+		
+		let option = document.createElement("option");
+		option.value = data.position.id;
+		option.text = data.position.name;
+		document.getElementById("selPosition").appendChild(option);
         document.getElementById("selPosition").value = data.position.id;
         // Cleaning the table
         let journeyDiv = document.getElementById("journeysDiv")
@@ -45,41 +50,12 @@ function makeTable(p) {
 	tr.appendChild(th);
 	table.appendChild(tr);
 
-	//Sorting the Journeys
-	/*p.journeys.sort(function(a,b) {
-		return a.start.localeCompare(b.start);
-	});*/
-
-	/*p.journeys.forEach(j => {
-		// Adding the journey ID
-		journeys.push(j.id);
-		// making the lines of the table
-		let date = new Date(j.start);
-		tr = document.createElement("tr");
-		let td = document.createElement("td");
-		td.textContent = j.origin.name;
-		if(p.position.id==j.origin.id) {
-			td.style.fontWeight = "bold";
-			td.style.backgroundColor = "#ADD8E6";
-		}
-		tr.appendChild(td);
-		td = document.createElement("td");
-		td.textContent = j.destination.name;
-		tr.appendChild(td);
-		td = document.createElement("td");
-		td.textContent = formatDate(date)
-		tr.appendChild(td);
-		td = document.createElement("td");
-		td.textContent = j.vehicle.description;
-		tr.appendChild(td);
-		table.appendChild(tr);
-	});
-	*/
-	console.log(p);
+	
+	console.log(p.journeys);
 	let position = p.origin.id;
-	for(let x=0; x < p.journeys.length; ++x) {
+	while(p.journeys.length>0) {
 		for(let y=0; y < p.journeys.length; ++y) {
-			console.log("position: "+position+" origin: "+p.journeys[y].origin.id)
+			//console.log("position: "+position+" origin: "+p.journeys[y].origin.id)
 			if(position==p.journeys[y].origin.id) {
 				let date = new Date(p.journeys[y].start);
 				tr = document.createElement("tr");
@@ -103,7 +79,6 @@ function makeTable(p) {
 				position=p.journeys[y].destination.id;
 				p.journeys.splice(y,1);
 				--y;
-				--x;
 			}
 		}
 	}
