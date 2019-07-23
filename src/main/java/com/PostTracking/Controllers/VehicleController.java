@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.VehicleDAO;
-import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.Vehicle;
 
 
@@ -44,13 +43,13 @@ public class VehicleController {
 	 * Returns a JSON object of Vehicles to the API
 	 * @return JSON vehicles
 	 */
-	/*@GetMapping("/api/vehicles")
+	@GetMapping("/api/vehicles")
 	@ResponseBody
 	public List<Vehicle> getAllVehicles() {
 		ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 		getAll().forEach(v -> vehicles.add(v));
 		return vehicles;
-	}*/
+	}
 	
 	/**
 	 * Get the car by the id.
@@ -100,7 +99,6 @@ public class VehicleController {
 	}
 	
 	/**
-	 * TODO Implement the DAO function for the vehicle delete and structure the 
 	 * page to be redirected when the client is trying to delete the vehicle. Maybe
 	 * show the routes for them with a confirm button.
 	 * <br><br>
@@ -112,6 +110,7 @@ public class VehicleController {
 	public String deleteVehicle(@RequestParam int id) {
 		Vehicle hibernateVehicle = vdao.findById(id).get();
 		hibernateVehicle.setDeleted(true);
+		hibernateVehicle.setAvailable(false);
 		vdao.save(hibernateVehicle);
 		return "redirect:/vehicles";
 	}

@@ -10,14 +10,20 @@ window.onload = function() {
 			this.innerHTML = "Checking...";
 			if(origin==destination) {
 				$('#paths').html("<strong>Origin can't be the same as destination</strong>");
+				this.disabled = false;
+				this.innerHTML = "Seek Path";	
 				return false;
 			}
 			if(isNaN(parseInt(origin,10)) && isNaN(parseInt(destination,10))) {
 				$('#paths').html("<strong>Sorry, I could't understand your Distrtribution Centers</strong>");
+				this.disabled = false;
+				this.innerHTML = "Seek Path";	
 				return false;
 			}
 			if(isNaN(parseFloat(volume)) && isFloat(parseFloat(weight))) {
 				$('#paths').html("<strong>Sorry, I need numbers on Weight and Volume</strong>");
+				this.disabled = false;
+				this.innerHTML = "Seek Path";	
 				return false;
 			}
 			$.ajax({
@@ -26,10 +32,14 @@ window.onload = function() {
 			}).done(function(data) {
 				// Walking Paths
 				$('#paths').html("");
-				data.forEach(path => {
-					document.getElementById("paths").appendChild(makeCard(path));
-					document.getElementById("paths").appendChild(document.createElement("br"));				
-				});
+				if(data.length==0) {
+					$('#paths').html("<strong>Sorry, We could't find any path.<strong>");
+				} else {
+					data.forEach(path => {
+						document.getElementById("paths").appendChild(makeCard(path));
+						document.getElementById("paths").appendChild(document.createElement("br"));				
+					});
+				}
 			});
 			this.disabled = false;
 			this.innerHTML = "Seek Path";	
@@ -56,7 +66,6 @@ function makeCard(p) {
 	table.appendChild(tr);
 	
 	let journeys = Array();
-
 	p.journeys.forEach(j => {
 		// Adding the journey ID
 		journeys.push(j.id);

@@ -1,12 +1,25 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        
-    </head>
+    <head></head>
 <body>
 
     <header th:replace="index/header.html"></header>
     <div class="alert alert-info" id="div_info" style="display: none;"></div>
+    <!-- Divs for testing availability-->
+    <div class="alert alert-warning" 
+		th:if="${!journey.getVehicle().isAvailable()}">
+        <strong>This Vehicle is currently not available.</strong>
+    </div>
+    <div class="alert alert-warning" 
+		th:if="${!journey.getOrigin().isAvailable()}">
+        <strong>This Origin is currently not available.</strong>
+    </div>
+    <div class="alert alert-warning" 
+		th:if="${!journey.getDestination().isAvailable()}">
+        <strong>This Destination is currently not available.</strong>
+    </div>
+    <!-- -->
+
     <h1>Packages of Journey</h1>
     <h2 th:text="${journey.getOrigin().getName() + ' to ' + 
         journey.getDestination().getName() + ' ('+
@@ -49,7 +62,6 @@
     </table>
     <div th:replace="/packages/detailModal.html"></div>
     <script src="/script/packageEditModal.js"></script>
-    
     <script src="/script/journeysDetails.js"></script>
 
     <footer th:insert="index/footer.html"></footer>

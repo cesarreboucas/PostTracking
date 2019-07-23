@@ -2,12 +2,8 @@ package com.PostTracking.Controllers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -107,7 +103,7 @@ public class PackageController {
 	@PostMapping("/packages")
 	public String createPackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
 		if(!pack.validateMe()) {
-			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
+			redirAttrs.addFlashAttribute("error", "Something went wrong :( ");
 			return "redirect:/packages";	
 		}
 		pack.setPosition(pack.getOrigin());
@@ -124,16 +120,25 @@ public class PackageController {
 	 */
 	@PutMapping("/packages")
 	public String updatePackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
-		if(!pack.validateMe()) {
-			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
+		if(pack.validateMe()) {
+			Package oldPack = pDAO.findById(pack.getId()).get();
+			if(oldPack.getDestination().getId()!=pack.getDestination().getId() ||
+			  oldPack.getOrigin().getId()!=pack.getOrigin().getId()) {
+				pack.setJourneys(new HashSet<Journey>());
+				pack.setPosition(pack.getOrigin());
+				pDAO.save(pack);
+				return "redirect:packages/reroute/"+pack.getId()+"/"+pack.getOrigin().getId()+"/"+pack.getDestination().getId()+
+					"/"+pack.getWeight()+"/"+pack.getVolume();
+			} else {
+				pack.setJourneys(oldPack.getJourneys());
+				pDAO.save(pack);
+				redirAttrs.addFlashAttribute("message", "The Package has been Updated!");
+				return "redirect:/packages";
+			}
+		} else {
+			redirAttrs.addFlashAttribute("error", "Something went wrong :( ");
 			return "redirect:/packages";	
 		}
-		
-		//Solving the "CLEANER Journeys"
-		pack.setJourneys(pDAO.findById(pack.getId()).get().getJourneys());
-		pack = pDAO.save(pack);
-		redirAttrs.addFlashAttribute("message", "The Package has been Updated!");
-		return "redirect:/packages";
 	}
 
 	/**
@@ -175,12 +180,12 @@ public class PackageController {
 		return jDAO.getWithCapacity(new Timestamp (System.currentTimeMillis()));
 	}
 	
-	
-	//TODO update description
 	/**
-	 * Seeks the path between two distribution centers to route a package
+	 * 
 	 * @param origin The origin DC 
 	 * @param destination the destination DC 
+	 * @param weight_s the weight of the package
+	 * @param volume_s the volume of the package
 	 * @return The JSON with possible Paths to reach the destination
 	 */
 	@GetMapping("/packages/seekpath/{origin}/{destination}/{weight_s}/{volume_s}")
@@ -189,7 +194,7 @@ public class PackageController {
 			@PathVariable String weight_s,@PathVariable String volume_s) {
 		ArrayList<Path> paths = new ArrayList<Path>();
 		List<Route> routes = new ArrayList<Route>();
-		rDAO.findAll().iterator().forEachRemaining(routes::add);
+		rDAO.findAllAvailable().iterator().forEachRemaining(routes::add);
 		int origin_id = 0;
 		int destination_id = 0;
 		double weight = 0.0;
@@ -313,42 +318,55 @@ public class PackageController {
 	}
 
 	@PostMapping("/packages/reroute")
-	@ResponseBody
-	public Package executeReRoute(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
-		//Setting Up the Comparator
-		Comparator<Journey> compareByStart = (Journey j1, Journey j2) ->
-                                    j1.getStart().compareTo( j2.getStart() );
+	public String executeReRoute(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
 
-		// Filling the object (just ID and Journeys come from View)
+		// Getting the new Routes from the Object
 		List<Journey> newJourneys = new ArrayList<Journey>(pack.getJourneys());
-		Collections.sort(newJourneys, compareByStart);
 
 		//Getting other fields from the Database
 		pack = pDAO.findById(pack.getId()).get();
 
 		if(pack.validateMe()) {
 			List<Journey> currentJourneys = new ArrayList<Journey>(pack.getJourneys());
-			Collections.sort(currentJourneys, compareByStart);
-			Set<Journey> newMergedJourneys = new HashSet<Journey>();
+			List<Journey> newMergedJourneys = new ArrayList<Journey>();
 			
-			for(int i=0; i < currentJourneys.size() ; ++i) {
-				//Finding the Journeys already done (to keep)
-				if(newJourneys.get(0).getOrigin().getId()==currentJourneys.get(i).getOrigin().getId()) {
-					break;
-				} else {
-					newMergedJourneys.add(currentJourneys.get(i));
+			//If New Set fits the Origin, dont execute the for!
+			if(newJourneys.get(0).getOrigin().getId()==pack.getOrigin().getId()) 
+				currentJourneys.clear();
+
+			for(int x=0; x < currentJourneys.size(); ++x) {
+				/**
+				 * If the List is empty, The Origin's pack is equal to the current journey but different from the first new set of journeys
+				 * or the new set isn't empty, the last journey has different origin to the new set and it completes the last journey (Dest->Origin)
+				 */
+				if((newMergedJourneys.isEmpty() &&
+					 pack.getOrigin().getId()==currentJourneys.get(x).getOrigin().getId() &&
+					 newJourneys.get(0).getOrigin().getId()!=pack.getOrigin().getId()) 
+					 ||
+					(!newMergedJourneys.isEmpty() &&
+					 currentJourneys.get(x).getOrigin().getId()!=newJourneys.get(0).getOrigin().getId() &&
+					 currentJourneys.get(x).getOrigin().getId()==newMergedJourneys.get(newMergedJourneys.size()-1).getDestination().getId())) {
+
+						//Add Journey to the new list if it is already done
+						newMergedJourneys.add(currentJourneys.remove(x));
+						// Takes the Journey out off the old list
+						
+						//Back to the start of the loop
+						x=-1;
 				}
 			}
+			
 			newMergedJourneys.addAll(newJourneys);
-			pack.setJourneys(newMergedJourneys);
+			pack.setJourneys(new HashSet<Journey>(newMergedJourneys));
+			pack.setDestination(newJourneys.get(newJourneys.size()-1).getDestination());
 			pDAO.save(pack);
+			redirAttrs.addFlashAttribute("message", "Package Re-Routed successfully");
+			return "redirect:/packages";	
 			
 		} else {
-			redirAttrs.addFlashAttribute("message", "Something went wrong :( ");
-			//return "redirect:/packages";	
-			System.out.println("fudeu");
+			redirAttrs.addFlashAttribute("error", "Something went wrong :( ");
+			return "redirect:/packages";	
 		}
-		return pack;
 	}
 
 	
