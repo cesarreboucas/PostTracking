@@ -52,6 +52,12 @@
 <p>After filling the Form, the Button "Seek Path" will look for Paths (set of Journeys) between the Origin and the Destination.<br/>The Output is similar to the following:</p>
 <img src="https://github.com/cesarreboucas/PostTracking/blob/master/Support/Instalation/seekpath.png?raw=true" />
 <p>Where you can choose (By Clicking in "Choose" :grin: among the options) the Journyes (and the Distribution Centers/Vehicles) you want to use to Deliver this Package.</p>
+<p>We choosed the second Option :dart:</p>
 <br/><br/>
 
 ## Looking for a Package
+<p>After adding a Package, you can see it on the menu Packages => Seach.</p>
+<p>Filling the criteria is optional but we strongly recommend, mainly when dealing with a large number of packages.</p>
+<p>In our example, this is the result</p>
+<img src="https://github.com/cesarreboucas/PostTracking/blob/master/Support/Instalation/packages_main.png?raw=true" />
+<p></p>As you can see, the Package number "3" is there going from Dragonstone to Winterfell, currently in Dragonstone (where it started its way), having the first movement going to "Myr"</p>
