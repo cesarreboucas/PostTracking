@@ -19,6 +19,13 @@ body {
 	border: #E2A7A3 !important;
 }
 
+button:disabled, button[disabled], button:disabled:hover{
+  border: 1px solid #999999 !important;
+  background-color: #cccccc !important;
+  color: #666666 !important;
+}
+
+
 header{
 	width: 100%;
 }
