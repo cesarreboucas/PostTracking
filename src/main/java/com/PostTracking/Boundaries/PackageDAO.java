@@ -5,11 +5,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
-import com.PostTracking.Entities.Journey;
+
 
 
 @Component

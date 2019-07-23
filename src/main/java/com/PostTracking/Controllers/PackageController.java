@@ -353,7 +353,6 @@ public class PackageController {
 						
 						//Back to the start of the loop
 						x=-1;
-						System.out.println("X setted to "+x);
 				}
 			}
 			
