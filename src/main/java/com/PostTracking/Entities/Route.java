@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 /**
- * Represents the Journey entity
+ * Represents the Route entity
  * Associates with Vehicle and Distribution Center entities
  *
  */

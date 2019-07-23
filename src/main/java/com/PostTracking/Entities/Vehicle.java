@@ -1,9 +1,8 @@
 package com.PostTracking.Entities;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,16 +25,19 @@ public class Vehicle {
 	private int maxWeight; // Kg
 	private int maxVolume; // dc3
 	private boolean available = true;
+	private boolean deleted = false;
 	
 	@Transient
 	List<Journey> routes = new ArrayList<Journey>();
 	
 	public Vehicle() {}
 	
-	public Vehicle(String description, int maxWeight, int maxVolume) {
+	public Vehicle(String description, int maxWeight, int maxVolume, boolean available) {
 		this.description = description;
 		this.maxWeight = maxWeight;
 		this.maxVolume = maxVolume;
+		this.available = available;
+		this.deleted = false;
 	}
 	
 	public int setId(int Id) {
@@ -72,6 +74,14 @@ public class Vehicle {
 	public void setAvailable(boolean available) {
 		this.available = available;
 	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public List<Journey> getRoutes() {
 		return routes;
@@ -87,7 +97,8 @@ public class Vehicle {
 		String.format("Vehicle ID: %d\n" +
 					  "Description: %s\n" +
 					  "Max Volume: %d\n" +
-					  "Max Weight: %d\n", Id, description, maxVolume, maxWeight);
+					  "Max Weight: %d\n" +
+					  "Available: %b\n", Id, description, maxVolume, maxWeight, available);
 	}
 
 	@Override

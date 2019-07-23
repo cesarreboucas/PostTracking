@@ -84,23 +84,49 @@
     ]
   },
   {
-    "name": "Vehicle Route",
-    "superclasses": "",
+    "name": "Route",
+    "superclasses": "Journey",
     "subclasses": "",
     "type": 1,
     "responsibilities": [
-      "Identifies the vehicle route",
+      "Inherits all attributes from Journey",
+      "Represents the First journey to the vehicle",
+      "Defines the start timestamp",
+      "Manages restart"
+    ],
+    "collaborators": [
+      "Vehicle",
+      "Distribution Center"
+    ]
+  },
+  {
+    "name": "Journey",
+    "superclasses": "",
+    "subclasses": "Route",
+    "type": 1,
+    "responsibilities": [
+      "Identifies the vehicle trip",
       "Identifies the vehicle",
       "Identifies the Distribution Center origin",
       "Identifies the Distribution Center destination",
-      "Defines the start timestamp",
-      "Defines the duration of the route",
-      "Manages restart",
+      "Defines the duration of the trip",
       "Check availability"
     ],
     "collaborators": [
       "Vehicle",
       "Distribution Center"
+    ]
+  },
+  {
+    "name": "Path",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Holds a set of Journeys"
+    ],
+    "collaborators": [
+      "Journeys"
     ]
   }
 ]

@@ -15,7 +15,12 @@ $('#modalPackageEdit').on('show.bs.modal', function (event) {
         document.getElementById("txtProvince").value = data.province;
         document.getElementById("txtZipCode").value = data.zipCode;
         document.getElementById("selOrigin").value = data.origin.id;
-        document.getElementById("selDestination").value = data.destination.id;
+		document.getElementById("selDestination").value = data.destination.id;
+		
+		let option = document.createElement("option");
+		option.value = data.position.id;
+		option.text = data.position.name;
+		document.getElementById("selPosition").appendChild(option);
         document.getElementById("selPosition").value = data.position.id;
         // Cleaning the table
         let journeyDiv = document.getElementById("journeysDiv")
@@ -37,30 +42,54 @@ function makeTable(p) {
 	th = document.createElement("th");
 	th.textContent = "Destination";
 	tr.appendChild(th);
-		th = document.createElement("th");
+	th = document.createElement("th");
 	th.textContent = "Date";
 	tr.appendChild(th);
+	th = document.createElement("th");
+	th.textContent = "Vehicle";
+	tr.appendChild(th);
 	table.appendChild(tr);
-	
-	let journeys = Array();
 
-	p.journeys.forEach(j => {
-		// Adding the journey ID
-		journeys.push(j.id);
-		// making the lines of the table
-		let date = new Date(j.start);
-		tr = document.createElement("tr");
-		let td = document.createElement("td");
-		td.textContent = j.origin.name;
-		tr.appendChild(td);
-		td = document.createElement("td");
-		td.textContent = j.destination.name;
-		tr.appendChild(td);
-		td = document.createElement("td");
-		td.textContent = formatDate(date)
-		tr.appendChild(td);
-		table.appendChild(tr);
-	});
+	
+	console.log(p.journeys);
+	let position = p.origin.id;
+	while(p.journeys.length>0) {
+		for(let y=0; y < p.journeys.length; ++y) {
+			//console.log("position: "+position+" origin: "+p.journeys[y].origin.id)
+			if(position==p.journeys[y].origin.id) {
+				let date = new Date(p.journeys[y].start);
+				tr = document.createElement("tr");
+				let td = document.createElement("td");
+				td.textContent = p.journeys[y].origin.name;
+				if(p.position.id==p.journeys[y].origin.id) {
+					td.style.fontWeight = "bold";
+					td.style.backgroundColor = "#ADD8E6";
+				}
+				tr.appendChild(td);
+				td = document.createElement("td");
+				td.textContent = p.journeys[y].destination.name;
+				tr.appendChild(td);
+				td = document.createElement("td");
+				td.textContent = formatDate(date)
+				tr.appendChild(td);
+				td = document.createElement("td");
+				td.textContent = p.journeys[y].vehicle.description;
+				tr.appendChild(td);
+				table.appendChild(tr);
+				position=p.journeys[y].destination.id;
+				p.journeys.splice(y,1);
+				--y;
+			}
+		}
+	}
 	
 	return table;
+}
+
+function formatDate(date) {
+	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	return date.getDate()+"-"+months[date.getMonth()]+"-"+date.getFullYear()+" "+
+			date.getHours().toString().padStart(2,"0")+":"
+			+date.getMinutes().toString().padStart(2,"0")+" ("+days[date.getDay()]+")";
 }

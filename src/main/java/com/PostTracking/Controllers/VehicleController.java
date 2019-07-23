@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -41,6 +39,10 @@ public class VehicleController {
 		
 	}
 	
+	/**
+	 * Returns a JSON object of Vehicles to the API
+	 * @return JSON vehicles
+	 */
 	@GetMapping("/api/vehicles")
 	@ResponseBody
 	public List<Vehicle> getAllVehicles() {
@@ -56,7 +58,7 @@ public class VehicleController {
 	 */
 	@GetMapping("/vehicles/{id}")
 	@ResponseBody
-	public Vehicle seekPath(@PathVariable String id) {
+	public Vehicle getVehicle(@PathVariable String id) {
 		try {
 			return vdao.findById(Integer.parseInt(id)).get();
 		} catch(Exception ex) {
@@ -88,6 +90,7 @@ public class VehicleController {
 		hibernateVehicle.setDescription(vehicle.getDescription());
 		hibernateVehicle.setMaxVolume(vehicle.getMaxVolume());
 		hibernateVehicle.setMaxWeight(vehicle.getMaxWeight());
+		hibernateVehicle.setAvailable(vehicle.isAvailable());
 		
 		System.out.println("POST");
 		System.out.println(hibernateVehicle);
@@ -96,7 +99,6 @@ public class VehicleController {
 	}
 	
 	/**
-	 * TODO Implement the DAO function for the vehicle delete and structure the 
 	 * page to be redirected when the client is trying to delete the vehicle. Maybe
 	 * show the routes for them with a confirm button.
 	 * <br><br>
@@ -107,9 +109,9 @@ public class VehicleController {
 	@DeleteMapping("/vehicles")
 	public String deleteVehicle(@RequestParam int id) {
 		Vehicle hibernateVehicle = vdao.findById(id).get();
-		//vdao.deleteVehicle(v_db);
-		System.out.println("DELETE");
-		System.out.println(hibernateVehicle);
+		hibernateVehicle.setDeleted(true);
+		hibernateVehicle.setAvailable(false);
+		vdao.save(hibernateVehicle);
 		return "redirect:/vehicles";
 	}
 	
@@ -118,7 +120,7 @@ public class VehicleController {
 	 */
 	@ModelAttribute("vehicles")
 	public Iterable<Vehicle> getAll() {
-		return vdao.findAll();
+		return vdao.fetchVehicles();
 	}
 	
 }

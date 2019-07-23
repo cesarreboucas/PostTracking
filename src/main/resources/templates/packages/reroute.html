@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head></head>
+<body>
+    <header th:replace="index/header.html"></header>
+    <h1>Re-Route Package</h1>
+    <div th:each="path : ${paths}" class="card">
+        <div class="card-header">
+            Journeys
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tr th:data-id="${pack.getId()}">
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Date</th>
+                    <th>Vehicle</th>
+                </tr>
+                <tr th:each="journey : ${path.getJourneys()}" th:data-id="${journey.getId()}">
+                    <td th:text="${journey.getOrigin().getName()}"></td>
+                    <td th:text="${journey.getDestination().getName()}"></td>
+                    <td th:text="${journey.getStart()}" name="tdDate"></td>
+                    <td th:text="${journey.getVehicle().getDescription()}"></td>
+                </tr>
+                <tr>
+                    <th colspan="4" style="text-align: right;">
+                        <button class="btn btn-sm btn-primary" onclick="setReroute(this)" name="btnChoose">Choose</button>
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <form action="#" th:action="@{/packages/reroute}" th:object="${pack}" th:method="POST" id="ReRouteForm">
+        <input name="PackageId" th:field="*{id}" id="txtId" type="hidden" />
+        <input type="hidden" id="txtJourneys" th:field="*{journeys}">
+    </form>
+    <div th:if="${paths.empty}">
+        <h2>
+            We couldn't find a new Path.
+        </h2>        
+    </div>
+    <script src="/script/essentialFunctions.js"></script>
+    <script>
+        $('td[name=tdDate]').each(function () {
+            let date = new Date($(this).html());
+            $(this).html(formatDate(date));
+        });
+    </script>
+    <script src="/script/reroute.js"></script>
+    <footer th:insert="index/footer.html"></footer>
+</body>
+</html>

@@ -21,6 +21,7 @@ public class DistributionCenter {
 	private String province = "";
 	private String zipCode = "";
 	private boolean active = true;
+	private boolean available = true;
 	
 	
 	public DistributionCenter() {}
@@ -88,6 +89,14 @@ public class DistributionCenter {
 	
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public boolean isAvailable() {
+		return this.available;
+	}
+	
+	public void setAvailable(boolean av) {
+		this.available = av;
 	}
 
 	@Override

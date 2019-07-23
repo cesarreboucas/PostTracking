@@ -22,7 +22,7 @@ public class Package {
 
 	@javax.persistence.Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private int id = 0;
 
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_origin")
@@ -39,14 +39,6 @@ public class Package {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_customer")
 	private Customer customer;
-
-	/*
-	@ManyToMany
-	@JoinTable(name="usuario_roles"
-		,joinColumns=@JoinColumn(name="usuario_id")
-		,inverseJoinColumns=@JoinColumn(name="role_id")
-	)
-	private Set<Rol> roles;*/
 	
 	@ManyToMany
 	@JoinTable(name = "package_journey", 
@@ -66,6 +58,10 @@ public class Package {
 	
 	public int getId() {
 		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public double getWeight() {

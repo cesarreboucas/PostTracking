@@ -102,7 +102,7 @@ public class CustomerController {
 	
 	/**
 	 * Makes customers list available in the view.
-	 * @return List of custommers
+	 * @return List of customers
 	 */
 	@ModelAttribute("customers")
 	public Iterable<Customer> getAll() {

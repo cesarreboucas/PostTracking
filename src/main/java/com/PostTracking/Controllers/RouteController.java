@@ -10,7 +10,6 @@ import com.PostTracking.Boundaries.DistributionCenterDAO;
 import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.DistributionCenter;
-import com.PostTracking.Entities.Journey;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
 import com.PostTracking.Models.VehiclePath;

@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
-import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 
 

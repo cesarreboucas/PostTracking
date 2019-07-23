@@ -17,6 +17,8 @@ $('#modalForm').on('show.bs.modal', function (event) {
 			document.getElementById("txtDescription").value = data.description;
 			document.getElementById("txtMaxVolume").value = data.maxVolume;
 			document.getElementById("txtMaxWeight").value = data.maxWeight;
+			document.getElementById("selectAvailable").value = data.available;
+			console.log(data);
 			modal.find("#modalTitle").text('Editing Vehicle');
 		});
 	} else {
@@ -24,6 +26,7 @@ $('#modalForm').on('show.bs.modal', function (event) {
 		document.getElementById("txtDescription").value = "";
 		document.getElementById("txtMaxVolume").value = 0;
 		document.getElementById("txtMaxWeight").value = 0;
+		document.getElementById("selectAvailable").value = "";
 		modal.find("#modalTitle").text('Adding Vehicle');
 	}
 	

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+    <head></head>
+<body>
+
+    <header th:replace="index/header.html"></header>
+    <div class="alert alert-info" id="div_info" style="display: none;"></div>
+    <!-- Divs for testing availability-->
+    <div class="alert alert-warning" 
+		th:if="${!journey.getVehicle().isAvailable()}">
+        <strong>This Vehicle is currently not available.</strong>
+    </div>
+    <div class="alert alert-warning" 
+		th:if="${!journey.getOrigin().isAvailable()}">
+        <strong>This Origin is currently not available.</strong>
+    </div>
+    <div class="alert alert-warning" 
+		th:if="${!journey.getDestination().isAvailable()}">
+        <strong>This Destination is currently not available.</strong>
+    </div>
+    <!-- -->
+
+    <h1>Packages of Journey</h1>
+    <h2 th:text="${journey.getOrigin().getName() + ' to ' + 
+        journey.getDestination().getName() + ' ('+
+        journey.getVehicle().getDescription()+')'}"></h2>
+        
+    <table class="table">
+        <tr>
+            <th>Package</th>
+            <th>Volume</th>
+            <th>Weight</th>
+            <th>Position</th>
+            <th>Final Destination</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="package : ${journey.getPackages()}"
+            th:classappend="${package.getPosition()!=journey.getOrigin()} ? 'table-danger' : '' ">
+            <td><button th:data-package="${package.getId()}" type="button" 
+                class="btn-secondary btn-sm btn-block btn-primary" 
+                data-toggle="modal" data-target="#modalPackageEdit">Detail</button>
+            </td>
+            <td th:text="${package.getVolume()}"></td>
+            <td th:text="${package.getWeight()}"></td>
+            <td th:text="${package.getPosition().getName()}" name="tdPosition"></td>
+            <td th:text="${package.getDestination().getName()}"></td>
+            <td>
+                <button class="btn btn-sm" th:data-id="${package.getId()}" 
+                    th:data-next="${journey.getDestination().getId()}"
+                    onclick="Check(this)" 
+                    th:text="${package.getPosition()==journey.getOrigin()} ?'Check': 'Unable'"
+                    th:disabled="${package.getPosition()!=journey.getOrigin()}"
+                    name="btnCheck">
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" style="text-align: right;">
+                <button class="btn btn-sm" onclick="checkAll(this)" th:data-j="${journey.getId()}">Check All</button>
+            </td>
+        </tr>
+    </table>
+    <div th:replace="/packages/detailModal.html"></div>
+    <script src="/script/packageEditModal.js"></script>
+    <script src="/script/journeysDetails.js"></script>
+
+    <footer th:insert="index/footer.html"></footer>
+</body>
+
+</html>
