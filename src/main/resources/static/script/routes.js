@@ -104,6 +104,7 @@ function onDropDownMenuClick(event) {
 
 function createCard() {
     let formContainer = document.getElementById('FormContainer');
+    clearFormContainer();
 
     let card = document.createElement('div');
     card.setAttribute('class', 'card');

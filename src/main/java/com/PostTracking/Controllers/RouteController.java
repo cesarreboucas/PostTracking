@@ -1,6 +1,7 @@
 package com.PostTracking.Controllers;
 
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,8 @@ import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
+import com.PostTracking.Models.VehiclePath;
+import com.PostTracking.Models.VehiclePaths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,12 +44,11 @@ public class RouteController {
 	 */
 	@GetMapping("/routes")
 	public String showAll(Model m) {
-		
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		vController.getAll().iterator().forEachRemaining(vehicles::add);
-		
 		List<Route> routes = new ArrayList<Route>();
 		rDAO.findAll().iterator().forEachRemaining(routes::add);
+
 		for(int i=0; i < routes.size(); ++i) {
 			int pos =  vehicles.indexOf(routes.get(i).getVehicle());
 			vehicles.get(pos).addRoute(routes.get(i));
@@ -87,8 +89,6 @@ public class RouteController {
 				return new ResponseEntity<String>(String.format("Route %d destination should be the same as route %d origin", routes.size(), 1), HttpStatus.BAD_REQUEST);
 			}
 
-			// Using the restart calculation as follow:
-			// Number of DC * 21600 (6 hours).
 			for (int i=0; i<routes.size(); i++) {
 				System.out.println(routes.get(i));
 				int vehicleId = routes.get(i).getVehicle().getId();
@@ -117,6 +117,8 @@ public class RouteController {
 				}
 
 				routes.get(i).setAvailable(true);
+				// Using the restart calculation as follow:
+				// Number of DC * 21600 (6 hours).
 				routes.get(i).setRestart(routes.size() * 21600);
 			 }
 			 
