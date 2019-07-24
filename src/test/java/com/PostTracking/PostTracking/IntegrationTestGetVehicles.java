@@ -14,7 +14,7 @@ import com.PostTracking.Entities.Vehicle;
 import com.google.gson.Gson;
 
 
-public class IntegrationTestGetAllVehicles {
+public class IntegrationTestGetVehicles {
 
 	Vehicle[] vehicles;
 	URL url;
@@ -22,10 +22,9 @@ public class IntegrationTestGetAllVehicles {
 	Gson gson = new Gson();
 	
 	@Test
-	public void GetAllVehiclesTest() {
+	public void GetVehiclesTest() {
 
 		try {
-			//Get all Vehicles
 			url = new URL("http://127.0.0.1:8080/api/vehicles");
 			con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
@@ -35,7 +34,7 @@ public class IntegrationTestGetAllVehicles {
 			String inputLine;
 			StringBuffer content = new StringBuffer();
 			while ((inputLine = in.readLine()) != null) {
-					    content.append(inputLine);
+				content.append(inputLine);
 			}
 			in.close();
 			vehicles = gson.fromJson(content.toString(), Vehicle[].class);
@@ -43,8 +42,5 @@ public class IntegrationTestGetAllVehicles {
 			ex.printStackTrace();
 		}
 		assertTrue(vehicles.length>0);
-	
 	}
-
-
 }
