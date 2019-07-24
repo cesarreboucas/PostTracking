@@ -111,6 +111,19 @@ public class PackageController {
 		redirAttrs.addFlashAttribute("message", "The Package has been Added!");
 		return "redirect:/packages";
 	}
+	
+	@PostMapping("/api/packages")
+	@ResponseBody
+	public Package createPackageByAPI(@ModelAttribute Package pack) {
+		if(pack.validateMe()) {
+			pack.setPosition(pack.getOrigin());
+			pack = pDAO.save(pack);
+			return pack;
+		}
+		return null;
+	}
+	
+	
 	//TODO update description
 	/**
 	 * 
@@ -226,8 +239,8 @@ public class PackageController {
 					Path p = new Path(paths.get(x));
 					p.addStep(new Route(routes.get(i)));
 					paths.add(p);
-					System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition()+
-							" Path progress: "+x+"/"+paths.size());
+					//System.out.println("adding from: "+paths.get(x).getPosition()+" to: "+p.getPosition()+
+					//		" Path progress: "+x+"/"+paths.size());
 				} 
 			}
 		}
@@ -248,7 +261,7 @@ public class PackageController {
 				System.out.println("Working on: "+x+" Paths Size ->"+paths.size());
 				// At this moment, this is actually a List of Routes (Child of Journey)
 				ArrayList<Journey> routesOfPath = paths.get(x).getJourneys();
-				System.out.println(paths.get(x));
+				//System.out.println(paths.get(x));
 				// Backing minimal to now
 				minimal = now;
 				for(int i=0; i < routesOfPath.size() ; ++i) {

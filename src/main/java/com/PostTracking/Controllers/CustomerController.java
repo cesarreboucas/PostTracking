@@ -35,7 +35,12 @@ public class CustomerController {
 		return "customers/customers";
 	}
 	
-
+	@GetMapping("/api/customers")
+	@ResponseBody
+	public Iterable<Customer> ReturnAll() {
+		return getAll();
+	}
+	
 	/**
 	 * Creates a new Customer
 	 * @param customer The new customer
