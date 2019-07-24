@@ -20,7 +20,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
 import java.util.*;
-public class PostalTrackingAddCustomerTest {
+public class AddCustomerTest {
 private WebDriver driver;
 private Map<String, Object> vars;
 JavascriptExecutor js;
