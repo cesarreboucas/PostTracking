@@ -119,7 +119,8 @@ public class RouteController {
 				routes.get(i).setAvailable(true);
 				// Using the restart calculation as follow:
 				// Number of DC * 21600 (6 hours).
-				routes.get(i).setRestart(routes.size() * 21600);
+				System.out.println("Restart: " + (routes.size() * 21600000));
+				routes.get(i).setRestart(routes.size() * 21600000);
 			 }
 			 
 			 rDAO.saveAll(routes);
