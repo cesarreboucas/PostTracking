@@ -128,5 +128,41 @@
     "collaborators": [
       "Journeys"
     ]
+  },
+  {
+    "name": "Package Controller",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Create package",
+      "Search packages",
+      "Update Package",
+      "Delete Package",
+      "Update position of package"
+    ],
+    "collaborators": [
+      "Route",
+      "Journey",
+      "Distribution Center",
+      "Package",
+      "Customer",
+      "Vehicle"
+    ]
+  },
+  {
+    "name": "Journey Controller",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Search routes",
+      "Return package journeys"
+    ],
+    "collaborators": [
+      "Routes",
+      "Distribution Center",
+      "Package"
+    ]
   }
 ]
