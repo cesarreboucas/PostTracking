@@ -10,7 +10,13 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.InputSource;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Sleeper;
 import org.openqa.selenium.JavascriptExecutor;
+
+import static org.junit.Assert.assertEquals;
+
 import java.util.*;
 public class AddRouteTest {
   private WebDriver driver;
@@ -29,47 +35,51 @@ public class AddRouteTest {
   }
   @Test
   public void addRouteTest() {
-    driver.get("http://127.0.0.1:8080/");
-    driver.manage().window().setSize(new Dimension(1920, 973));
-    driver.findElement(By.linkText("Routes")).click();
-    driver.findElement(By.cssSelector(".btn:nth-child(1)")).click();
-    driver.findElement(By.id("DropDownTrigger")).click();
-    driver.findElement(By.linkText("Dodge Ram 3500")).click();
-    driver.findElement(By.cssSelector("td:nth-child(2) > .form-group")).click();
-    {
-      WebElement dropdown = driver.findElement(By.cssSelector("td:nth-child(2) > .form-group"));
-      dropdown.findElement(By.xpath("//option[. = 'Castle Black']")).click();
-    }
-    driver.findElement(By.cssSelector("td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(3) > input")).sendKeys("2019-07-01T01:01");
-    driver.findElement(By.cssSelector("td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("2019-07-02T01:01");
-    driver.findElement(By.id("CreateRow")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(1) > .form-group")).click();
-    {
-      WebElement dropdown = driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(1) > .form-group"));
-      dropdown.findElement(By.xpath("//option[. = 'Castle Black']")).click();
-    }
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(2) > .form-group")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("2019-07-03T01:01");
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("2019-07-04T01:01");
-    driver.findElement(By.id("CreateRoute")).click();
-    driver.findElement(By.id("modalForm")).click();
-    driver.findElement(By.cssSelector("body")).click();
+	  try {
+		    driver.get("http://127.0.0.1:8080/");
+		    driver.manage().window().setSize(new Dimension(1296, 1000));
+		    driver.findElement(By.linkText("Routes")).click();
+		    driver.findElement(By.cssSelector(".btn:nth-child(1)")).click();
+		    {
+		      WebElement element = driver.findElement(By.cssSelector(".btn:nth-child(1)"));
+		      Actions builder = new Actions(driver);
+		      builder.moveToElement(element).perform();
+		    }
+		    {
+		      WebElement element = driver.findElement(By.tagName("body"));
+		      Actions builder = new Actions(driver);
+		      builder.moveToElement(element, 0, 0).perform();
+		    }
+		    driver.findElement(By.id("DropDownTrigger")).click();
+		    driver.findElement(By.linkText("Appaloosa Horse")).click();
+		    driver.findElement(By.cssSelector("td:nth-child(2) > .form-group")).click();
+		    {
+		      WebElement dropdownElement = driver.findElement(By.cssSelector("td:nth-child(2) > .form-group"));
+		      Select dropdown = new Select(dropdownElement);
+		      dropdown.selectByIndex(1);
+		    }
+		    driver.findElement(By.cssSelector("td:nth-child(3) > input")).sendKeys("01/01/002019 01:01PM");
+		    driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("01/02/002019 01:01PM");
+		    
+		    //CREATE ANOTHER ROW
+		    driver.findElement(By.id("CreateRow")).click();
+		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(1) > .form-group")).click();
+		    {
+		      WebElement dropdownElement = driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(1) > .form-group"));
+		      Select dropdown = new Select(dropdownElement);
+		      dropdown.selectByIndex(1);
+		    }
+		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("01/03/002019 01:01PM");
+		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("01/04/002019 01:01PM");
+		    driver.findElement(By.id("CreateRoute")).click();
+		    
+		    Thread.sleep(1000);
+		    
+		    String result = driver.findElement(By.id("ErrorMessage")).getText();
+		    assertEquals(result, "Routes created successfull");
+	} catch (Exception e) {
+		// TODO: handle exception
+		System.out.println(e.getMessage());
+	}
   }
 }
