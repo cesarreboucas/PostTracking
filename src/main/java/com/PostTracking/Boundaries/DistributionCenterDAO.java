@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component;
 import com.PostTracking.Entities.DistributionCenter;
 
 
-
+/**
+ * Extends CrudRepository for DistributionCenter Entity
+ * @author 300296145
+ *
+ */
 @Component
 public interface DistributionCenterDAO extends CrudRepository<DistributionCenter, Integer> {
 	@Query("SELECT dc FROM DistributionCenter dc WHERE dc.active = true ORDER BY dc.name ASC")

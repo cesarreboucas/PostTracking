@@ -6,7 +6,11 @@ import org.springframework.stereotype.Component;
 
 import com.PostTracking.Entities.Route;
 
-
+/**
+ * Extends CrudRepository for Route Entity
+ * @author 300296145
+ *
+ */
 @Component
 public interface RouteDAO extends CrudRepository<Route, Integer> {
     @Query("SELECT r FROM Route r WHERE (r.vehicle.available=true and r.available=true "+

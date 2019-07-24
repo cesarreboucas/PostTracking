@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 
 import com.PostTracking.Entities.Journey;
 
+/**
+ * Extends CrudRepository for Journey Entity
+ * @author 300296145
+ *
+ */
 @Component
 public interface JourneyDAO extends CrudRepository<Journey, Long> {
     @Query("SELECT a FROM Journey a WHERE a.start>=:minimal")

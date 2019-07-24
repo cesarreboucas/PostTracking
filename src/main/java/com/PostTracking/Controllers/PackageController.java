@@ -112,6 +112,11 @@ public class PackageController {
 		return "redirect:/packages";
 	}
 	
+	/**
+	 * Provides an EndPoint for Creating Packages for Mobile Devices
+	 * @param pack The Package to be created
+	 * @return The Saved Package
+	 */
 	@PostMapping("/api/packages")
 	@ResponseBody
 	public Package createPackageByAPI(@ModelAttribute Package pack) {
@@ -124,12 +129,11 @@ public class PackageController {
 	}
 	
 	
-	//TODO update description
 	/**
-	 * 
-	 * @param pack 
-	 * @param redirAttrs
-	 * @return
+	 * Updates the Package
+	 * @param pack the Package to be Updated
+	 * @param redirAttrs The Message to inform the result of the Operation
+	 * @return The View of Packages
 	 */
 	@PutMapping("/packages")
 	public String updatePackage(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
@@ -153,7 +157,8 @@ public class PackageController {
 			return "redirect:/packages";	
 		}
 	}
-
+	
+	//TODO change for EntityResponse
 	/**
 	 * Changes the position od a package
 	 * @param position the distribution center id
@@ -185,12 +190,6 @@ public class PackageController {
 		} catch(Exception ex) {
 			return new Package();
 		}
-	}
-	
-	@GetMapping("/packages/test")
-	@ResponseBody
-	public List<Journey> getJourneysBody() {
-		return jDAO.getWithCapacity(new Timestamp (System.currentTimeMillis()));
 	}
 	
 	/**
@@ -308,7 +307,17 @@ public class PackageController {
 		
 		return paths;
 	}
-
+	
+	/**
+	 * Provides a View to Reroute a Package
+	 * @param id The Package ID
+	 * @param origin The (new) Origin
+	 * @param destination The (new) Destination
+	 * @param weight_s The Weight
+	 * @param volume_s The Volume
+	 * @param m The Model to be injected
+	 * @return The View of ReRoute
+	 */
 	@GetMapping("/packages/reroute/{id}/{origin}/{destination}/{weight_s}/{volume_s}")
 	public String reRoutePackage(@PathVariable String id, @PathVariable String origin,
 		@PathVariable String destination,@PathVariable String weight_s,@PathVariable String volume_s, Model m) {
@@ -329,7 +338,13 @@ public class PackageController {
 			m.addAttribute("pack", p);
 			return "packages/reroute";
 	}
-
+	
+	/**
+	 * Proccess the Reroute of Each Package
+	 * @param pack The Package to be ReRouted
+	 * @param redirAttrs The message to inform the Result of the Operation
+	 * @return A Redirect to the Packages View
+	 */
 	@PostMapping("/packages/reroute")
 	public String executeReRoute(@ModelAttribute Package pack, RedirectAttributes redirAttrs) {
 

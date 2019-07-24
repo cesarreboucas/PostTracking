@@ -39,7 +39,7 @@ public class JourneyController {
 
 	/**
 	 * Maps /journeys/{id}
-	 * 
+	 * Provides the View of Packages by Journey
 	 * @param id    the Id of the Package
 	 * @param model the Model to be sent to the view
 	 * @return the view for a specific journey
@@ -51,11 +51,20 @@ public class JourneyController {
 		return "journeys/journeysDetail";
 	}
 	
+	/**
+	 * Returns the View with a List of active Journeys
+	 * @return The View
+	 */
 	@GetMapping("/journeys")
 	public String showJourneys() {	
 		return "journeys/journeys";
 	}
-
+	
+	/**
+	 * Provides the Checking of Packages for a particular Journey
+	 * @param journey_id The id of the Journey
+	 * @return An ResoinseEntity with the Result Operation
+	 */
 	@GetMapping("/journeys/checkpackages/{journey_id}")
 	public ResponseEntity<?> checkPackages(@PathVariable String journey_id) {
 		long id;
@@ -76,12 +85,20 @@ public class JourneyController {
 		}
 		return new ResponseEntity<String>(j.getDestination().getName(), HttpStatus.OK);
 	}
-
+	
+	/**
+	 * Provides the List of Journeys to the Views
+	 * @return A list of Journeys
+	 */
 	@ModelAttribute("journeys")
 	public Iterable<Journey> getAll() {
 		return jDAO.findAll();
 	}
 
+	/**
+	 * Provides the List of Journeys that are Filled with at least one Package
+	 * @return The List of Filled Journeys
+	 */
 	@ModelAttribute("filledJourneys")
 	public Iterable<Journey> getAllFilled() {
 		return jDAO.findFilled();

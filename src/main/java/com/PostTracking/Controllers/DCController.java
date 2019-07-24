@@ -63,7 +63,12 @@ public class DCController {
 		}
 	}
 
-	//TODO Update description
+	/**
+	 * Renders the View for Packages by DistributionCenter
+	 * @param id The id of the DistributionCenter
+	 * @param m The Model to be Injected
+	 * @return The view
+	 */
 	@GetMapping("/dcs/{id}/packages")
 	public String getPackagesFromDistributionCenter(@PathVariable String id, Model m) {
 			DistributionCenter dc = dcDAO.findById(Integer.parseInt(id)).get();

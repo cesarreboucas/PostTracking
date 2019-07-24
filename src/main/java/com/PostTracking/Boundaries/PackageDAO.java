@@ -9,7 +9,11 @@ import com.PostTracking.Entities.Customer;
 import com.PostTracking.Entities.DistributionCenter;
 
 
-
+/**
+ * Extends CrudRepository for Package Entity
+ * @author 300296145
+ *
+ */
 @Component
 public interface PackageDAO extends CrudRepository<com.PostTracking.Entities.Package, Integer> {
     

@@ -35,6 +35,10 @@ public class CustomerController {
 		return "customers/customers";
 	}
 	
+	/**
+	 * Provides a list of Customers
+	 * @return Json of Customers
+	 */
 	@GetMapping("/api/customers")
 	@ResponseBody
 	public Iterable<Customer> ReturnAll() {

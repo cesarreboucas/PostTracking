@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.PostTracking.Entities.Customer;
 
-
+/**
+ * Extends CrudRepository for Customer Entity
+ * @author 300296145
+ *
+ */
 @Component
 public interface CustomerDAO extends CrudRepository<Customer, Integer> {
 	
