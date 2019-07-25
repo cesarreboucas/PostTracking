@@ -48,7 +48,7 @@ public class JourneyController {
 	public String showPackages(@PathVariable String id, Model model) {
 		model.addAttribute("journey", jDAO.findById(Long.parseLong(id)).get());
 		model.addAttribute("package", new Package());
-		return "journeys/journeysDetail";
+		return "journeys/journeysdetail";
 	}
 	
 	/**

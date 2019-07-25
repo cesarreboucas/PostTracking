@@ -75,7 +75,7 @@ public class DCController {
 			m.addAttribute("dc", dc);
 			m.addAttribute("packages", pDAO.fetchPackagesByDC(dc));
 			m.addAttribute("package", new Package());
-			return "dcs/dcsWithPackages";
+			return "dcs/dcswithpackages.html";
 	}
 	
 	/**
