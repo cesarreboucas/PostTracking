@@ -2190,6 +2190,11 @@ let routes =  [
            line.setAttributeNS(null,"y1", locations[r.origin.id].y);
            line.setAttributeNS(null,"x2", locations[r.destination.id].x);
            line.setAttributeNS(null,"y2", locations[r.destination.id].y);
-           line.setAttributeNS(null,"style", "stroke:rgb(255,0,0);stroke-width:3");
+           line.setAttributeNS(null,"style", "stroke:rgb(255,0,0);stroke-width:4");
            gCities.appendChild(line);
+       });
+
+       let scale = 1;
+       document.addEventListener("wheel", function (e) {
+           console.log(e);
        });

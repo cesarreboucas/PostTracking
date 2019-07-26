@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.PostTracking.Boundaries.CustomerDAO;
@@ -36,24 +37,12 @@ public class CustomerController {
 	}
 	
 	/**
-	 * Provides a list of Customers
-	 * @return Json of Customers
-	 */
-	@GetMapping("/api/customers")
-	@ResponseBody
-	public Iterable<Customer> ReturnAll() {
-		return getAll();
-	}
-	
-	/**
 	 * Creates a new Customer
 	 * @param customer The new customer
 	 * @return The view /Customer
 	 */
 	@PostMapping("/customers")
 	public String createCustomer(@ModelAttribute Customer customer) {
-		System.out.println("POST");
-		System.out.println(customer);
 		cdao.save(customer);
 		return "redirect:/customers";
 	}
@@ -105,6 +94,37 @@ public class CustomerController {
 		try {
 			return cdao.findById(Integer.parseInt(id)).get();
 		} catch(Exception ex) {
+			return new Customer();
+		}
+	}
+	
+	/**
+	 * Provides a list of Customers
+	 * @return Json of Customers
+	 */
+	@GetMapping("/api/customers")
+	@ResponseBody
+	public Iterable<Customer> ReturnAll() {
+		return getAll();
+	}
+	
+	/**
+	 * Provides a list of Customers based on Email
+	 * @return Json of Customers
+	 */
+	@GetMapping("/api/customerbymail/{mail}")
+	@ResponseBody
+	public Iterable<Customer> getCustomerByMail(@PathVariable String mail) {
+		return cdao.findByEmailAddress(mail);
+	}
+	
+	@PostMapping("/api/customers")
+	@ResponseBody
+	public Customer createCustomerApi(@ModelAttribute Customer customer) {
+		Customer c = cdao.save(customer);
+		if(c instanceof Customer) {
+			return c;
+		} else {
 			return new Customer();
 		}
 	}
