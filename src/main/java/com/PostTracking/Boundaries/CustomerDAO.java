@@ -18,5 +18,6 @@ public interface CustomerDAO extends CrudRepository<Customer, Integer> {
 	@Query("SELECT c FROM Customer c WHERE c.active = true ORDER BY c.firstName ASC")
 	Iterable<Customer> fetchCustomers();
 	
+	public Iterable<Customer> findByEmailAddress(String email);
 	
 }

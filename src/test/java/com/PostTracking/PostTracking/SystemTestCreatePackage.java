@@ -151,7 +151,7 @@ public class SystemTestCreatePackage {
             sb.append(journeys_str.substring(0, journeys_str.length()-1));
             sb.append("&");
             sb.append("weight="+p.getWeight()+"&");
-            sb.append("weight="+p.getVolume()+"&");
+            sb.append("volume="+p.getVolume()+"&");
             sb.append("recipient=test");
             System.out.println(sb.toString());
             
