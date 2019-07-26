@@ -157,130 +157,130 @@ public class Starterkit {
 		
 		// Castle Black - Winterfell
 		rArrayList.add(new Route(vDAO.findById(1).get() ,dcDAO.findById(2).get(),dcDAO.findById(1).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, true));
+				new Timestamp(1558087200000L), 28800000, 172800000, true));
 		rArrayList.add(new Route(vDAO.findById(1).get(),dcDAO.findById(1).get(), dcDAO.findById(2).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 28800000, 172800000, true));
 		
 		// Winterfell - Kings Landing
 		rArrayList.add(new Route(vDAO.findById(2).get() ,dcDAO.findById(1).get(),dcDAO.findById(4).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, true));
+				new Timestamp(1558087200000L), 72000000, 345600000, true));
 		rArrayList.add(new Route(vDAO.findById(2).get(),dcDAO.findById(4).get(), dcDAO.findById(1).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558260000000L), 72000000, 345600000, true));
 		
 		
 		// Highgarden - Casterly Rock - Kings Landing
 		rArrayList.add(new Route(vDAO.findById(3).get() ,dcDAO.findById(8).get(),dcDAO.findById(3).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 25200000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(3).get(),dcDAO.findById(3).get(), dcDAO.findById(4).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 25200000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(3).get(),dcDAO.findById(4).get(),dcDAO.findById(8).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 25200000, 259200000,true));
 		
 		// Casterly Rock - Riverrun - The Crag
 		rArrayList.add(new Route(vDAO.findById(4).get() ,dcDAO.findById(3).get(),dcDAO.findById(9).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 18000000, 172800000, true));
 		rArrayList.add(new Route(vDAO.findById(4).get(),dcDAO.findById(9).get(), dcDAO.findById(12).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 14400000, 172800000, true));
 		rArrayList.add(new Route(vDAO.findById(4).get(),dcDAO.findById(12).get(),dcDAO.findById(3).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558191600000L), 10800000, 172800000,true));
 		
 		// The Crag - Iron Lands
 		rArrayList.add(new Route(vDAO.findById(5).get() ,dcDAO.findById(12).get(),dcDAO.findById(7).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, true));
+				new Timestamp(1558087200000L), 21600000, 172800000, true));
 		rArrayList.add(new Route(vDAO.findById(5).get(),dcDAO.findById(7).get(), dcDAO.findById(12).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 21600000, 172800000, true));
 		
 		// The Eyrie - Riverrun - Kings Landing
 		rArrayList.add(new Route(vDAO.findById(6).get() ,dcDAO.findById(10).get(),dcDAO.findById(9).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 25200000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(6).get(),dcDAO.findById(9).get(), dcDAO.findById(4).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 25200000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(6).get(),dcDAO.findById(4).get(),dcDAO.findById(10).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 25200000, 259200000,true));
 		
 		// Storms End - Highgarden - Kings Landing
 		rArrayList.add(new Route(vDAO.findById(7).get() ,dcDAO.findById(5).get(),dcDAO.findById(8).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 28800000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(7).get(),dcDAO.findById(8).get(), dcDAO.findById(4).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 25200000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(7).get(),dcDAO.findById(4).get(),dcDAO.findById(5).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 18000000, 259200000,true));
 		
 		// Kings Landing - Dragonstone - Pentos
 		rArrayList.add(new Route(vDAO.findById(8).get() ,dcDAO.findById(4).get(),dcDAO.findById(6).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 28800000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(8).get(),dcDAO.findById(6).get(), dcDAO.findById(13).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 36000000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(8).get(),dcDAO.findById(13).get(),dcDAO.findById(4).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 50400000, 259200000,true));
 		
 		// Storms End - Myr - Volantis
 		rArrayList.add(new Route(vDAO.findById(9).get() ,dcDAO.findById(5).get(),dcDAO.findById(14).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 64800000, 432000000, 	true));
 		rArrayList.add(new Route(vDAO.findById(9).get(),dcDAO.findById(14).get(), dcDAO.findById(15).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 129600000, 432000000, true));
 		rArrayList.add(new Route(vDAO.findById(9).get(),dcDAO.findById(15).get(),dcDAO.findById(5).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558346400000L), 129600000, 432000000,true));
 		
 		// Myr - Pentos - Volantis
 		rArrayList.add(new Route(vDAO.findById(10).get() ,dcDAO.findById(14).get(),dcDAO.findById(13).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 25200000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(10).get(),dcDAO.findById(13).get(), dcDAO.findById(15).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 36000000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(10).get(),dcDAO.findById(15).get(),dcDAO.findById(14).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 28800000, 259200000,true));
 		
 		// Volantis - Mereen
 		rArrayList.add(new Route(vDAO.findById(11).get() ,dcDAO.findById(15).get(),dcDAO.findById(16).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, true));
+				new Timestamp(1558087200000L), 50400000, 172800000, true));
 		rArrayList.add(new Route(vDAO.findById(11).get(),dcDAO.findById(16).get(), dcDAO.findById(15).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 50400000, 172800000, true));
 		
 		// Mereen - Vaes Dothrak - Vaes Khadokh
 		rArrayList.add(new Route(vDAO.findById(12).get() ,dcDAO.findById(16).get(),dcDAO.findById(11).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 54000000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(12).get(),dcDAO.findById(11).get(), dcDAO.findById(18).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 57600000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(12).get(),dcDAO.findById(18).get(),dcDAO.findById(16).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 50400000, 259200000,true));
 		
 		// Vaes Dothrak - Vaes Khadokh
 		rArrayList.add(new Route(vDAO.findById(13).get() ,dcDAO.findById(11).get(),dcDAO.findById(18).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, true));
+				new Timestamp(1558087200000L), 57600000, 172800000, true));
 		rArrayList.add(new Route(vDAO.findById(13).get(),dcDAO.findById(18).get(), dcDAO.findById(11).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 57600000, 172800000, true));
 		
 		// Vaes Khadokh - Volantis - Norvos
 		rArrayList.add(new Route(vDAO.findById(14).get() ,dcDAO.findById(18).get(),dcDAO.findById(15).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 32400000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(14).get(),dcDAO.findById(15).get(), dcDAO.findById(17).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 36000000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(14).get(),dcDAO.findById(17).get(),dcDAO.findById(18).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 28800000, 259200000,true));
 		
 		// Pentos - Norvos - Myr
 		rArrayList.add(new Route(vDAO.findById(15).get() ,dcDAO.findById(13).get(),dcDAO.findById(17).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 25200000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(15).get(),dcDAO.findById(17).get(), dcDAO.findById(14).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 43200000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(15).get(),dcDAO.findById(14).get(),dcDAO.findById(13).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 43200000, 259200000,true));
 		
 		// Dragonstone - Myr - Kings Landing
 		rArrayList.add(new Route(vDAO.findById(16).get() ,dcDAO.findById(6).get(),dcDAO.findById(14).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 64800000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(16).get(),dcDAO.findById(14).get(), dcDAO.findById(4).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 64800000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(16).get(),dcDAO.findById(4).get(),dcDAO.findById(6).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 28800000, 259200000,true));
 		
 		// Riverrun - The Eyrie - Winterfell
 		rArrayList.add(new Route(vDAO.findById(17).get() ,dcDAO.findById(9).get(),dcDAO.findById(10).get(),
-				new Timestamp(1558087200000L), 7200000, 86400000, 	true));
+				new Timestamp(1558087200000L), 25200000, 259200000, 	true));
 		rArrayList.add(new Route(vDAO.findById(17).get(),dcDAO.findById(10).get(), dcDAO.findById(1).get(),
-				new Timestamp(1558098000000L), 7200000, 86400000, true));
+				new Timestamp(1558173600000L), 36000000, 259200000, true));
 		rArrayList.add(new Route(vDAO.findById(17).get(),dcDAO.findById(1).get(),dcDAO.findById(9).get(),
-				new Timestamp(1558108800000L), 7200000, 86400000,true));
+				new Timestamp(1558260000000L), 36000000, 259200000,true));
 		
 		
 		
