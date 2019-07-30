@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.PostTracking.Boundaries.CustomerDAO;
 import com.PostTracking.Boundaries.DistributionCenterDAO;
@@ -146,7 +147,9 @@ public class Starterkit {
 		}
 		
 		
-		return "<a href=\"/start2\">Second Part</a>";
+		return "<html><head>" + 
+				"<meta http-equiv=\"refresh\" content=\"0; url=start2\">" + 
+				"</head></html>";
 	}
 	
 	@GetMapping("/start2")
@@ -342,12 +345,13 @@ public class Starterkit {
 		dc.setAddress("address");
 		dcDAO.createDistributionCenter(dc);*/
 		
-		return "<a href=\"/start3\">Third Part</a>";
+		return "<html><head>" + 
+		"<meta http-equiv=\"refresh\" content=\"0; url=start3\">" + 
+		"</head></html>";
 	}
 
 	@GetMapping("/start3")
-	@ResponseBody
-	public String start3() {
+	public String start3(RedirectAttributes redirAttrs) {
 		Package p = new Package();
 		p.setCustomer(cDAO.findById(1).get());
 		p.setRecipient("test recipient");
@@ -379,6 +383,7 @@ public class Starterkit {
 		pDAO.save(p);
 		
 
-		return "<a href=\"/\">Index</a>";
+		redirAttrs.addFlashAttribute("message", "The database has been populated");
+		return "redirect:/";
 	}
 }
