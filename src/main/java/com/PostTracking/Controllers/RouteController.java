@@ -20,9 +20,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -58,14 +61,7 @@ public class RouteController {
 		return "routes/routes";
 	}
 
-	/**
-	 * Receive a json object of a list of routes. <br>
-	 * This method was made for the api, since it just return respose string and not views.
-	 * @param routes List of routes.
-	 * @return The http status with a response message.
-	 */
-	@PostMapping("/api/routes")
-	public ResponseEntity<?> createRoute(@RequestBody List<Route> routes) {
+	private ResponseEntity<?> validateRoutes(List<Route> routes) {
 		try {
 			// Do the same validations as the front end
 			if(routes.size() < 2) {
@@ -122,13 +118,51 @@ public class RouteController {
 				// Number of DC * 21600 (6 hours).
 				System.out.println("Restart: " + (routes.size() * 21600000));
 				routes.get(i).setRestart(routes.size() * 21600000);
-			 }
-			 
-			 rDAO.saveAll(routes);
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage() ,HttpStatus.INTERNAL_SERVER_ERROR);	
 		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	/**
+	 * Endpoint to create routes.
+	 * @param routes List of routes.
+	 * @return The http status with a response message.
+	 */
+	@PostMapping("/api/routes")
+	public ResponseEntity<?> createRoute(@RequestBody List<Route> routes) {
+		ResponseEntity<?> validation = validateRoutes(routes);
+		if(validation.getStatusCode() != HttpStatus.OK) {
+			return validation;
+		} 
+		rDAO.saveAll(routes);
 		return new ResponseEntity<String>("Routes created successfully", HttpStatus.OK);
+	}
+
+	@PutMapping("/api/routes")
+	public ResponseEntity<?> editRoute(@RequestBody List<Route> routes) {
+		ResponseEntity<?> validation = validateRoutes(routes);
+		if(validation.getStatusCode() != HttpStatus.OK) {
+			return validation;
+		} 
+		// First we remove the routes. We can't just edit the routes, we have to remove them and then
+		// create new ones.
+		// Another important fact is that the journeys will have to be set again, so this is a very expensive method.
+		rDAO.deleteRoutesByVehicle(routes.get(0).getVehicle().getId());
+		rDAO.saveAll(routes);
+		return new ResponseEntity<String>("Routes edited successfully", HttpStatus.OK);
+	}
+
+	@DeleteMapping("/api/routes/{id}")
+	public ResponseEntity<?> removeRoutesByVehicle(@PathVariable("id") int vehicleId){
+		try {
+			rDAO.deleteRoutesByVehicle(vehicleId);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<String>("Routes removed successfully", HttpStatus.OK);
 	}
 
 	@GetMapping("/api/routes")

@@ -8,14 +8,20 @@
 		<h1>Routes</h1>
 
 		<div>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">
-				Add route
+			<button type="button" class="btn btn-primary" data-type="CREATE" style="margin-bottom: 5px;" id="createRoute" data-toggle="modal">
+				Add Route
 			</button>
 		</div>
+		<div class="alert alert-primary" role="alert" id="MainErrorMessage" hidden></div>
 		
 		<div th:each="vehicle : ${vehicles}" class="card">
-		  <div th:text="${vehicle.getDescription()}" class="card-header">
-		  </div>
+			<div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
+				<div style="align-self: flex-start;" th:text="${vehicle.getDescription()}"></div>
+				<div style="align-self: flex-end;">
+					<button class="btn btn-primary" th:attr="data-vehicleid=${vehicle.getId()}" data-type="EDIT" name="EditRoutes" data-toggle="modal">Edit</button>
+					<button class="btn btn-secondary" th:attr="data-vehicleid=${vehicle.getId()}" name="RemoveRoutes">Remove</button>
+				</div>
+		  	</div>
 		  <div class="card-body">
 
 		  		<table class="table">
@@ -52,7 +58,7 @@
 					<div id="FormContainer" style="margin-bottom: 1em">
 
 					</div>
-					<button type="button" id="CreateRoute" class="btn btn-primary">Save changes</button>
+					<button type="button" id="CreateRoute" class="btn btn-primary">Save route</button>
 					<button type="button" id="CreateRow" class="btn btn-primary">Create Row</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
