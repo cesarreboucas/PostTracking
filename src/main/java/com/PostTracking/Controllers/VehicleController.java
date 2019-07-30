@@ -3,6 +3,7 @@ package com.PostTracking.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.PostTracking.Boundaries.RouteDAO;
 import com.PostTracking.Boundaries.VehicleDAO;
+import com.PostTracking.Entities.Journey;
+import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
 
 
@@ -25,6 +29,8 @@ public class VehicleController {
 	
 	@Autowired
 	VehicleDAO vdao;
+	@Autowired
+	RouteDAO rDAO;
 	
 	 /**
 	  * Get all vehicles on the database
@@ -113,6 +119,21 @@ public class VehicleController {
 		hibernateVehicle.setAvailable(false);
 		vdao.save(hibernateVehicle);
 		return "redirect:/vehicles";
+	}
+
+	/**
+	 * For some reason the vehicle entities isn't comming with the routes, so I had to create this 
+	 * endpoint to filter the routes based on the vehicle id.
+	 * @param vehicleId
+	 * @return A list of routes filtered by the vehicleId.
+	 */
+	@GetMapping("/api/vehicle/{id}/routes")
+	@ResponseBody
+	public List<Journey> getVehicleRoutes(@PathVariable("id") int vehicleId) {
+		System.out.println("[/api/vehicle/:id/routes] " + vehicleId);
+		List<Journey> vehicleRoutes = new ArrayList<>();
+		rDAO.findAllByVehicle(vehicleId).forEach(route -> vehicleRoutes.add(route));
+		return vehicleRoutes;
 	}
 	
 	/**

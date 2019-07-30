@@ -3,6 +3,8 @@ const routeTableHeaders = ['Origin', 'Destination', 'Start', 'Arrival'];
 let vehicles = [];
 let distributionCenters = [];
 let selectedVehicle = null;
+let type = 'create';
+let editVehicleId = null;
 
 const getVehicles = new Promise((resolve, reject) => {
     $.ajax({
@@ -30,7 +32,9 @@ const getDistributionCenters = new Promise((resolve, reject) => {
     });
 });
 
-$('#modalForm').on('show.bs.modal', createModal);
+$('#modalForm').on('show.bs.modal', function(e) {
+    createModal();
+});
 
 function clearFormContainer() {
     let formContainer = document.getElementById('FormContainer');
@@ -39,21 +43,119 @@ function clearFormContainer() {
     }
 }
 
-function createModal(event) {
+function createModal() {
     Promise.all([getVehicles, getDistributionCenters])
     .then((data) => {
         vehicles = data[0];
         distributionCenters = data[1];
         selectedVehicle = null;
-        console.log('[VEHICLES]', vehicles);
-        console.log('[DISTRIBUTION_CENTER]', distributionCenters);
-        createCard();
+        console.log('[TYPE]', type);
+        if(type==='CREATE') {
+            createCard();
+            createRow();
+        } else {
+            drawRoutes();
+            let saveButton = document.getElementById('CreateRoute');
+            saveButton.textContent = 'Edit route';
+        }
     })
-    .catch(onFetchFail);
+    .catch(error => {
+        console.log('[ERROR]', error);
+    });
 }
 
-function onFetchFail(error) {
-    console.log('[ERROR]', error);
+function drawRoutes() {
+    createCard();
+    let dropDownTrigger = document.getElementById('DropDownTrigger');
+    const vehicleId = editVehicleId;
+    console.log('[VEHICLE_ID]', vehicleId);
+    vehicles.forEach(vehicle => {
+        if(vehicle.id === vehicleId) {
+            selectedVehicle = vehicle;
+            return;
+        }
+    });
+    dropDownTrigger.textContent = selectedVehicle.description;
+
+    $.ajax({
+        dataType: "json",
+        url: `/api/vehicle/${vehicleId}/routes`
+    })
+    .done(function(data) {
+        console.log('[VEHICLE_ROUTES]', data);
+        let routeTable = document.getElementById('RouteTable');
+        data.forEach(route => {
+            createRow();
+            let lastRow = routeTable.lastChild;
+            let selects = $(lastRow).find('select');
+            let inputs = $(lastRow).find('input');
+
+            $(selects[0]).val(route.origin.id);
+            $(selects[1]).val(route.destination.id);
+
+            let start = new Date(route.start);
+            let arrival = new Date(start.getTime() + route.duration);
+            $(inputs[0]).val(convertToDateLocalTimeInput(start));
+            $(inputs[1]).val(convertToDateLocalTimeInput(arrival));
+        });
+    })
+    .fail(function( jqXHR, textStatus, errorThrown ) {
+    });
+}
+
+function convertToDateLocalTimeInput(date) {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDay();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    const leadZeroes = function(value) {
+        return value < 10 ? `0${value}` : `${value}`;
+    }
+
+    const sYear = `${year}`;
+    const sMonth = leadZeroes(month);
+    const sDay = leadZeroes(day);
+    const sHours = leadZeroes(hours);
+    const sMinutes = leadZeroes(minutes);
+
+    const dateLocalInputValue = `${sYear}-${sMonth}-${sDay}T${sHours}:${sMinutes}`;
+    console.log('[DATE_LOCAL_TIME]', dateLocalInputValue);
+    return dateLocalInputValue; 
+}
+
+function createCard() {
+    let formContainer = document.getElementById('FormContainer');
+    clearFormContainer();
+    setErrorMessage('');
+
+    let card = document.createElement('div');
+    card.setAttribute('class', 'card');
+    formContainer.appendChild(card);
+
+    let cardHeader = document.createElement('div');
+    cardHeader.setAttribute('class', 'card-header');
+    cardHeader.appendChild(createDropDown());
+    card.appendChild(cardHeader);
+
+    let cardBody = document.createElement('div');
+    cardBody.setAttribute('class', 'card-body');
+    card.appendChild(cardBody);
+
+    let routeTable = document.createElement('table');
+    routeTable.setAttribute('class', 'table');
+    routeTable.setAttribute('id', 'RouteTable');
+    cardBody.appendChild(routeTable);
+
+    let tr = document.createElement('tr');
+    routeTable.appendChild(tr);
+
+    routeTableHeaders.forEach(routeTableHeader => {
+        let th = document.createElement('th');
+        th.textContent = routeTableHeader;
+        tr.appendChild(th);
+    });
 }
 
 function createDropDown() {
@@ -100,41 +202,6 @@ function onDropDownMenuClick(event) {
         }
     });
     dropDownTrigger.textContent = selectedVehicle.description;
-}
-
-function createCard() {
-    let formContainer = document.getElementById('FormContainer');
-    clearFormContainer();
-    setErrorMessage('');
-
-    let card = document.createElement('div');
-    card.setAttribute('class', 'card');
-    formContainer.appendChild(card);
-
-    let cardHeader = document.createElement('div');
-    cardHeader.setAttribute('class', 'card-header');
-    cardHeader.appendChild(createDropDown());
-    card.appendChild(cardHeader);
-
-    let cardBody = document.createElement('div');
-    cardBody.setAttribute('class', 'card-body');
-    card.appendChild(cardBody);
-
-    let routeTable = document.createElement('table');
-    routeTable.setAttribute('class', 'table');
-    routeTable.setAttribute('id', 'RouteTable');
-    cardBody.appendChild(routeTable);
-
-    let tr = document.createElement('tr');
-    routeTable.appendChild(tr);
-
-    routeTableHeaders.forEach(routeTableHeader => {
-        let th = document.createElement('th');
-        th.textContent = routeTableHeader;
-        tr.appendChild(th);
-    });
-
-    createRow();
 }
 
 function createRow() {
@@ -200,10 +267,66 @@ function createSelect() {
     return element;
 }
 
-$('#CreateRow').click(function() {
-    createRow();
+function setErrorMessage(errorMessage, level = 'warn', messageId = 'ErrorMessage') {
+    let errorMessageDiv = document.getElementById(messageId);
+    if(errorMessage === '') {
+        errorMessageDiv.hidden = true;
+        return;
+    } else if(errorMessageDiv.hidden){
+        errorMessageDiv.hidden = false;
+    }
+
+    switch(level) {
+        case 'warn':
+            errorMessageDiv.setAttribute('class', 'alert alert-warning');
+            errorMessageDiv.innerHTML = errorMessage;
+            break;
+        case 'danger':
+            errorMessageDiv.setAttribute('class', 'alert alert-danger');
+            errorMessageDiv.innerHTML = errorMessage;
+            break;
+        case 'success':
+            errorMessageDiv.setAttribute('class', 'alert alert-success');
+            errorMessageDiv.innerHTML = errorMessage;
+            break;
+    }
+}
+
+/**
+ * BUTTON CLICKS
+ */
+
+$('#createRoute').click(function(e) {
+    type = e.delegateTarget.dataset['type'];
+    $('#modalForm').modal('show');
 });
 
+$("button[name^='EditRoutes']").click(function(e) {
+    type = e.delegateTarget.dataset['type'];
+    editVehicleId = parseInt(e.delegateTarget.dataset['vehicleid']);
+    $('#modalForm').modal('show');
+});
+
+// ON REMOVE ROUTE
+$("button[name^='RemoveRoutes']").click(function(e){
+    console.log('[REMOVE_ROUTES]');
+    const vehicleId = parseInt(e.delegateTarget.dataset['vehicleid']);
+    $.ajax({
+        type: 'delete',
+        contentType: "application/json; charset=utf-8",
+        url: `/api/routes/${vehicleId}`,
+        traditional: true
+    })
+    .done(function(data) {
+        location.reload();
+        setErrorMessage(data, 'success', 'MainErrorMessage');
+    })
+    .fail(function( jqXHR, textStatus, errorThrown ) {
+        setErrorMessage(jqXHR.responseText, 'danger', 'MainErrorMessage');
+    });
+});
+
+// ON CREATE ROUTE - MODAL BUTTON
 $('#CreateRoute').click(function() {
     let routes = [];
     const trs = $('#RouteTable').children();
@@ -303,7 +426,7 @@ $('#CreateRoute').click(function() {
     console.log('[ROUTES]', routeModel);
 
     $.ajax({
-        type: "post",
+        type: type === 'CREATE' ? 'post' : 'put',
         contentType: "application/json; charset=utf-8",
         url: "/api/routes",
         traditional: true,
@@ -317,27 +440,7 @@ $('#CreateRoute').click(function() {
     });
 });
 
-function setErrorMessage(errorMessage, level = 'warn') {
-    let errorMessageDiv = document.getElementById('ErrorMessage');
-    if(errorMessage === '') {
-        errorMessageDiv.hidden = true;
-        return;
-    } else if(errorMessageDiv.hidden){
-        errorMessageDiv.hidden = false;
-    }
-
-    switch(level) {
-        case 'warn':
-            errorMessageDiv.setAttribute('class', 'alert alert-warning');
-            errorMessageDiv.innerHTML = errorMessage;
-            break;
-        case 'danger':
-            errorMessageDiv.setAttribute('class', 'alert alert-danger');
-            errorMessageDiv.innerHTML = errorMessage;
-            break;
-        case 'success':
-            errorMessageDiv.setAttribute('class', 'alert alert-success');
-            errorMessageDiv.innerHTML = errorMessage;
-            break;
-    }
-}
+// ON CREATE ROW - MODAL BUTTON
+$('#CreateRow').click(function() {
+    createRow();
+});
