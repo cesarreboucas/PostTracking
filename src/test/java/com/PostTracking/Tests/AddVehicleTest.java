@@ -2,6 +2,7 @@ package com.PostTracking.Tests;
 
 import org.junit.Test;
 import org.junit.Before;
+import org.hibernate.sql.Select;
 import org.junit.After;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,24 +37,34 @@ public class AddVehicleTest {
   }
   @Test
   public void addVehicle() {
-    driver.get("http://localhost:8080/");
-    driver.manage().window().setSize(new Dimension(1296, 1000));
-    driver.findElement(By.linkText("Vehicles")).click();
-    driver.findElement(By.cssSelector(".btn-secondary:nth-child(1)")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".btn-secondary:nth-child(1)"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.tagName("body"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element, 0, 0).perform();
-    }
-    driver.findElement(By.id("txtDescription")).click();
-    driver.findElement(By.id("txtDescription")).sendKeys("TestSelenium");
-    driver.findElement(By.id("txtMaxVolume")).sendKeys("200");
-    driver.findElement(By.id("txtMaxWeight")).sendKeys("200");
-    driver.findElement(By.cssSelector(".btn:nth-child(4)")).click();
+    try {
+    	driver.get("http://localhost:8080/");
+        driver.manage().window().setSize(new Dimension(1296, 1000));
+        driver.findElement(By.linkText("Vehicles")).click();
+        driver.findElement(By.cssSelector(".btn-secondary:nth-child(1)")).click();
+        {
+          WebElement element = driver.findElement(By.cssSelector(".btn-secondary:nth-child(1)"));
+          Actions builder = new Actions(driver);
+          builder.moveToElement(element).perform();
+        }
+        {
+          WebElement element = driver.findElement(By.tagName("body"));
+          Actions builder = new Actions(driver);
+          builder.moveToElement(element, 0, 0).perform();
+        }
+        driver.findElement(By.id("txtDescription")).click();
+        driver.findElement(By.id("txtDescription")).sendKeys("DragaoBaoBao");
+        driver.findElement(By.id("txtMaxVolume")).sendKeys("5000");
+        driver.findElement(By.id("txtMaxWeight")).sendKeys("5000");
+        WebElement selectAvailable =  driver.findElement(By.id("selectAvailable"));
+        org.openqa.selenium.support.ui.Select sSelectAvailable = new org.openqa.selenium.support.ui.Select(selectAvailable);
+        sSelectAvailable.selectByIndex(0);
+        driver.findElement(By.id("SaveVehicle")).click();
+        
+        Thread.sleep(4000);
+	} catch (Exception e) {
+		// TODO: handle exception
+		System.out.println(e.getMessage());
+	}
   }
 }

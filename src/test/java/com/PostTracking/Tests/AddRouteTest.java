@@ -51,12 +51,15 @@ public class AddRouteTest {
 		      builder.moveToElement(element, 0, 0).perform();
 		    }
 		    driver.findElement(By.id("DropDownTrigger")).click();
-		    driver.findElement(By.linkText("Appaloosa Horse")).click();
+		    driver.findElement(By.linkText("DragaoBaoBao")).click();
 		    driver.findElement(By.cssSelector("td:nth-child(2) > .form-group")).click();
 		    {
-		      WebElement dropdownElement = driver.findElement(By.cssSelector("td:nth-child(2) > .form-group"));
+		      WebElement dropdownElement = driver.findElement(By.cssSelector("td:nth-child(1) > .form-group"));
 		      Select dropdown = new Select(dropdownElement);
-		      dropdown.selectByIndex(1);
+		      dropdown.selectByIndex(8);
+		      WebElement dropdownElement2 = driver.findElement(By.cssSelector("td:nth-child(2) > .form-group"));
+		      Select dropdown2 = new Select(dropdownElement2);
+		      dropdown2.selectByIndex(14);
 		    }
 		    driver.findElement(By.cssSelector("td:nth-child(3) > input")).sendKeys("01/01/002019 01:01PM");
 		    driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("01/02/002019 01:01PM");
@@ -67,7 +70,10 @@ public class AddRouteTest {
 		    {
 		      WebElement dropdownElement = driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(1) > .form-group"));
 		      Select dropdown = new Select(dropdownElement);
-		      dropdown.selectByIndex(1);
+		      dropdown.selectByIndex(14);
+		      WebElement dropdownElement2 = driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(2) > .form-group"));
+		      Select dropdown2 = new Select(dropdownElement2);
+		      dropdown2.selectByIndex(8);
 		    }
 		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("01/03/002019 01:01PM");
 		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("01/04/002019 01:01PM");

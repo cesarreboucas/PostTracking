@@ -112,10 +112,12 @@ public class RouteController {
 				}
 
 				routes.get(i).setAvailable(true);
-				// Using the restart calculation as follow:
-				// Number of DC * 21600 (6 hours).
-				System.out.println("Restart: " + (routes.size() * 21600000));
-				routes.get(i).setRestart(routes.size() * 21600000);
+				
+				Route lastRoute = routes.get(routes.size() - 1);
+				Route firstRoute = routes.get(0);
+				long restart = (lastRoute.getStart().getTime() + lastRoute.getDuration() + 86400000) - firstRoute.getStart().getTime(); 
+				System.out.println("Restart: " + restart);
+				routes.get(i).setRestart(restart);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage() ,HttpStatus.INTERNAL_SERVER_ERROR);	
@@ -131,6 +133,9 @@ public class RouteController {
 	 */
 	@PostMapping("/api/routes")
 	public ResponseEntity<?> createRoute(@RequestBody List<Route> routes) {
+		if(rDAO.findAllByVehicle(routes.get(0).getVehicle().getId()).iterator().hasNext()) {
+			return new ResponseEntity<String>(String.format("This vehicle already has a route"), HttpStatus.BAD_REQUEST);
+		}
 		ResponseEntity<?> validation = validateRoutes(routes);
 		if(validation.getStatusCode() != HttpStatus.OK) {
 			return validation;

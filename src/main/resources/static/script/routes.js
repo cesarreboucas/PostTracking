@@ -95,6 +95,10 @@ function drawRoutes() {
 
             let start = new Date(route.start);
             let arrival = new Date(start.getTime() + route.duration);
+
+            console.log('[START]', start);
+            console.log('[ARRIVAL]', arrival);
+
             $(inputs[0]).val(convertToDateLocalTimeInput(start));
             $(inputs[1]).val(convertToDateLocalTimeInput(arrival));
         });
@@ -105,8 +109,8 @@ function drawRoutes() {
 
 function convertToDateLocalTimeInput(date) {
     const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDay();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const hours = date.getHours();
     const minutes = date.getMinutes();
 
@@ -121,7 +125,6 @@ function convertToDateLocalTimeInput(date) {
     const sMinutes = leadZeroes(minutes);
 
     const dateLocalInputValue = `${sYear}-${sMonth}-${sDay}T${sHours}:${sMinutes}`;
-    console.log('[DATE_LOCAL_TIME]', dateLocalInputValue);
     return dateLocalInputValue; 
 }
 

@@ -14,7 +14,7 @@
 		</div>
 		<div class="alert alert-primary" role="alert" id="MainErrorMessage" hidden></div>
 		
-		<div th:each="vehicle : ${vehicles}" class="card">
+		<div th:each="vehicle : ${vehicles}" class="card" th:if="${vehicle.getRoutes().size() > 0}">
 			<div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
 				<div style="align-self: flex-start;" th:text="${vehicle.getDescription()}"></div>
 				<div style="align-self: flex-end;">

@@ -177,7 +177,7 @@ public class Journey {
 		return this.restart;
 	}
 
-	public void setRestart(int restart) {
+	public void setRestart(long restart) {
 		this.restart = restart;
 	}
 
