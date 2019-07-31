@@ -448,13 +448,8 @@ class ComparePathsByArrival implements Comparator<Path> {
 
 	@Override
 	public int compare(Path pA, Path pB) {
-		if(pA.getJourneys().get(pA.getJourneys().size()-1).getArrival().getTime() - 
-				pB.getJourneys().get(pB.getJourneys().size()-1).getArrival().getTime() > 0) {
-			return 1;
-		} else {
-			return -1;
-		}
-
+		return Long.compare(pA.getJourneys().get(pA.getJourneys().size()-1).getArrival().getTime(),
+				pB.getJourneys().get(pB.getJourneys().size()-1).getArrival().getTime());
 	}
 
 	
