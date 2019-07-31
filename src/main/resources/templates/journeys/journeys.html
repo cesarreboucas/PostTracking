@@ -23,7 +23,7 @@
             <td th:text="${journey.getDestination().getName()}"></td>
             <td th:text="${journey.getVehicle().getDescription()}"></td>
             <td th:text="${journey.getStart()}"></td>
-            <td><a role="button" class="btn btn-sm btn-primary" th:href="${'/journeys/'+journey.getId()}">View</a></td>
+            <td><a role="button" class="btn-sm btn-primary" th:href="${'/journeys/'+journey.getId()}">View</a></td>
         </tr>
     </table>
 </body>

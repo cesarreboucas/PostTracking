@@ -8,7 +8,7 @@
 		<h1>Routes</h1>
 
 		<div>
-			<button type="button" class="btn btn-primary" data-type="CREATE" style="margin-bottom: 5px;" id="createRoute" data-toggle="modal">
+			<button type="button" class="btn-sm btn-secondary" data-type="CREATE" style="margin-bottom: 5px;" id="createRoute" data-toggle="modal">
 				Add Route
 			</button>
 		</div>
@@ -18,8 +18,8 @@
 			<div class="card-header" style="display: flex; flex-direction: row; justify-content: space-between;">
 				<div style="align-self: flex-start;" th:text="${vehicle.getDescription()}"></div>
 				<div style="align-self: flex-end;">
-					<button class="btn btn-primary" th:attr="data-vehicleid=${vehicle.getId()}" data-type="EDIT" name="EditRoutes" data-toggle="modal">Edit</button>
-					<button class="btn btn-secondary" th:attr="data-vehicleid=${vehicle.getId()}" name="RemoveRoutes">Remove</button>
+					<button class="btn-sm btn-primary" th:attr="data-vehicleid=${vehicle.getId()}" data-type="EDIT" name="EditRoutes" data-toggle="modal">Edit</button>
+					<button class="btn-sm btn-warning" th:attr="data-vehicleid=${vehicle.getId()}" name="RemoveRoutes">Remove</button>
 				</div>
 		  	</div>
 		  <div class="card-body">

@@ -37,7 +37,7 @@
         <tr th:each="package : ${journey.getPackages()}"
             th:classappend="${package.getPosition()!=journey.getOrigin()} ? 'table-danger' : '' ">
             <td><button th:data-package="${package.getId()}" type="button" 
-                class="btn-secondary btn-sm btn-block btn-primary" 
+                class="btn-sm btn-secondary btn-sm btn-block btn-primary" 
                 data-toggle="modal" data-target="#modalPackageEdit">Detail</button>
             </td>
             <td th:text="${package.getVolume()}"></td>
