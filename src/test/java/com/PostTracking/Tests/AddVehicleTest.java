@@ -1,4 +1,4 @@
-package com.PostTracking.PostTracking;
+package com.PostTracking.Tests;
 
 import org.junit.Test;
 import org.junit.Before;

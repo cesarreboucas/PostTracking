@@ -12,8 +12,6 @@ import com.PostTracking.Boundaries.VehicleDAO;
 import com.PostTracking.Entities.DistributionCenter;
 import com.PostTracking.Entities.Route;
 import com.PostTracking.Entities.Vehicle;
-import com.PostTracking.Models.VehiclePath;
-import com.PostTracking.Models.VehiclePaths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

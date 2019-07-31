@@ -35,6 +35,11 @@ window.onload = function() {
 				if(data.length==0) {
 					$('#paths').html("<strong>Sorry, We could't find any path.<strong>");
 				} else {
+					/*data.sort(function (a,b) {
+						let dateA = new Date(a.journeys[a.journeys.length-1].arrival);
+						let dateB = new Date(a.journeys[a.journeys.length-1].arrival);
+						return dateA - dateB;
+					});*/
 					data.forEach(path => {
 						document.getElementById("paths").appendChild(makeCard(path));
 						document.getElementById("paths").appendChild(document.createElement("br"));				
