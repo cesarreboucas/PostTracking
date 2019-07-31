@@ -1,4 +1,4 @@
-package com.PostTracking.PostTracking;
+package com.PostTracking.Tests;
 
 import static org.junit.Assert.*;
 

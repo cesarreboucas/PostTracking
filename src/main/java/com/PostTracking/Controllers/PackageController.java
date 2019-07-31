@@ -2,6 +2,8 @@ package com.PostTracking.Controllers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -290,8 +292,6 @@ public class PackageController {
 						
 					} while(j.checkCapacity(volume, weight)==false);
 
-					
-					
 				}
 			// If current position != destination, drop
 			} else {
@@ -304,7 +304,7 @@ public class PackageController {
 				--x; //Backing X after index changed
 			}
 		}
-		
+		Collections.sort(paths, new ComparePathsByArrival());
 		return paths;
 	}
 	
@@ -442,5 +442,22 @@ public class PackageController {
 	public Iterable<Vehicle> getVehicles() {
 		return vDAO.findAll();
 	}
+}
+
+class ComparePathsByArrival implements Comparator<Path> {
+
+	@Override
+	public int compare(Path pA, Path pB) {
+		if(pA.getJourneys().get(pA.getJourneys().size()-1).getArrival().getTime() - 
+				pB.getJourneys().get(pB.getJourneys().size()-1).getArrival().getTime() > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+
+	}
+
+	
+	
 }
 
