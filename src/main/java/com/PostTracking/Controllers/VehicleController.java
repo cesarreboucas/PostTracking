@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -78,11 +81,13 @@ public class VehicleController {
 	 * @return Redirect to [GET] Vehicles.
 	 */
 	@PostMapping("/vehicles")
-	public String createVehicle(@ModelAttribute Vehicle vehicle) {
-		System.out.println("POST");
-		System.out.println(vehicle);
-		vdao.save(vehicle);
-		return "redirect:/vehicles";
+	public ResponseEntity<?> createVehicle(@ModelAttribute Vehicle vehicle) {
+		try {
+			vdao.save(vehicle);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<String>("Vehicle saved successfully", HttpStatus.OK);
 	}
 	
 	/**
@@ -91,17 +96,22 @@ public class VehicleController {
 	 * @return Redirect to [GET] Vehicles.
 	 */
 	@PutMapping("/vehicles")
-	public String updateVehicle(@ModelAttribute Vehicle vehicle) {
-		Vehicle hibernateVehicle = vdao.findById(vehicle.getId()).get();
-		hibernateVehicle.setDescription(vehicle.getDescription());
-		hibernateVehicle.setMaxVolume(vehicle.getMaxVolume());
-		hibernateVehicle.setMaxWeight(vehicle.getMaxWeight());
-		hibernateVehicle.setAvailable(vehicle.isAvailable());
-		
-		System.out.println("POST");
-		System.out.println(hibernateVehicle);
-		vdao.save(hibernateVehicle);
-		return "redirect:/vehicles";
+	public ResponseEntity<?> updateVehicle(@RequestBody Vehicle vehicle) {
+		try {
+			System.out.println(vehicle);
+			Optional<Vehicle> hibernateVehicle = vdao.findById(vehicle.getId());
+			if(!hibernateVehicle.isPresent()) {
+				return new ResponseEntity<String>("Vehicle not found", HttpStatus.NOT_FOUND);
+			}
+			hibernateVehicle.get().setDescription(vehicle.getDescription());
+			hibernateVehicle.get().setMaxVolume(vehicle.getMaxVolume());
+			hibernateVehicle.get().setMaxWeight(vehicle.getMaxWeight());
+			hibernateVehicle.get().setAvailable(vehicle.isAvailable());
+			vdao.save(hibernateVehicle.get());	
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);	
+		}
+		return new ResponseEntity<String>("Vehicle edited successfully", HttpStatus.OK);
 	}
 	
 	/**

@@ -10,9 +10,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.InputSource;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Sleeper;
 import org.openqa.selenium.JavascriptExecutor;
 
 import static org.junit.Assert.assertEquals;
@@ -24,7 +22,12 @@ public class AddRouteTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\Support\\chromedriver.exe");
+    String os = System.getProperty("os.name").toLowerCase();
+	if(os.contains("mac")) {
+		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/Support/chromedriver");
+	} else {
+		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\Support\\chromedriver");
+	}
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
@@ -38,53 +41,58 @@ public class AddRouteTest {
 	  try {
 		    driver.get("http://127.0.0.1:8080/");
 		    driver.manage().window().setSize(new Dimension(1296, 1000));
-		    driver.findElement(By.linkText("Routes")).click();
-		    driver.findElement(By.cssSelector(".btn:nth-child(1)")).click();
-		    {
-		      WebElement element = driver.findElement(By.cssSelector(".btn:nth-child(1)"));
-		      Actions builder = new Actions(driver);
-		      builder.moveToElement(element).perform();
-		    }
-		    {
-		      WebElement element = driver.findElement(By.tagName("body"));
-		      Actions builder = new Actions(driver);
-		      builder.moveToElement(element, 0, 0).perform();
-		    }
-		    driver.findElement(By.id("DropDownTrigger")).click();
-		    driver.findElement(By.linkText("DragaoBaoBao")).click();
+			driver.findElement(By.linkText("Routes")).click();
+			Thread.sleep(1200);
+		    driver.findElement(By.id("createRoute")).click();
+			Thread.sleep(1200);
+			driver.findElement(By.id("DropDownTrigger")).click();
+			Thread.sleep(1200);
+			driver.findElement(By.linkText("DragaoBaoBao")).click();
+			Thread.sleep(1200);
 		    driver.findElement(By.cssSelector("td:nth-child(2) > .form-group")).click();
 		    {
 		      WebElement dropdownElement = driver.findElement(By.cssSelector("td:nth-child(1) > .form-group"));
 		      Select dropdown = new Select(dropdownElement);
-		      dropdown.selectByIndex(8);
+			  dropdown.selectByIndex(8);
+			  Thread.sleep(1200);
 		      WebElement dropdownElement2 = driver.findElement(By.cssSelector("td:nth-child(2) > .form-group"));
 		      Select dropdown2 = new Select(dropdownElement2);
-		      dropdown2.selectByIndex(14);
+			  dropdown2.selectByIndex(14);
+			  Thread.sleep(2000);
 		    }
-		    driver.findElement(By.cssSelector("td:nth-child(3) > input")).sendKeys("01/01/002019 01:01PM");
-		    driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("01/02/002019 01:01PM");
+			driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("01/01/002019 01:01PM");
+			//driver.findElement(By.cssSelector("td:nth-child(3) > input")).sendKeys("002019/01/01 01:01PM");
+			Thread.sleep(1200);
+			driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("01/02/002019 01:01PM");
+			//driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("002019/01/02 01:01PM");
+			Thread.sleep(1200);
 		    
 		    //CREATE ANOTHER ROW
-		    driver.findElement(By.id("CreateRow")).click();
+			driver.findElement(By.id("CreateRow")).click();
+			Thread.sleep(1200);
 		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(1) > .form-group")).click();
 		    {
 		      WebElement dropdownElement = driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(1) > .form-group"));
 		      Select dropdown = new Select(dropdownElement);
-		      dropdown.selectByIndex(14);
+			  dropdown.selectByIndex(14);
+			  Thread.sleep(1200);
 		      WebElement dropdownElement2 = driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(2) > .form-group"));
 		      Select dropdown2 = new Select(dropdownElement2);
-		      dropdown2.selectByIndex(8);
+			  dropdown2.selectByIndex(8);
+			  Thread.sleep(1200);
 		    }
-		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("01/03/002019 01:01PM");
-		    driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("01/04/002019 01:01PM");
-		    driver.findElement(By.id("CreateRoute")).click();
-		    
-		    Thread.sleep(1000);
+			driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("01/03/002019 01:01PM");
+			//driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("002019/01/03 01:01PM");
+			Thread.sleep(1200);
+			driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("01/04/002019 01:01PM");
+			//driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("002019/01/04 01:01PM");
+			Thread.sleep(1200);
+			driver.findElement(By.id("CreateRoute")).click();
+			Thread.sleep(1200);
 		    
 		    String result = driver.findElement(By.id("ErrorMessage")).getText();
 		    assertEquals(result, "Routes created successfully");
 	} catch (Exception e) {
-		// TODO: handle exception
 		System.out.println(e.getMessage());
 	}
   }
