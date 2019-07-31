@@ -16,4 +16,7 @@ import com.PostTracking.Entities.DistributionCenter;
 public interface DistributionCenterDAO extends CrudRepository<DistributionCenter, Integer> {
 	@Query("SELECT dc FROM DistributionCenter dc WHERE dc.active = true ORDER BY dc.name ASC")
 	Iterable<DistributionCenter> fetchDCs();
+	
+	
+	Iterable<DistributionCenter> findAllByOrderByIdAsc();
 }

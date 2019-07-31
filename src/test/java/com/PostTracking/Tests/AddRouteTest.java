@@ -26,7 +26,7 @@ public class AddRouteTest {
 	if(os.contains("mac")) {
 		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/Support/chromedriver");
 	} else {
-		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\Support\\chromedriver");
+		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\Support\\chromedriver.exe");
 	}
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
@@ -47,7 +47,7 @@ public class AddRouteTest {
 			Thread.sleep(1200);
 			driver.findElement(By.id("DropDownTrigger")).click();
 			Thread.sleep(1200);
-			driver.findElement(By.linkText("DragaoBaoBao")).click();
+			driver.findElement(By.linkText("Dragon")).click();
 			Thread.sleep(1200);
 		    driver.findElement(By.cssSelector("td:nth-child(2) > .form-group")).click();
 		    {
@@ -60,10 +60,10 @@ public class AddRouteTest {
 			  dropdown2.selectByIndex(14);
 			  Thread.sleep(2000);
 		    }
-			driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("01/01/002019 01:01PM");
+			driver.findElement(By.cssSelector("td:nth-child(3) > input")).sendKeys("07/01/002019 05:01AM");
 			//driver.findElement(By.cssSelector("td:nth-child(3) > input")).sendKeys("002019/01/01 01:01PM");
 			Thread.sleep(1200);
-			driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("01/02/002019 01:01PM");
+			driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("07/01/002019 08:01AM");
 			//driver.findElement(By.cssSelector("td:nth-child(4) > input")).sendKeys("002019/01/02 01:01PM");
 			Thread.sleep(1200);
 		    
@@ -81,10 +81,10 @@ public class AddRouteTest {
 			  dropdown2.selectByIndex(8);
 			  Thread.sleep(1200);
 		    }
-			driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("01/03/002019 01:01PM");
+			driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("07/01/002019 09:01AM");
 			//driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(3) > input")).sendKeys("002019/01/03 01:01PM");
 			Thread.sleep(1200);
-			driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("01/04/002019 01:01PM");
+			driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("07/01/002019 11:01AM");
 			//driver.findElement(By.cssSelector("tr:nth-child(3) > td:nth-child(4) > input")).sendKeys("002019/01/04 01:01PM");
 			Thread.sleep(1200);
 			driver.findElement(By.id("CreateRoute")).click();

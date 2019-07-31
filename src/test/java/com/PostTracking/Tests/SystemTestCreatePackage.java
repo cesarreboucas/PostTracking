@@ -33,7 +33,7 @@ public class SystemTestCreatePackage {
 	public SystemTestCreatePackage() {
 		System.out.println("Getting all Distribution Centers");
 		try {
-			// Get The DCS
+			//Get The DCS
 			url = new URL("http://127.0.0.1:8080/api/dcs");
 			con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
@@ -48,8 +48,6 @@ public class SystemTestCreatePackage {
 					}
 			in.close();
 			dcs = gson.fromJson(content.toString(), DistributionCenter[].class); 
-					
-			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -100,8 +98,8 @@ public class SystemTestCreatePackage {
 		do {
 			index_destination = r.nextInt(dcs.length); 
 		} while (index_destination == index_origin);
-		p.setOrigin(dcs[index_origin]);
-		p.setDestination(dcs[index_destination]);
+		p.setOrigin(dcs[16]);
+		p.setDestination(dcs[10]);
 		p.setWeight(r.nextInt(200));
 		p.setVolume(r.nextInt(200));
 		

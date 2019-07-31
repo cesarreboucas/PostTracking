@@ -81,7 +81,7 @@ public class VehicleController {
 	 * @return Redirect to [GET] Vehicles.
 	 */
 	@PostMapping("/vehicles")
-	public ResponseEntity<?> createVehicle(@ModelAttribute Vehicle vehicle) {
+	public ResponseEntity<?> createVehicle(@RequestBody Vehicle vehicle) {
 		try {
 			vdao.save(vehicle);
 		} catch (Exception e) {

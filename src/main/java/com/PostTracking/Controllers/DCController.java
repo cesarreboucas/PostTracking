@@ -131,8 +131,9 @@ public class DCController {
 	 */
 	@GetMapping("/api/dcs")
 	@ResponseBody
-	public List<DistributionCenter> getAllDistributionCenters() {
-		return (List<DistributionCenter>) getDistributionCentes();
+	public Iterable<DistributionCenter> getAllDistributionCenters() {
+		//return (List<DistributionCenter>) getDistributionCentes();
+		return dcDAO.findAllByOrderByIdAsc();
 	}
 
 	/**
